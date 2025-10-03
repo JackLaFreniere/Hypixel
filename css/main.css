@@ -59,9 +59,9 @@ body {
 
 .calculator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -216,6 +216,13 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+    .calculator-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 900px;
+    }
+}
+
 @media (max-width: 768px) {
     .header h1 { 
         font-size: 2.2em; 
@@ -244,6 +251,7 @@ body {
     .calculator-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+        max-width: 500px;
     }
     
     .calculator-card { 
