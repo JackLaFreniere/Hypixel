@@ -91,7 +91,7 @@ class HypixelBazaarAPI {
 
         try {
             console.log('Loading items database...');
-            const response = await fetch('../items.json');
+            const response = await fetch('../jsons/items.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

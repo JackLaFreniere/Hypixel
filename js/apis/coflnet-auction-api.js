@@ -63,7 +63,7 @@ class CoflnetAuctionAPI {
 
         try {
             console.log('Loading items database for Coflnet API...');
-            const response = await fetch('../items.json');
+            const response = await fetch('../jsons/items.json');
             if (!response.ok) {
                 throw new Error(`Failed to load items.json: ${response.status}`);
             }
