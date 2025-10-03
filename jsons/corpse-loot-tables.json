@@ -92,6 +92,48 @@
                 "source": "bazaar"
             },
             {
+                "name": "Opal Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Onyx Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Aquamarine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Peridot Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Citrine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Ruby Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Jasper Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
                 "name": "Refined Mithril",
                 "quantity": 2,
                 "weight": 60,
@@ -236,6 +278,49 @@
                 "quantity": 1,
                 "weight": 25,
                 "source": "bazaar"
+            },
+            
+            {
+                "name": "Opal Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Onyx Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Aquamarine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Peridot Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Citrine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Ruby Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Jasper Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
             },
             {
                 "name": "Dwarven O's Metallic Minis",
@@ -448,6 +533,42 @@
                 "quantity": 1,
                 "weight": 25,
                 "source": "bazaar"
+            },
+            {
+                "name": "Onyx Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Aquamarine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Peridot Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Citrine Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Ruby Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
+            },
+            {
+                "name": "Jasper Crystal",
+                "quantity": 1,
+                "weight": 50,
+                "source": "crystal"
             },
             {
                 "name": "Dwarven O's Metallic Minis",

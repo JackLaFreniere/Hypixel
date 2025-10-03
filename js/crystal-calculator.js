@@ -15,8 +15,14 @@ class CrystalCalculator {
             'jasper', 'opal', 'aquamarine', 'citrine', 'onyx', 'peridot'
         ];
         
-        this.flawedQuantity = 32000; // 32k flawed gemstones needed for 1 perfect
-        this.fineQuantity = 400; // 400 fine gemstones needed for 1 perfect
+        // Gemstone conversion ratios
+        this.normalPerFlawed = 80; // 1 flawed = 80 normal gemstones
+        this.normalPerFine = 6400; // 1 fine = 6400 normal gemstones
+        this.normalPerPerfect = 2560000; // 1 perfect = 2,560,000 normal gemstones
+        
+        // Calculate how many we need for 1 perfect
+        this.flawedNeededForPerfect = this.normalPerPerfect / this.normalPerFlawed; // 32,000 flawed
+        this.fineNeededForPerfect = this.normalPerPerfect / this.normalPerFine; // 400 fine
         this.gemstoneData = {};
         this.sortColumn = null;
         this.sortDirection = 'asc';
@@ -102,12 +108,15 @@ class CrystalCalculator {
                 flawedPrice: 0,
                 finePrice: 0,
                 perfectPrice: 0,
-                flawedTotal: 0,
-                fineTotal: 0,
+                flawedPerNormal: 0,
+                finePerNormal: 0,
+                flawedTotalCost: 0,
+                fineTotalCost: 0,
                 bestMethod: 'Loading...',
                 bestCost: 0,
                 profit: 0,
-                status: 'Loading...'
+                status: 'Loading...',
+                useFlawed: false
             };
         });
         
@@ -160,15 +169,17 @@ class CrystalCalculator {
     async getItemPrice(itemName) {
         try {
             // Try bazaar first
-            const bazaarPrice = await this.bazaarAPI.getInstaSellPrice(itemName);
+            const bazaarPrice = await this.bazaarAPI.getItemPriceByName(itemName);
             if (bazaarPrice > 0) {
+                console.log(`Found ${itemName} in bazaar: ${bazaarPrice}`);
                 return bazaarPrice;
             }
             
             // If not available in bazaar, try auction house
             console.log(`${itemName} not found in bazaar, trying auction house...`);
-            const auctionPrice = await this.coflnetAPI.getAveragePrice(itemName);
+            const auctionPrice = await this.coflnetAPI.getLowestBIN(itemName);
             if (auctionPrice > 0) {
+                console.log(`Found ${itemName} in auction house: ${auctionPrice}`);
                 return auctionPrice;
             }
             
@@ -186,31 +197,49 @@ class CrystalCalculator {
         
         Object.values(this.gemstoneData).forEach(data => {
             if (data.perfectPrice > 0) {
-                // Calculate costs for both methods
-                const flawedCost = data.flawedTotal;
-                const fineCost = data.fineTotal;
+                // Calculate cost per normal gemstone equivalent
+                const flawedCostPerNormal = data.flawedPrice / this.normalPerFlawed; // Cost per normal gem via flawed
+                const fineCostPerNormal = data.finePrice / this.normalPerFine; // Cost per normal gem via fine
                 
-                // Determine best method (lowest cost, but only if price > 0)
+                // Store the per-normal-gemstone costs for display
+                data.flawedPerNormal = flawedCostPerNormal;
+                data.finePerNormal = fineCostPerNormal;
+                
+                // Calculate total cost to make 1 perfect gemstone
+                // Path 1: Buy flawed gems - need 32,000 flawed gemstones
+                const flawedTotalCost = data.flawedPrice * this.flawedNeededForPerfect;
+                // Path 2: Buy fine gems - need 400 fine gemstones
+                const fineTotalCost = data.finePrice * this.fineNeededForPerfect;
+                
+                // Determine best method for creating 1 perfect gemstone
                 let bestCost = 0;
                 let bestMethod = 'No Data';
+                let useFlawed = false;
                 
-                if (flawedCost > 0 && fineCost > 0) {
-                    if (flawedCost <= fineCost) {
-                        bestCost = flawedCost;
-                        bestMethod = `32k Flawed (${this.formatNumber(data.flawedPrice)} each)`;
+                if (flawedTotalCost > 0 && fineTotalCost > 0) {
+                    if (flawedTotalCost <= fineTotalCost) {
+                        bestCost = flawedTotalCost;
+                        bestMethod = 'Flawed to Perfect';
+                        useFlawed = true;
                     } else {
-                        bestCost = fineCost;
-                        bestMethod = `400 Fine (${this.formatNumber(data.finePrice)} each)`;
+                        bestCost = fineTotalCost;
+                        bestMethod = 'Fine to Perfect';
+                        useFlawed = false;
                     }
-                } else if (flawedCost > 0) {
-                    bestCost = flawedCost;
-                    bestMethod = `32k Flawed (${this.formatNumber(data.flawedPrice)} each)`;
-                } else if (fineCost > 0) {
-                    bestCost = fineCost;
-                    bestMethod = `400 Fine (${this.formatNumber(data.finePrice)} each)`;
+                } else if (flawedTotalCost > 0) {
+                    bestCost = flawedTotalCost;
+                    bestMethod = 'Flawed to Perfect';
+                    useFlawed = true;
+                } else if (fineTotalCost > 0) {
+                    bestCost = fineTotalCost;
+                    bestMethod = 'Fine to Perfect';
+                    useFlawed = false;
                 }
                 
-                // Calculate profit using best method
+                // Store calculation results
+                data.flawedTotalCost = flawedTotalCost;
+                data.fineTotalCost = fineTotalCost;
+                data.useFlawed = useFlawed;
                 data.bestMethod = bestMethod;
                 data.bestCost = bestCost;
                 data.profit = bestCost > 0 ? data.perfectPrice - bestCost : 0;
@@ -220,6 +249,11 @@ class CrystalCalculator {
                 data.bestCost = 0;
                 data.profit = 0;
                 data.status = 'No Perfect Price';
+                data.useFlawed = false;
+                data.flawedPerNormal = 0;
+                data.finePerNormal = 0;
+                data.flawedTotalCost = 0;
+                data.fineTotalCost = 0;
             }
         });
         
@@ -243,12 +277,19 @@ class CrystalCalculator {
         sortedData.forEach(data => {
             const row = document.createElement('tr');
             
+            // Determine which price cell to highlight based on cost efficiency
+            const flawedClass = data.useFlawed ? 'price-cell best-option' : 'price-cell';
+            const fineClass = !data.useFlawed && data.fineTotalCost > 0 ? 'price-cell best-option' : 'price-cell';
+            
             row.innerHTML = `
                 <td class="gemstone-name">${data.name}</td>
-                <td class="price-cell">${data.flawedPrice > 0 ? this.formatNumber(data.flawedPrice) : 'N/A'}</td>
-                <td class="price-cell">${data.finePrice > 0 ? this.formatNumber(data.finePrice) : 'N/A'}</td>
-                <td class="method-cell">${data.bestMethod}</td>
-                <td class="price-cell">${data.bestCost > 0 ? this.formatNumber(data.bestCost) : 'N/A'}</td>
+                <td class="${flawedClass}">
+                    ${data.flawedPrice > 0 ? this.formatNumber(data.flawedPrice) + ' coins<br><small>' + this.formatNumber(data.flawedPerNormal) + ' per normal</small>' : 'N/A'}
+                </td>
+                <td class="${fineClass}">
+                    ${data.finePrice > 0 ? this.formatNumber(data.finePrice) + ' coins<br><small>' + this.formatNumber(data.finePerNormal) + ' per normal</small>' : 'N/A'}
+                </td>
+                <td class="price-cell craft-cost">${data.bestCost > 0 ? this.formatNumber(data.bestCost) : 'N/A'}</td>
                 <td class="price-cell">${data.perfectPrice > 0 ? this.formatNumber(data.perfectPrice) : 'N/A'}</td>
                 <td class="profit-cell ${data.profit > 0 ? 'positive' : data.profit < 0 ? 'negative' : ''}">${this.formatCoins(data.profit)}</td>
                 <td class="status-cell ${data.status === 'Profitable' ? 'status-profitable' : data.status === 'Unprofitable' ? 'status-unprofitable' : 'status-loading'}">${data.status}</td>

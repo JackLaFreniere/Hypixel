@@ -114,6 +114,8 @@
             onerror="console.error('Failed to load hypixel-bazaar-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load hypixel-bazaar-api.js from ../js/apis/</div>'"></script>
     <script src="../js/apis/coflnet-auction-api.js" 
             onerror="console.error('Failed to load coflnet-auction-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load coflnet-auction-api.js from ../js/apis/</div>'"></script>
+    <script src="../js/apis/gemstone-pricing.js" 
+            onerror="console.error('Failed to load gemstone-pricing.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load gemstone-pricing.js from ../js/apis/</div>'"></script>
     <script src="../js/corpse-roi-calculator.js" 
             onerror="console.error('Failed to load corpse-roi-calculator.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load corpse-roi-calculator.js from ../js/</div>'"></script>
     <script>
@@ -125,6 +127,7 @@
             console.log('Checking required classes...');
             console.log('HypixelBazaarAPI:', typeof HypixelBazaarAPI);
             console.log('CoflnetAuctionAPI:', typeof CoflnetAuctionAPI);
+            console.log('GemstonePricing:', typeof GemstonePricing);
             console.log('CorpseROICalculator:', typeof CorpseROICalculator);
             
             if (typeof HypixelBazaarAPI === 'undefined') {
@@ -136,6 +139,12 @@
             if (typeof CoflnetAuctionAPI === 'undefined') {
                 console.error('CoflnetAuctionAPI is not loaded!');
                 document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CoflnetAuctionAPI failed to load. Check file path.</div>';
+                return;
+            }
+            
+            if (typeof GemstonePricing === 'undefined') {
+                console.error('GemstonePricing is not loaded!');
+                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: GemstonePricing failed to load. Check file path.</div>';
                 return;
             }
             
@@ -155,6 +164,7 @@
             try {
                 window.globalBazaarAPI = new HypixelBazaarAPI();
                 window.globalCoflnetAPI = new CoflnetAuctionAPI();
+                window.globalGemstonePricing = new GemstonePricing();
                 console.log('Global APIs created successfully');
             } catch (error) {
                 console.error('Error creating global APIs:', error);
@@ -165,6 +175,14 @@
             try {
                 window.calculator = new CorpseROICalculator();
                 console.log('Calculator created successfully');
+                
+                // Set gemstone pricing reference immediately
+                if (window.globalGemstonePricing) {
+                    window.calculator.setGemstonePricing(window.globalGemstonePricing);
+                    console.log('Gemstone pricing reference set on calculator');
+                } else {
+                    console.warn('Global gemstone pricing not available yet');
+                }
             } catch (error) {
                 console.error('Error creating calculator:', error);
                 return;
@@ -174,6 +192,17 @@
             console.log('Initializing APIs...');
             window.globalBazaarAPI.initialize().then(() => {
                 console.log('Bazaar API initialized successfully');
+                
+                // Initialize gemstone pricing with the APIs
+                window.globalGemstonePricing.initialize(window.globalBazaarAPI, window.globalCoflnetAPI);
+                console.log('Gemstone pricing initialized successfully');
+                
+                // Re-set gemstone pricing reference after API initialization
+                if (window.calculator) {
+                    window.calculator.setGemstonePricing(window.globalGemstonePricing);
+                    console.log('Gemstone pricing reference updated on calculator after API init');
+                }
+                
                 // Load loot tables after API is ready
                 window.calculator.loadLootTables();
             }).catch(error => {
@@ -222,6 +251,104 @@
             });
             
             console.log('Event listeners set up. Calculator ready!');
+        }
+        
+        // Global function to show crystal prices
+        async function showCrystalPrices() {
+            if (!window.calculator) {
+                alert('Calculator not initialized!');
+                return;
+            }
+            
+            try {
+                console.log('Fetching crystal prices...');
+                console.log('Calculator gemstone pricing:', window.calculator.gemstonePricing);
+                console.log('Global gemstone pricing:', window.globalGemstonePricing);
+                
+                // Check if gemstone pricing is initialized
+                if (!window.calculator.gemstonePricing) {
+                    console.error('Gemstone pricing not set on calculator');
+                    alert('Gemstone pricing not initialized. Please try again in a moment.');
+                    return;
+                }
+                
+                // Test individual crystal price fetch
+                console.log('Testing individual amber crystal price...');
+                const testPrice = await window.calculator.getCrystalPrice('amber');
+                console.log('Amber crystal test price:', testPrice);
+                
+                const crystalPrices = await window.calculator.getAllCrystalPrices();
+                console.log('All crystal prices received:', crystalPrices);
+                
+                let message = 'Crystal Prices:\n\n';
+                let hasAnyPrices = false;
+                
+                for (const [gemstone, price] of Object.entries(crystalPrices)) {
+                    const formattedPrice = window.calculator.formatNumber ? 
+                        window.calculator.formatNumber(price) : 
+                        Math.round(price).toLocaleString();
+                    message += `${gemstone.charAt(0).toUpperCase() + gemstone.slice(1)} Crystal: ${formattedPrice} coins\n`;
+                    if (price > 0) hasAnyPrices = true;
+                }
+                
+                if (!hasAnyPrices) {
+                    message += '\nNote: All prices showing as 0. This might indicate:\n';
+                    message += '- API initialization issues\n';
+                    message += '- Network connectivity problems\n';
+                    message += '- Invalid item names\n';
+                    message += '\nCheck browser console for detailed error logs.';
+                }
+                
+                alert(message);
+            } catch (error) {
+                console.error('Error fetching crystal prices:', error);
+                alert('Error fetching crystal prices: ' + error.message + '\n\nCheck browser console for more details.');
+            }
+        }
+        
+        // Test API function for debugging
+        async function testAPI() {
+            console.log('=== API TEST START ===');
+            
+            try {
+                // Test bazaar API with known item
+                console.log('Testing bazaar API...');
+                const bazaarTest = await window.globalBazaarAPI.getItemPriceByName('FLAWED_RUBY_GEM');
+                console.log('Flawed Ruby Gem price:', bazaarTest);
+                
+                // Test auction API with known item
+                console.log('Testing auction API...');
+                const auctionTest = await window.globalCoflnetAPI.getLowestBIN('PERFECT_RUBY_GEM');
+                console.log('Perfect Ruby Gem price:', auctionTest);
+                
+                // Test crystal names
+                console.log('Testing crystal item names...');
+                const crystalNames = ['RUBY_CRYSTAL', 'AMBER_CRYSTAL', 'JASPER_CRYSTAL'];
+                for (const name of crystalNames) {
+                    const price = await window.globalCoflnetAPI.getLowestBIN(name);
+                    console.log(`${name} price:`, price);
+                }
+                
+                // Test gemstone pricing utility
+                console.log('Testing gemstone pricing utility...');
+                if (window.globalGemstonePricing && window.globalGemstonePricing.initialized) {
+                    const rubyPrice = await window.globalGemstonePricing.getGemstonePrice('ruby', 'perfect');
+                    console.log('Ruby perfect price from utility:', rubyPrice);
+                    
+                    const crystalPrice = await window.globalGemstonePricing.getGemstonePrice('ruby', 'crystal');
+                    console.log('Ruby crystal price from utility:', crystalPrice);
+                } else {
+                    console.log('Gemstone pricing utility not initialized');
+                }
+                
+                alert('API test completed. Check browser console for detailed results.');
+                
+            } catch (error) {
+                console.error('API test error:', error);
+                alert('API test failed: ' + error.message);
+            }
+            
+            console.log('=== API TEST END ===');
         }
         
         // Set up table sorting

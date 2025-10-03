@@ -333,6 +333,23 @@ tr:hover {
     font-weight: 600;
 }
 
+.price-cell.best-option {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.price-cell.craft-cost {
+    font-weight: 700;
+}
+
+.price-cell small {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
 .method-cell {
     font-weight: 500;
     font-size: 0.9em;

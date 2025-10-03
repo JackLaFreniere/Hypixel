@@ -20,15 +20,6 @@
     </div>
 
     <div class="container">
-        <!-- Controls -->
-        <div class="controls">
-            <h2>Controls</h2>
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="updateAllPrices()">Update All Prices</button>
-                <button class="btn btn-secondary" onclick="autoCalculate()">Auto Calculate</button>
-            </div>
-        </div>
-
         <!-- Results Summary -->
         <div class="results" id="results">
             <h2>Crystal Conversion Analysis</h2>
@@ -37,7 +28,7 @@
                     <h3><img src="../assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Coin" class="profit-icon"> Best Profit</h3>
                     <div class="profit-amount" id="bestProfitAmount">+0</div>
                     <div class="profit-gemstone" id="bestProfitGemstone">No data</div>
-                    <div class="profit-status" id="profitStatus">Click "Auto Calculate" to start</div>
+                    <div class="profit-status" id="profitStatus">Loading data...</div>
                 </div>
                 
                 <div class="roi-summary">
@@ -71,10 +62,9 @@
                         <thead>
                             <tr>
                                 <th class="sortable" data-sort="gemstone">Gemstone</th>
-                                <th class="sortable" data-sort="flawedPrice">Flawed Price</th>
-                                <th class="sortable" data-sort="finePrice">Fine Price</th>
-                                <th class="sortable" data-sort="bestMethod">Best Method</th>
-                                <th class="sortable" data-sort="bestCost">Best Cost</th>
+                                <th class="sortable" data-sort="flawedPrice">Flawed Price<br><small>(32k needed)</small></th>
+                                <th class="sortable" data-sort="finePrice">Fine Price<br><small>(400 needed)</small></th>
+                                <th class="sortable" data-sort="bestCost">Craft Cost<br><small>(best method)</small></th>
                                 <th class="sortable" data-sort="perfectPrice">Perfect Price</th>
                                 <th class="sortable" data-sort="profit">Profit</th>
                                 <th class="sortable" data-sort="status">Status</th>
@@ -96,6 +86,8 @@
             onerror="console.error('Failed to load hypixel-bazaar-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load hypixel-bazaar-api.js from ../js/apis/</div>'"></script>
     <script src="../js/apis/coflnet-auction-api.js" 
             onerror="console.error('Failed to load coflnet-auction-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load coflnet-auction-api.js from ../js/apis/</div>'"></script>
+    <script src="../js/apis/gemstone-pricing.js" 
+            onerror="console.error('Failed to load gemstone-pricing.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load gemstone-pricing.js from ../js/apis/</div>'"></script>
     <script src="../js/crystal-calculator.js" 
             onerror="console.error('Failed to load crystal-calculator.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load crystal-calculator.js from ../js/</div>'"></script>
     <script>
@@ -107,6 +99,7 @@
             console.log('Checking required classes...');
             console.log('HypixelBazaarAPI:', typeof HypixelBazaarAPI);
             console.log('CoflnetAuctionAPI:', typeof CoflnetAuctionAPI);
+            console.log('GemstonePricing:', typeof GemstonePricing);
             console.log('CrystalCalculator:', typeof CrystalCalculator);
             
             if (typeof HypixelBazaarAPI === 'undefined') {
@@ -118,6 +111,12 @@
             if (typeof CoflnetAuctionAPI === 'undefined') {
                 console.error('CoflnetAuctionAPI is not loaded!');
                 document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CoflnetAuctionAPI failed to load. Check file path.</div>';
+                return;
+            }
+            
+            if (typeof GemstonePricing === 'undefined') {
+                console.error('GemstonePricing is not loaded!');
+                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: GemstonePricing failed to load. Check file path.</div>';
                 return;
             }
             
@@ -137,6 +136,7 @@
             try {
                 window.globalBazaarAPI = new HypixelBazaarAPI();
                 window.globalCoflnetAPI = new CoflnetAuctionAPI();
+                window.globalGemstonePricing = new GemstonePricing();
                 console.log('Global APIs created successfully');
             } catch (error) {
                 console.error('Error creating global APIs:', error);
@@ -156,6 +156,11 @@
             console.log('Initializing APIs...');
             window.globalBazaarAPI.initialize().then(() => {
                 console.log('Bazaar API initialized successfully');
+                
+                // Initialize gemstone pricing with the APIs
+                window.globalGemstonePricing.initialize(window.globalBazaarAPI, window.globalCoflnetAPI);
+                console.log('Gemstone pricing initialized successfully');
+                
                 // Auto-calculate on load
                 window.calculator.autoCalculate();
             }).catch(error => {

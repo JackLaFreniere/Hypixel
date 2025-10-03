@@ -35,7 +35,105 @@ class CorpseROICalculator {
         this.sortDirection = 'asc';
         this.isLoaded = false;
         
+        // Initialize gemstone pricing reference
+        this.gemstonePricing = null;
+        
         console.log('CorpseROICalculator constructor completed');
+    }
+
+    /**
+     * Set the gemstone pricing utility reference
+     */
+    setGemstonePricing(gemstonePricing) {
+        this.gemstonePricing = gemstonePricing;
+        console.log('Gemstone pricing utility set for corpse calculator');
+    }
+
+    /**
+     * Get crystal price for a specific gemstone type
+     */
+    async getCrystalPrice(gemstoneType) {
+        if (!this.gemstonePricing) {
+            console.warn('Gemstone pricing utility not available');
+            return 0;
+        }
+        
+        try {
+            return await this.gemstonePricing.getGemstonePrice(gemstoneType, 'crystal');
+        } catch (error) {
+            console.error(`Error fetching crystal price for ${gemstoneType}:`, error);
+            return 0;
+        }
+    }
+
+    /**
+     * Get all crystal prices
+     */
+    async getAllCrystalPrices() {
+        if (!this.gemstonePricing) {
+            console.warn('Gemstone pricing utility not available');
+            return {};
+        }
+        
+        try {
+            const allPrices = await this.gemstonePricing.getAllGemstonePrices();
+            const crystalPrices = {};
+            
+            for (const [gemstone, prices] of Object.entries(allPrices)) {
+                crystalPrices[gemstone] = prices.crystal || 0;
+            }
+            
+            return crystalPrices;
+        } catch (error) {
+            console.error('Error fetching all crystal prices:', error);
+            return {};
+        }
+    }
+
+    /**
+     * Check if an item name represents a crystal
+     */
+    isCrystalItem(itemName) {
+        // Crystal items typically end with "Crystal"
+        return itemName.toLowerCase().includes('crystal');
+    }
+
+    /**
+     * Extract gemstone type from crystal item name and get its price
+     */
+    async getCrystalPriceForItem(itemName) {
+        if (!this.gemstonePricing) {
+            console.warn('Gemstone pricing utility not available');
+            return 0;
+        }
+        
+        // Extract gemstone type from crystal name
+        // Examples: "Amber Crystal" -> "amber", "Jasper Crystal" -> "jasper"
+        const gemstoneType = itemName.toLowerCase()
+            .replace(' crystal', '')
+            .replace('crystal', '')
+            .trim();
+        
+        console.log(`Extracted gemstone type "${gemstoneType}" from "${itemName}"`);
+        
+        try {
+            return await this.getCrystalPrice(gemstoneType);
+        } catch (error) {
+            console.error(`Error getting crystal price for ${itemName}:`, error);
+            return 0;
+        }
+    }
+
+    /**
+     * Format numbers for display
+     */
+    formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return Math.round(num).toLocaleString();
     }
 
     async loadLootTables() {
@@ -161,7 +259,11 @@ class CorpseROICalculator {
                     const item = dropItems.find(d => d.name === itemName);
                     let price = 0;
                     
-                    if (item.source === 'bazaar') {
+                    // Check if this is a crystal item first
+                    if (this.isCrystalItem(itemName)) {
+                        price = await this.getCrystalPriceForItem(itemName);
+                        console.log(`Crystal price for ${itemName}: ${price}`);
+                    } else if (item.source === 'bazaar') {
                         price = await this.bazaarAPI.getItemPriceByName(itemName);
                     } else if (item.source === 'auction') {
                         // Try Coflnet first, then fallback
