@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypixel Skyblock Calculators</title>
+    <meta name="description" content="Comprehensive calculators for Hypixel Skyblock - ROI, profit, and optimization tools">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background: #0f172a;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+        .header h1 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 15px;
+            color: #f1f5f9;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Calculator Card */
+        .calculator-section {
+            padding: 60px 0;
+        }
+        .calculator-section h2 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 60px;
+            color: #f1f5f9;
+        }
+        .calculator-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: #60a5fa;
+        }
+        .calc-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+            display: block;
+        }
+        .calculator-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+        .calculator-card p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .calc-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .calc-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        .tags {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: #374151;
+            color: #9ca3af;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #4b5563;
+        }
+        
+        /* Stats */
+        .stats {
+            padding: 80px 0;
+            background: #1e293b;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        .stat {
+            padding: 30px;
+        }
+        .stat h3 {
+            font-size: 2.5em;
+            color: #60a5fa;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .stat p {
+            color: #94a3b8;
+            font-size: 1.1em;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            border-top: 1px solid #334155;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-section h3 {
+            color: #f1f5f9;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .footer-section p,
+        .footer-section li {
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: #60a5fa;
+        }
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .hero h2 { font-size: 2em; }
+            .container { padding: 0 15px; }
+            .hero { padding: 60px 0; }
+            .features { padding: 60px 0; }
+            .calculator-section { padding: 60px 0; }
+            .calculator-card { padding: 30px; }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Skyblock Calculators</h1>
+            <p>Personal tools for Hypixel Skyblock optimization</p>
+        </div>
+    </div>
+
+    <section class="calculator-section">
+        <div class="container">
+            <h2>Available Calculators</h2>
+            <div class="calculator-card">
+                <span class="calc-icon">🏺</span>
+                <h3>Corpse ROI Calculator</h3>
+                <p>Calculate the return on investment for different corpse types in the Glacite Tunnels. Supports Vanguard, Tungsten, Umber, and Lapis corpses with customizable loot tables and live pricing.</p>
+                <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch Calculator</a>
+                <div class="tags">
+                    <span class="tag">Live API</span>
+                    <span class="tag">Multi-Corpse</span>
+                    <span class="tag">Mining</span>
+                    <span class="tag">Profit Optimization</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <h3>Real-Time</h3>
+                    <p>Live Data Updates</p>
+                </div>
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Free to Use</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Always Available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Skyblock Calculators</h3>
+                    <p>Professional optimization tools for serious Hypixel Skyblock players.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Calculators</h3>
+                    <ul>
+                        <li><a href="calculators/skeleton-key-clean.html">Skeleton Key ROI</a></li>
+                        <li><a href="#">More Coming Soon</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Skyblock Calculators. Not affiliated with Hypixel or Mojang.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

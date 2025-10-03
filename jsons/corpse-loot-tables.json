@@ -1,0 +1,948 @@
+{
+    "corpseDropTables": {
+        "vanguard": [
+            {
+                "name": "Shattered Locket",
+                "quantity": 1,
+                "weight": 3,
+                "source": "auction"
+            },
+            {
+                "name": "Skeleton Key",
+                "quantity": 1,
+                "weight": 6,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Key",
+                "quantity": 4,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 4,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Mithril Plate",
+                "quantity": 1,
+                "weight": 30,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 160,
+                "weight": 40,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 160,
+                "weight": 40,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 160,
+                "weight": 40,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 160,
+                "weight": 40,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Amalgamation",
+                "quantity": 4,
+                "weight": 40,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Key",
+                "quantity": 2,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 2,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Dwarven O's Metallic Minis",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Plate",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Plate",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Mithril",
+                "quantity": 2,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Titanium",
+                "quantity": 2,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Blue Goblin Egg",
+                "quantity": 4,
+                "weight": 70,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Onyx Gemstone",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Peridot Gemstone",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Citrine Gemstone",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Aquamarine Gemstone",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Umber",
+                "quantity": 2,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Tungsten",
+                "quantity": 2,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Amalgamation",
+                "quantity": 2,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Key",
+                "quantity": 1,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 1,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Blue Goblin Egg",
+                "quantity": 2,
+                "weight": 140,
+                "source": "bazaar"
+            },
+            {
+                "name": "Suspicious Scrap",
+                "quantity": 4,
+                "weight": 150,
+                "source": "bazaar"
+            },
+            {
+                "name": "Ice Cold I",
+                "quantity": 1,
+                "weight": 150,
+                "source": "bazaar"
+            },
+            {
+                "name": "Bejeweled Handle",
+                "quantity": 4,
+                "weight": 150,
+                "source": "bazaar"
+            }
+        ],
+        "tungsten": [
+            {
+                "name": "Flawless Onyx Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Peridot Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Citrine Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Aquamarine Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Plate",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Plate",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Dwarven O's Metallic Minis",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Mithril",
+                "quantity": 1,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Titanium",
+                "quantity": 1,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Umber",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Tungsten",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Amalgamation",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Blue Goblin Egg",
+                "quantity": 2,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Ice Cold I",
+                "quantity": 1,
+                "weight": 150,
+                "source": "bazaar"
+            },
+            {
+                "name": "Bejeweled Handle",
+                "quantity": 1,
+                "weight": 175,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Suspicious Scrap",
+                "quantity": 1,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Jewel",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            }
+        ],
+        "umber": [
+            {
+                "name": "Flawless Onyx Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Peridot Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Citrine Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawless Aquamarine Gemstone",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Umber Plate",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Plate",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Dwarven O's Metallic Minis",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Mithril",
+                "quantity": 1,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Titanium",
+                "quantity": 1,
+                "weight": 60,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Umber",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Tungsten",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Amalgamation",
+                "quantity": 1,
+                "weight": 80,
+                "source": "bazaar"
+            },
+            {
+                "name": "Blue Goblin Egg",
+                "quantity": 2,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Ice Cold I",
+                "quantity": 1,
+                "weight": 150,
+                "source": "bazaar"
+            },
+            {
+                "name": "Bejeweled Handle",
+                "quantity": 1,
+                "weight": 175,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 8,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Suspicious Scrap",
+                "quantity": 1,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Jewel",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 6,
+                "weight": 400,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 4,
+                "weight": 600,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 2,
+                "weight": 800,
+                "source": "bazaar"
+            }
+        ],
+        "lapis": [
+            {
+                "name": "Umber Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Tungsten Key",
+                "quantity": 1,
+                "weight": 10,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Umber",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Tungsten",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Mithril",
+                "quantity": 1,
+                "weight": 35,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Titanium",
+                "quantity": 1,
+                "weight": 35,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Amalgamation",
+                "quantity": 1,
+                "weight": 50,
+                "source": "bazaar"
+            },
+            {
+                "name": "Bejeweled Handle",
+                "quantity": 1,
+                "weight": 75,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Umber",
+                "quantity": 4,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Tungsten",
+                "quantity": 4,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Refined Umber",
+                "quantity": 1,
+                "weight": 25,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Glacite",
+                "quantity": 4,
+                "weight": 100,
+                "source": "bazaar"
+            },
+            {
+                "name": "Green Goblin Egg",
+                "quantity": 4,
+                "weight": 175,
+                "source": "bazaar"
+            },
+            {
+                "name": "Yellow Goblin Egg",
+                "quantity": 4,
+                "weight": 175,
+                "source": "bazaar"
+            },
+            {
+                "name": "Red Goblin Egg",
+                "quantity": 4,
+                "weight": 175,
+                "source": "bazaar"
+            },
+            {
+                "name": "Goblin Egg",
+                "quantity": 4,
+                "weight": 200,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Suspicious Scrap",
+                "quantity": 1,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Umber",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Tungsten",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Glacite",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Jewel",
+                "quantity": 2,
+                "weight": 250,
+                "source": "bazaar"
+            },
+            {
+                "name": "Green Goblin Egg",
+                "quantity": 2,
+                "weight": 350,
+                "source": "bazaar"
+            },
+            {
+                "name": "Yellow Goblin Egg",
+                "quantity": 2,
+                "weight": 350,
+                "source": "bazaar"
+            },
+            {
+                "name": "Red Goblin Egg",
+                "quantity": 2,
+                "weight": 350,
+                "source": "bazaar"
+            },
+            {
+                "name": "Goblin Egg",
+                "quantity": 2,
+                "weight": 350,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Onyx Gemstone",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Peridot Gemstone",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Citrine Gemstone",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Fine Aquamarine Gemstone",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Umber",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Tungsten",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Enchanted Glacite",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Glacite Jewel",
+                "quantity": 1,
+                "weight": 500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Green Goblin Egg",
+                "quantity": 1,
+                "weight": 700,
+                "source": "bazaar"
+            },
+            {
+                "name": "Yellow Goblin Egg",
+                "quantity": 1,
+                "weight": 700,
+                "source": "bazaar"
+            },
+            {
+                "name": "Red Goblin Egg",
+                "quantity": 1,
+                "weight": 700,
+                "source": "bazaar"
+            },
+            {
+                "name": "Goblin Egg",
+                "quantity": 1,
+                "weight": 700,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Onyx Gemstone",
+                "quantity": 40,
+                "weight": 750,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Peridot Gemstone",
+                "quantity": 40,
+                "weight": 750,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Citrine Gemstone",
+                "quantity": 40,
+                "weight": 750,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Aquamarine Gemstone",
+                "quantity": 40,
+                "weight": 750,
+                "source": "bazaar"
+            },
+            {
+                "name": "Goblin Egg",
+                "quantity": 1,
+                "weight": 800,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Onyx Gemstone",
+                "quantity": 20,
+                "weight": 1000,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Peridot Gemstone",
+                "quantity": 20,
+                "weight": 1000,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Citrine Gemstone",
+                "quantity": 20,
+                "weight": 1000,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Aquamarine Gemstone",
+                "quantity": 20,
+                "weight": 1000,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Onyx Gemstone",
+                "quantity": 10,
+                "weight": 1500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Peridot Gemstone",
+                "quantity": 10,
+                "weight": 1500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Citrine Gemstone",
+                "quantity": 10,
+                "weight": 1500,
+                "source": "bazaar"
+            },
+            {
+                "name": "Flawed Aquamarine Gemstone",
+                "quantity": 10,
+                "weight": 1500,
+                "source": "bazaar"
+            }
+        ]
+    },
+    "keyNames": {
+        "vanguard": "Skeleton Key",
+        "tungsten": "Tungsten Key",
+        "umber": "Umber Key",
+        "lapis": "Free"
+    }
+}
