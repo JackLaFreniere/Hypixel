@@ -73,6 +73,10 @@ class CorpseROICalculator {
     async setCorpseType(corpseType) {
         console.log('setCorpseType called with:', corpseType);
         
+        // Show loading immediately when transitioning to new corpse
+        this.showLoading(true);
+        this.showStatus(`Loading ${corpseType.charAt(0).toUpperCase() + corpseType.slice(1)} Corpse data...`, 'success');
+        
         // Wait for loot tables to load if not already loaded
         if (!this.isLoaded) {
             console.log('Loading loot tables...');
@@ -86,9 +90,6 @@ class CorpseROICalculator {
         // Update UI
         document.getElementById('dropTableTitle').textContent = `Drop Table - ${corpseType.charAt(0).toUpperCase() + corpseType.slice(1)} Corpse`;
         
-        // Show the drop table
-        document.getElementById('dropTableContainer').style.display = 'block';
-        
         // Auto-fetch key price
         console.log('Auto-setting key price...');
         await this.autoSetKeyPrice(corpseType);
@@ -97,8 +98,8 @@ class CorpseROICalculator {
         console.log('Auto-updating item prices...');
         await this.updatePrices();
         
-        // Show status
-        this.showStatus(`Selected ${corpseType.charAt(0).toUpperCase() + corpseType.slice(1)} Corpse`, 'success');
+        // Show final status
+        this.showStatus(`${corpseType.charAt(0).toUpperCase() + corpseType.slice(1)} Corpse loaded successfully!`, 'success');
     }
 
     async autoSetKeyPrice(corpseType) {
@@ -415,8 +416,21 @@ class CorpseROICalculator {
     }
 
     showLoading(show) {
-        document.getElementById('loading').style.display = show ? 'block' : 'none';
-        document.getElementById('dropTableContainer').style.display = show ? 'none' : 'block';
+        const loadingEl = document.getElementById('loading');
+        const dropTableContainer = document.getElementById('dropTableContainer');
+        const resultsEl = document.getElementById('results');
+        
+        if (show) {
+            // Show loading, hide content
+            loadingEl.style.display = 'block';
+            dropTableContainer.style.display = 'none';
+            resultsEl.style.display = 'none';
+        } else {
+            // Hide loading, show content
+            loadingEl.style.display = 'none';
+            dropTableContainer.style.display = 'block';
+            resultsEl.style.display = 'block';
+        }
     }
 
     showStatus(message, type) {

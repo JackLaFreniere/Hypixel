@@ -193,10 +193,13 @@
                         console.log('Corpse clicked:', option.dataset.corpse);
                         
                         // Remove selected class from all options
-                        document.querySelectorAll('.corpse-option').forEach(opt => opt.classList.remove('selected'));
-                        // Add selected class to clicked option
+                        document.querySelectorAll('.corpse-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Add selected class immediately to clicked option
                         option.classList.add('selected');
-                        console.log('Visual selection updated');
+                        console.log('Visual selection updated immediately');
                         
                         // Set the corpse type (now async)
                         const corpseType = option.dataset.corpse;
@@ -210,6 +213,7 @@
                         }
                     } catch (error) {
                         console.error('Error in corpse click handler:', error);
+                        
                         if (window.calculator && window.calculator.showStatus) {
                             window.calculator.showStatus('Error selecting corpse. Please try again.', 'error');
                         }

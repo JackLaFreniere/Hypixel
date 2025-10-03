@@ -115,13 +115,18 @@ body {
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     position: relative;
+    /* Prevent any movement by fixing dimensions */
+    width: 100%;
+    min-height: 140px;
+    box-sizing: border-box;
+    /* Prevent any transforms or movements */
+    transform: none !important;
 }
 
 .corpse-option:hover {
     border-color: #60a5fa;
-    transform: translateY(-2px);
 }
 
 .corpse-option.selected {
@@ -420,16 +425,26 @@ tr:hover {
 /* Loading */
 .loading {
     text-align: center;
-    padding: 40px;
+    padding: 60px 40px;
     color: #94a3b8;
+    background: #334155;
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid #475569;
+}
+
+.loading p {
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-top: 0;
 }
 
 .spinner {
-    border: 3px solid #334155;
-    border-top: 3px solid #60a5fa;
+    border: 4px solid #334155;
+    border-top: 4px solid #60a5fa;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite;
     margin: 0 auto 20px;
 }
@@ -438,6 +453,15 @@ tr:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Remove fade-in animation to prevent box resizing */
+
+/* Loading state for corpse options */
+.corpse-option.loading {
+    opacity: 0.5;
+}
+
+
 
 /* Status Messages */
 .status {
