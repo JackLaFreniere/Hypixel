@@ -1,106 +1,344 @@
 /**
- * Global Hypixel Bazaar API Manager
- * 
- * This class provides a centralized way to interact with the Hypixel Bazaar API
- * across all calculators. It handles proxy management, caching, rate limiting,
- * and item database integration.
- * 
- * Usage:
- * const bazaarAPI = new HypixelBazaarAPI();
- * await bazaarAPI.initialize();
- * const price = await bazaarAPI.getItemPrice('SKELETON_KEY');
- * const priceByName = await bazaarAPI.getItemPriceByName('Skeleton Key');
+ * Step-by-Step Bazaar API Rebuild
+ * Starting with minimal functionality and building up
  */
 class HypixelBazaarAPI {
     constructor() {
-        // CORS proxy servers for Hypixel API access
-        // Reorder based on protocol for better compatibility
-        this.isFileProtocol = typeof window !== 'undefined' && window.location.protocol === 'file:';
+        console.log('[BAZAAR] Step 1: Constructor called');
         
-        if (this.isFileProtocol) {
-            // File protocol works better with allorigins
-            this.proxies = [
-                'https://api.allorigins.win/get?url=',
-                'https://corsproxy.io/?',
-                'https://cors-anywhere.herokuapp.com/'
-            ];
-        } else {
-            // HTTP/HTTPS works better with corsproxy
-            this.proxies = [
-                'https://corsproxy.io/?',
-                'https://api.allorigins.win/get?url=',
-                'https://cors-anywhere.herokuapp.com/'
-            ];
-        }
-        
-        this.currentProxyIndex = 0;
+        // Step 1: Basic setup
         this.hypixelAPI = 'https://api.hypixel.net/skyblock/bazaar';
-        
-        // Caching system - adjust cache time based on protocol
         this.cache = new Map();
         this.lastFetch = 0;
-        this.rateLimitDelay = 500; // 500ms between requests (120 per minute)
+        this.cacheExpiry = 60000; // 1 minute cache
         
-        // File protocol needs longer cache to avoid CORS issues
-        this.cacheExpiry = this.isFileProtocol ? 300000 : 60000; // 5 minutes for file://, 1 minute for HTTP
-        
-        // Items database for name-to-ID conversion
-        this.itemsDatabase = null;
-        this.itemsDatabaseLoaded = false;
-        
-        // Status tracking
-        this.isInitialized = false;
-        this.connectionStatus = 'disconnected'; // 'disconnected', 'connecting', 'connected', 'error'
-        this.lastError = null;
-        
-        // Event system for status updates
-        this.eventListeners = new Map();
+        console.log('[BAZAAR] Step 1: Constructor complete');
     }
 
     /**
-     * Initialize the API manager by loading the items database
-     * @returns {Promise<boolean>} Success status
+     * Step 2: Simple proxy test - try one proxy at a time with timeout
+     */
+    async testSingleProxy(proxyUrl, timeout = 10000) {
+        console.log(`[BAZAAR] Step 2: Testing proxy: ${proxyUrl}`);
+        
+        return new Promise(async (resolve, reject) => {
+            // Set up timeout
+            const timeoutId = setTimeout(() => {
+                reject(new Error(`Timeout after ${timeout}ms`));
+            }, timeout);
+            
+            try {
+                const fullUrl = `${proxyUrl}${encodeURIComponent(this.hypixelAPI)}`;
+                console.log(`[BAZAAR] Step 2: Full URL: ${fullUrl}`);
+                
+                const response = await fetch(fullUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    }
+                });
+                
+                console.log(`[BAZAAR] Step 2: Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log(`[BAZAAR] Step 2: Response data type:`, typeof data);
+                console.log(`[BAZAAR] Step 2: Response keys:`, Object.keys(data));
+                
+                clearTimeout(timeoutId);
+                resolve(data);
+                
+            } catch (error) {
+                clearTimeout(timeoutId);
+                console.error(`[BAZAAR] Step 2: Proxy ${proxyUrl} failed:`, error.message);
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Step 3: Test multiple proxies in order
+     */
+    async fetchBazaarData() {
+        console.log('[BAZAAR] Step 3: Starting fetchBazaarData');
+        
+        // Check cache first
+        const now = Date.now();
+        if (this.cache.has('bazaarData') && (now - this.lastFetch) < this.cacheExpiry) {
+            console.log('[BAZAAR] Step 3: Using cached data');
+            return this.cache.get('bazaarData');
+        }
+        
+        // Updated list of working proxies (as of 2025)
+        const proxies = [
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest=',
+            'https://cors-anywhere.herokuapp.com/',
+            'https://thingproxy.freeboard.io/fetch/'
+        ];
+        
+        let lastError = null;
+        
+        for (let i = 0; i < proxies.length; i++) {
+            const proxy = proxies[i];
+            console.log(`[BAZAAR] Step 3: Trying proxy ${i + 1}/${proxies.length}: ${proxy}`);
+            
+            try {
+                const fullUrl = `${proxy}${encodeURIComponent(this.hypixelAPI)}`;
+                console.log(`[BAZAAR] Step 3: Full URL: ${fullUrl}`);
+                
+                const response = await fetch(fullUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    },
+                    timeout: 15000
+                });
+                
+                console.log(`[BAZAAR] Step 3: Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log(`[BAZAAR] Step 3: Response data type:`, typeof data);
+                console.log(`[BAZAAR] Step 3: Response keys:`, Object.keys(data));
+                
+                // Handle different proxy response formats
+                let hypixelData;
+                
+                if (proxy.includes('codetabs') || proxy.includes('thingproxy')) {
+                    // These return API data directly
+                    console.log('[BAZAAR] Step 3: Processing direct proxy response');
+                    hypixelData = data;
+                } else if (proxy.includes('allorigins')) {
+                    // allorigins returns {contents: "..."} 
+                    console.log('[BAZAAR] Step 3: Processing allorigins response');
+                    if (data.contents) {
+                        hypixelData = JSON.parse(data.contents);
+                    } else {
+                        throw new Error('No contents in allorigins response');
+                    }
+                } else {
+                    // Default: assume direct response
+                    console.log('[BAZAAR] Step 3: Processing as direct response');
+                    hypixelData = data;
+                }
+                
+                console.log('[BAZAAR] Step 3: Hypixel data keys:', Object.keys(hypixelData));
+                
+                if (!hypixelData.success) {
+                    throw new Error(`Hypixel API returned success: false - ${JSON.stringify(hypixelData)}`);
+                }
+                
+                if (!hypixelData.products) {
+                    throw new Error('No products in Hypixel response');
+                }
+                
+                console.log(`[BAZAAR] Step 3: SUCCESS! Found ${Object.keys(hypixelData.products).length} products`);
+                console.log(`[BAZAAR] Step 3: Sample products:`, Object.keys(hypixelData.products).slice(0, 5));
+                
+                // Cache the result
+                this.cache.set('bazaarData', hypixelData.products);
+                this.lastFetch = now;
+                
+                return hypixelData.products;
+                
+            } catch (error) {
+                lastError = error;
+                console.error(`[BAZAAR] Step 3: Proxy ${proxy} failed:`, error.message);
+                
+                // If it's the last proxy, we'll try a fallback
+                if (i === proxies.length - 1) {
+                    console.error('[BAZAAR] Step 3: All proxies failed, trying fallback...');
+                    break;
+                }
+            }
+        }
+        
+        // Fallback: try a direct request (might work in some environments)
+        try {
+            console.log('[BAZAAR] Step 3: Attempting direct API call as last resort...');
+            const response = await fetch(this.hypixelAPI, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.products) {
+                    console.log('[BAZAAR] Step 3: Direct API call succeeded!');
+                    this.cache.set('bazaarData', data.products);
+                    this.lastFetch = now;
+                    return data.products;
+                }
+            }
+        } catch (directError) {
+            console.log('[BAZAAR] Step 3: Direct API call also failed:', directError.message);
+        }
+        
+        console.error('[BAZAAR] Step 3: ALL METHODS FAILED');
+        throw new Error(`All bazaar API methods failed. Last error: ${lastError?.message || 'Unknown error'}`);
+    }
+
+    /**
+     * Step 4: Basic price lookup by exact item ID
+     */
+    async getItemPrice(itemId) {
+        console.log(`[BAZAAR] Step 4: Getting price for item ID: ${itemId}`);
+        
+        try {
+            const products = await this.fetchBazaarData();
+            const product = products[itemId];
+            
+            if (!product) {
+                console.warn(`[BAZAAR] Step 4: Item ${itemId} not found in bazaar data`);
+                console.log(`[BAZAAR] Step 4: Available items (first 10):`, Object.keys(products).slice(0, 10));
+                return 0;
+            }
+            
+            console.log(`[BAZAAR] Step 4: Found product for ${itemId}:`, {
+                hasBuySummary: !!product.buy_summary,
+                buySummaryLength: product.buy_summary ? product.buy_summary.length : 0,
+                hasSellSummary: !!product.sell_summary,
+                sellSummaryLength: product.sell_summary ? product.sell_summary.length : 0
+            });
+            
+            // Try buy orders first (what players are willing to pay)
+            if (product.buy_summary && product.buy_summary.length > 0) {
+                const price = product.buy_summary[0].pricePerUnit;
+                console.log(`[BAZAAR] Step 4: Buy price for ${itemId}: ${price} coins`);
+                return price;
+            }
+            
+            // Fallback to sell orders (what players are selling for)
+            if (product.sell_summary && product.sell_summary.length > 0) {
+                const price = product.sell_summary[0].pricePerUnit;
+                console.log(`[BAZAAR] Step 4: Sell price for ${itemId}: ${price} coins`);
+                return price;
+            }
+            
+            console.warn(`[BAZAAR] Step 4: No price data for ${itemId}`);
+            return 0;
+            
+        } catch (error) {
+            console.error(`[BAZAAR] Step 4: Error getting price for ${itemId}:`, error);
+            return 0;
+        }
+    }
+
+    /**
+     * Step 6: Convert item name to API ID format (simple fallback only)
+     */
+    nameToApiKey(itemName) {
+        console.log(`[BAZAAR] Step 6: Converting "${itemName}" to API key (fallback method)`);
+        
+        // Simple conversion: just uppercase and replace spaces with underscores
+        const apiKey = itemName
+            .toUpperCase()
+            .replace(/\s+/g, '_')
+            .replace(/[()]/g, '');
+        
+        console.log(`[BAZAAR] Step 6: Fallback conversion: "${itemName}" -> "${apiKey}"`);
+        return apiKey;
+    }
+
+    /**
+     * Step 7: Get price by item display name (what the calculator uses)
+     */
+    async getItemPriceByName(itemName) {
+        console.log(`[BAZAAR] Step 7: Getting price for item name: "${itemName}"`);
+        
+        // Use database lookup to find the correct item ID
+        const itemId = this.findItemId(itemName);
+        console.log(`[BAZAAR] Step 7: Item ID resolved to: "${itemId}"`);
+        
+        return await this.getItemPrice(itemId);
+    }
+
+    /**
+     * Step 8: Initialize method - load items database
      */
     async initialize() {
-        if (this.isInitialized) {
-            return true;
-        }
-
+        console.log('[BAZAAR] Step 8: Initialize called');
         try {
-            this.setStatus('connecting', 'Loading items database...');
             await this.loadItemsDatabase();
-            this.setStatus('connected', 'Bazaar API ready');
-            this.isInitialized = true;
+            console.log('[BAZAAR] Step 8: Initialize completed successfully');
             return true;
         } catch (error) {
-            this.setStatus('error', 'Failed to initialize Bazaar API');
-            this.lastError = error;
-            console.error('Failed to initialize Bazaar API:', error);
+            console.error('[BAZAAR] Step 8: Initialize failed:', error);
+            // Don't throw - allow fallback to work
             return false;
         }
     }
 
     /**
-     * Load the items database for name-to-ID conversion
-     * @private
+     * Step 8b: Load items database from JSON file
      */
     async loadItemsDatabase() {
         if (this.itemsDatabaseLoaded) {
+            console.log('[BAZAAR] Step 8b: Items database already loaded');
             return;
         }
 
         try {
-            console.log('Loading items database...');
-            const response = await fetch('../items.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            console.log('[BAZAAR] Step 8b: Loading items database...');
+            console.log('[BAZAAR] Step 8b: Current location:', window.location.href);
+            
+            // Try different paths based on current location
+            const possiblePaths = [
+                '../jsons/items.json',        // From calculators/ folder
+                './jsons/items.json',         // From root folder
+                '/jsons/items.json',          // Absolute path
+                'jsons/items.json'            // Relative from current
+            ];
+            
+            let response;
+            let successfulPath;
+            
+            for (const path of possiblePaths) {
+                try {
+                    console.log(`[BAZAAR] Step 8b: Trying path: ${path}`);
+                    response = await fetch(path);
+                    if (response.ok) {
+                        successfulPath = path;
+                        console.log(`[BAZAAR] Step 8b: Successfully accessed: ${path}`);
+                        break;
+                    } else {
+                        console.log(`[BAZAAR] Step 8b: Path ${path} returned ${response.status}`);
+                    }
+                } catch (e) {
+                    console.log(`[BAZAAR] Step 8b: Path ${path} failed:`, e.message);
+                }
             }
+            
+            if (!response || !response.ok) {
+                throw new Error(`Failed to load items.json from any path. Last status: ${response?.status}`);
+            }
+            
             const data = await response.json();
+            console.log(`[BAZAAR] Step 8b: Response data structure:`, Object.keys(data));
+            
             this.itemsDatabase = data.items || data; // Handle both formats
             this.itemsDatabaseLoaded = true;
-            console.log('Items database loaded:', this.itemsDatabase.length, 'items');
+            console.log(`[BAZAAR] Step 8b: Items database loaded: ${this.itemsDatabase.length} items from ${successfulPath}`);
+            
+            // Log some sample items to verify structure
+            console.log(`[BAZAAR] Step 8b: Sample items:`, this.itemsDatabase.slice(0, 3).map(item => ({
+                name: item.name,
+                id: item.id
+            })));
+            
         } catch (error) {
-            console.error('Failed to load items database:', error);
+            console.error('[BAZAAR] Step 8b: Failed to load items database:', error);
             this.itemsDatabase = [];
             this.itemsDatabaseLoaded = true; // Set to true to prevent retry loops
             throw error;
@@ -108,414 +346,76 @@ class HypixelBazaarAPI {
     }
 
     /**
-     * Fetch all bazaar data from the Hypixel API
-     * @returns {Promise<Object>} Bazaar products data
-     * @private
-     */
-    async fetchBazaarData() {
-        const now = Date.now();
-        
-        // Check if we have cached data that's still valid
-        if (this.cache.has('bazaarData') && (now - this.lastFetch) < this.cacheExpiry) {
-            console.log('Using cached bazaar data');
-            return this.cache.get('bazaarData');
-        }
-
-        // Rate limiting
-        if ((now - this.lastFetch) < this.rateLimitDelay) {
-            await new Promise(resolve => setTimeout(resolve, this.rateLimitDelay - (now - this.lastFetch)));
-        }
-
-        this.setStatus('connecting', 'Fetching bazaar data...');
-        console.log('Environment info:', {
-            protocol: window.location.protocol,
-            host: window.location.host,
-            origin: window.location.origin,
-            userAgent: navigator.userAgent.substring(0, 50) + '...'
-        });
-
-        // Try different proxies
-        for (let i = 0; i < this.proxies.length; i++) {
-            const proxyIndex = (this.currentProxyIndex + i) % this.proxies.length;
-            const proxy = this.proxies[proxyIndex];
-            
-            try {
-                let proxyURL;
-                let response;
-                
-                console.log(`Trying proxy ${i + 1}/${this.proxies.length}: ${proxy}`);
-                
-                if (proxy.includes('allorigins')) {
-                    proxyURL = `${proxy}${encodeURIComponent(this.hypixelAPI)}`;
-                    response = await fetch(proxyURL);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const proxyData = await response.json();
-                    const hypixelData = JSON.parse(proxyData.contents);
-                    
-                    if (!hypixelData.success) {
-                        throw new Error('Hypixel API returned error');
-                    }
-
-                    this.cache.set('bazaarData', hypixelData.products);
-                    this.lastFetch = Date.now();
-                    this.currentProxyIndex = proxyIndex; // Remember working proxy
-                    this.setStatus('connected', 'Bazaar data loaded');
-                    
-                    console.log('Successfully fetched data via allorigins, items found:', Object.keys(hypixelData.products).length);
-                    
-                    return hypixelData.products;
-                } else {
-                    proxyURL = `${proxy}${encodeURIComponent(this.hypixelAPI)}`;
-                    response = await fetch(proxyURL);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const hypixelData = await response.json();
-                    console.log('API Response received:', !!hypixelData);
-                    
-                    if (!hypixelData.success) {
-                        throw new Error('Hypixel API returned error');
-                    }
-
-                    this.cache.set('bazaarData', hypixelData.products);
-                    this.lastFetch = Date.now();
-                    this.currentProxyIndex = proxyIndex; // Remember working proxy
-                    this.setStatus('connected', 'Bazaar data loaded');
-                    
-                    console.log('Successfully fetched data via other proxy, items found:', Object.keys(hypixelData.products).length);
-                    
-                    return hypixelData.products;
-                }
-            } catch (error) {
-                console.warn(`Proxy ${proxy} failed:`, error.message);
-                if (i === this.proxies.length - 1) {
-                    this.setStatus('error', 'All proxies failed');
-                    throw new Error('All proxies failed');
-                }
-            }
-        }
-    }
-
-    /**
-     * Get the price of an item by its API ID
-     * @param {string} itemId - The Hypixel API item ID
-     * @returns {Promise<number>} Item price in coins (0 if not found)
-     */
-    async getItemPrice(itemId) {
-        try {
-            const products = await this.fetchBazaarData();
-            const product = products[itemId];
-            
-            if (!product) {
-                console.warn(`Item ${itemId} not found in bazaar data`);
-                return 0;
-            }
-
-            // Use buy_summary for sell offers (what players are buying for)
-            if (product.buy_summary && product.buy_summary.length > 0) {
-                const price = product.buy_summary[0].pricePerUnit;
-                console.log(`${itemId}: ${price} coins (buy orders)`);
-                return price;
-            }
-            
-            // Fallback to sell_summary for buy offers (what players are selling for)
-            if (product.sell_summary && product.sell_summary.length > 0) {
-                const price = product.sell_summary[0].pricePerUnit;
-                console.log(`${itemId}: ${price} coins (sell orders)`);
-                return price;
-            }
-            
-            console.warn(`${itemId}: No buy or sell orders available`);
-            return 0;
-        } catch (error) {
-            console.error(`Error getting price for ${itemId}:`, error);
-            this.setStatus('error', 'Failed to fetch item price');
-            this.lastError = error;
-            return 0;
-        }
-    }
-
-    /**
-     * Get the price of an item by its display name
-     * @param {string} itemName - The display name of the item
-     * @returns {Promise<number>} Item price in coins (0 if not found)
-     */
-    async getItemPriceByName(itemName) {
-        const itemId = this.findItemId(itemName);
-        return await this.getItemPrice(itemId);
-    }
-
-    /**
-     * Get prices for multiple items at once
-     * @param {Array<string>} itemIds - Array of Hypixel API item IDs
-     * @returns {Promise<Map<string, number>>} Map of item IDs to prices
-     */
-    async getMultiplePrices(itemIds) {
-        const prices = new Map();
-        const products = await this.fetchBazaarData();
-        
-        for (const itemId of itemIds) {
-            const product = products[itemId];
-            
-            if (!product) {
-                console.warn(`Item ${itemId} not found in bazaar data`);
-                prices.set(itemId, 0);
-                continue;
-            }
-
-            // Use buy_summary for sell offers (what players are buying for)
-            if (product.buy_summary && product.buy_summary.length > 0) {
-                prices.set(itemId, product.buy_summary[0].pricePerUnit);
-            } else if (product.sell_summary && product.sell_summary.length > 0) {
-                // Fallback to sell_summary for buy offers (what players are selling for)
-                prices.set(itemId, product.sell_summary[0].pricePerUnit);
-            } else {
-                prices.set(itemId, 0);
-            }
-        }
-        
-        return prices;
-    }
-
-    /**
-     * Get prices for multiple items by their display names with retry logic
-     * @param {Array<string>} itemNames - Array of display names
-     * @returns {Promise<Map<string, number>>} Map of item names to prices
-     */
-    async getMultiplePricesByName(itemNames) {
-        const maxRetries = 2;
-        let lastError;
-        
-        for (let attempt = 0; attempt <= maxRetries; attempt++) {
-            try {
-                const nameToIdMap = new Map();
-                const itemIds = [];
-                
-                // Convert names to IDs
-                for (const name of itemNames) {
-                    const id = this.findItemId(name);
-                    nameToIdMap.set(id, name);
-                    itemIds.push(id);
-                }
-                
-                // Get prices by ID
-                const pricesById = await this.getMultiplePrices(itemIds);
-                
-                // Convert back to names
-                const pricesByName = new Map();
-                for (const [id, price] of pricesById) {
-                    const name = nameToIdMap.get(id);
-                    if (name) {
-                        pricesByName.set(name, price);
-                    }
-                }
-                
-                return pricesByName;
-            } catch (error) {
-                lastError = error;
-                console.warn(`Attempt ${attempt + 1} failed:`, error.message);
-                
-                if (attempt < maxRetries) {
-                    // Clear cache and wait before retry
-                    this.clearCache();
-                    await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-                }
-            }
-        }
-        
-        console.error('All retry attempts failed:', lastError);
-        throw lastError || new Error('Max retries exceeded');
-    }
-
-    /**
-     * Find the API ID for an item by its display name
-     * @param {string} itemName - The display name of the item
-     * @returns {string} The API ID for the item
+     * Step 8c: Find item ID using the loaded database
      */
     findItemId(itemName) {
+        console.log(`[BAZAAR] Step 8c: Looking for item: "${itemName}"`);
+        
         if (!this.itemsDatabase || this.itemsDatabase.length === 0) {
-            console.warn('Items database not loaded, using fallback ID generation');
-            return this.nameToApiKey(itemName);
+            console.warn('[BAZAAR] Step 8c: Items database not loaded, using fallback');
+            const fallbackId = this.nameToApiKey(itemName);
+            console.log(`[BAZAAR] Step 8c: Fallback ID: "${fallbackId}"`);
+            return fallbackId;
         }
 
+        console.log(`[BAZAAR] Step 8c: Searching in database of ${this.itemsDatabase.length} items`);
+        
+        // Search for exact name match (case insensitive)
         const item = this.itemsDatabase.find(item => 
             item.name && item.name.toLowerCase() === itemName.toLowerCase()
         );
 
         if (item && item.id) {
-            console.log(`Found item: ${itemName} -> ${item.id}`);
+            console.log(`[BAZAAR] Step 8c: Found exact match: "${itemName}" -> "${item.id}"`);
             return item.id;
         } else {
-            console.warn(`Item not found in database: ${itemName}, using fallback`);
-            return this.nameToApiKey(itemName);
+            console.warn(`[BAZAAR] Step 8c: No exact match found for "${itemName}"`);
+            
+            // Try partial matching as fallback
+            const partialMatch = this.itemsDatabase.find(item => 
+                item.name && item.name.toLowerCase().includes(itemName.toLowerCase())
+            );
+            
+            if (partialMatch && partialMatch.id) {
+                console.log(`[BAZAAR] Step 8c: Found partial match: "${itemName}" -> "${partialMatch.name}" -> "${partialMatch.id}"`);
+                return partialMatch.id;
+            }
+            
+            console.warn(`[BAZAAR] Step 8c: No match found, using fallback conversion`);
+            const fallbackId = this.nameToApiKey(itemName);
+            console.log(`[BAZAAR] Step 8c: Fallback ID: "${fallbackId}"`);
+            return fallbackId;
         }
     }
 
     /**
-     * Convert display name to API key format (public method)
-     * @param {string} itemName - The display name
-     * @returns {string} The generated API key
-     */
-    nameToApiKey(itemName) {
-        return itemName
-            .toUpperCase()
-            .replace(/\s+/g, '_')
-            .replace(/[()]/g, '');
-    }
-
-    /**
-     * Clear the cache and force fresh data on next request
+     * Step 9: Clear cache method
      */
     clearCache() {
+        console.log('[BAZAAR] Step 9: Clearing cache');
         this.cache.clear();
         this.lastFetch = 0;
-        console.log('Bazaar API cache cleared');
     }
 
-    /**
-     * Get information about an item from the database
-     * @param {string} itemName - The display name of the item
-     * @returns {Object|null} Item information or null if not found
-     */
-    getItemInfo(itemName) {
-        if (!this.itemsDatabase || this.itemsDatabase.length === 0) {
-            return null;
-        }
 
-        return this.itemsDatabase.find(item => 
-            item.name && item.name.toLowerCase() === itemName.toLowerCase()
-        ) || null;
-    }
-
-    /**
-     * Search for items by partial name match
-     * @param {string} searchTerm - Partial name to search for
-     * @param {number} limit - Maximum number of results (default: 10)
-     * @returns {Array<Object>} Array of matching items
-     */
-    searchItems(searchTerm, limit = 10) {
-        if (!this.itemsDatabase || this.itemsDatabase.length === 0) {
-            return [];
-        }
-
-        const searchLower = searchTerm.toLowerCase();
-        return this.itemsDatabase
-            .filter(item => item.name && item.name.toLowerCase().includes(searchLower))
-            .slice(0, limit);
-    }
-
-    /**
-     * Set the connection status and notify listeners
-     * @param {string} status - Status: 'disconnected', 'connecting', 'connected', 'error'
-     * @param {string} message - Status message
-     * @private
-     */
-    setStatus(status, message) {
-        this.connectionStatus = status;
-        this.emit('statusChange', { status, message });
-        console.log(`Bazaar API Status: ${status} - ${message}`);
-    }
-
-    /**
-     * Add an event listener
-     * @param {string} event - Event name
-     * @param {Function} callback - Callback function
-     */
-    on(event, callback) {
-        if (!this.eventListeners.has(event)) {
-            this.eventListeners.set(event, []);
-        }
-        this.eventListeners.get(event).push(callback);
-    }
-
-    /**
-     * Remove an event listener
-     * @param {string} event - Event name
-     * @param {Function} callback - Callback function to remove
-     */
-    off(event, callback) {
-        if (this.eventListeners.has(event)) {
-            const listeners = this.eventListeners.get(event);
-            const index = listeners.indexOf(callback);
-            if (index > -1) {
-                listeners.splice(index, 1);
-            }
-        }
-    }
-
-    /**
-     * Emit an event to all listeners
-     * @param {string} event - Event name
-     * @param {*} data - Event data
-     * @private
-     */
-    emit(event, data) {
-        if (this.eventListeners.has(event)) {
-            this.eventListeners.get(event).forEach(callback => {
-                try {
-                    callback(data);
-                } catch (error) {
-                    console.error('Error in event listener:', error);
-                }
-            });
-        }
-    }
-
-    /**
-     * Get the current status of the API
-     * @returns {Object} Status information
-     */
-    getStatus() {
-        return {
-            isInitialized: this.isInitialized,
-            connectionStatus: this.connectionStatus,
-            lastError: this.lastError,
-            cacheSize: this.cache.size,
-            itemsDatabaseLoaded: this.itemsDatabaseLoaded,
-            itemsCount: this.itemsDatabase ? this.itemsDatabase.length : 0
-        };
-    }
-
-    /**
-     * Refresh all cached data
-     * @returns {Promise<boolean>} Success status
-     */
-    async refresh() {
-        try {
-            this.clearCache();
-            this.setStatus('connecting', 'Refreshing bazaar data...');
-            await this.fetchBazaarData();
-            this.setStatus('connected', 'Data refreshed successfully');
-            return true;
-        } catch (error) {
-            this.setStatus('error', 'Failed to refresh data');
-            this.lastError = error;
-            console.error('Failed to refresh bazaar data:', error);
-            return false;
-        }
-    }
 }
 
-// Create global instance
-window.HypixelBazaarAPI = window.HypixelBazaarAPI || HypixelBazaarAPI;
+// Step 5: Create global instance for testing
+console.log('[BAZAAR] Step 5: Creating global instance');
+window.HypixelBazaarAPI = HypixelBazaarAPI;
 
-// Auto-initialize if this is the first time loading
 if (!window.globalBazaarAPI) {
-    console.log('Initializing global Bazaar API...');
     window.globalBazaarAPI = new HypixelBazaarAPI();
+    console.log('[BAZAAR] Step 5: Global instance created');
     
     // Auto-initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            window.globalBazaarAPI.initialize();
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('[BAZAAR] Step 5: DOM ready, initializing...');
+            await window.globalBazaarAPI.initialize();
         });
     } else {
+        console.log('[BAZAAR] Step 5: DOM already ready, initializing...');
         window.globalBazaarAPI.initialize();
     }
 }

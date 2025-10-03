@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Calculator</title>
+    <meta name="description" content="Calculate the profit of converting flawed gemstones to perfect gemstones in Hypixel Skyblock">
+    <link rel="stylesheet" href="../css/crystal-calculator.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-nav">
+            <a href="../index.html" class="back-button">← Back to Home</a>
+        </div>
+        <div class="header-content">
+            <img src="../assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="header-logo">
+            <h1>Crystal Calculator</h1>
+        </div>
+        <p>Calculate the profit of converting 32,000 flawed gemstones to perfect gemstones</p>
+    </div>
+
+    <div class="container">
+        <!-- Controls -->
+        <div class="controls">
+            <h2>Controls</h2>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="updateAllPrices()">Update All Prices</button>
+                <button class="btn btn-secondary" onclick="autoCalculate()">Auto Calculate</button>
+            </div>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="results" id="results">
+            <h2>Crystal Conversion Analysis</h2>
+            <div class="results-container">
+                <div class="profit-indicator">
+                    <h3><img src="../assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Coin" class="profit-icon"> Best Profit</h3>
+                    <div class="profit-amount" id="bestProfitAmount">+0</div>
+                    <div class="profit-gemstone" id="bestProfitGemstone">No data</div>
+                    <div class="profit-status" id="profitStatus">Click "Auto Calculate" to start</div>
+                </div>
+                
+                <div class="roi-summary">
+                    <h3>📊 Quick Stats</h3>
+                    <div class="roi-item">
+                        <span class="roi-label">Profitable Gemstones:</span>
+                        <span class="roi-value" id="profitableCount">0</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="roi-label">Total Investment Range:</span>
+                        <span class="roi-value" id="investmentRange">0 - 0</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="roi-label">Best ROI:</span>
+                        <span class="roi-value" id="bestROI">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gemstone Table -->
+        <div class="gemstone-table">
+            <h2>Gemstone Conversion Table</h2>
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading prices...</p>
+            </div>
+            <div id="gemstoneTableContainer">
+                <div class="table-container">
+                    <table id="gemstoneTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="gemstone">Gemstone</th>
+                                <th class="sortable" data-sort="flawedPrice">Flawed Price</th>
+                                <th class="sortable" data-sort="finePrice">Fine Price</th>
+                                <th class="sortable" data-sort="bestMethod">Best Method</th>
+                                <th class="sortable" data-sort="bestCost">Best Cost</th>
+                                <th class="sortable" data-sort="perfectPrice">Perfect Price</th>
+                                <th class="sortable" data-sort="profit">Profit</th>
+                                <th class="sortable" data-sort="status">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gemstoneTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Messages -->
+    <div id="statusContainer"></div>
+
+    <!-- Scripts -->
+    <script src="../js/apis/hypixel-bazaar-api.js" 
+            onerror="console.error('Failed to load hypixel-bazaar-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load hypixel-bazaar-api.js from ../js/apis/</div>'"></script>
+    <script src="../js/apis/coflnet-auction-api.js" 
+            onerror="console.error('Failed to load coflnet-auction-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load coflnet-auction-api.js from ../js/apis/</div>'"></script>
+    <script src="../js/crystal-calculator.js" 
+            onerror="console.error('Failed to load crystal-calculator.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load crystal-calculator.js from ../js/</div>'"></script>
+    <script>
+        // Wait for all scripts to load
+        window.addEventListener('load', function() {
+            console.log('Page fully loaded, starting initialization...');
+            
+            // Check if all required classes are available
+            console.log('Checking required classes...');
+            console.log('HypixelBazaarAPI:', typeof HypixelBazaarAPI);
+            console.log('CoflnetAuctionAPI:', typeof CoflnetAuctionAPI);
+            console.log('CrystalCalculator:', typeof CrystalCalculator);
+            
+            if (typeof HypixelBazaarAPI === 'undefined') {
+                console.error('HypixelBazaarAPI is not loaded!');
+                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: HypixelBazaarAPI failed to load. Check file path.</div>';
+                return;
+            }
+            
+            if (typeof CoflnetAuctionAPI === 'undefined') {
+                console.error('CoflnetAuctionAPI is not loaded!');
+                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CoflnetAuctionAPI failed to load. Check file path.</div>';
+                return;
+            }
+            
+            if (typeof CrystalCalculator === 'undefined') {
+                console.error('CrystalCalculator is not loaded!');
+                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CrystalCalculator failed to load. Check file path.</div>';
+                return;
+            }
+            
+            initializeCalculator();
+        });
+        
+        function initializeCalculator() {
+            console.log('Starting calculator initialization...');
+            
+            // Initialize global APIs first
+            try {
+                window.globalBazaarAPI = new HypixelBazaarAPI();
+                window.globalCoflnetAPI = new CoflnetAuctionAPI();
+                console.log('Global APIs created successfully');
+            } catch (error) {
+                console.error('Error creating global APIs:', error);
+                return;
+            }
+            
+            // Initialize the calculator
+            try {
+                window.calculator = new CrystalCalculator();
+                console.log('Calculator created successfully');
+            } catch (error) {
+                console.error('Error creating calculator:', error);
+                return;
+            }
+            
+            // Initialize the APIs
+            console.log('Initializing APIs...');
+            window.globalBazaarAPI.initialize().then(() => {
+                console.log('Bazaar API initialized successfully');
+                // Auto-calculate on load
+                window.calculator.autoCalculate();
+            }).catch(error => {
+                console.error('Failed to initialize Bazaar API:', error);
+            });
+            
+            console.log('Event listeners set up. Calculator ready!');
+        }
+        
+        // Global functions for buttons
+        function updateAllPrices() {
+            if (window.calculator) {
+                window.calculator.updateAllPrices();
+            }
+        }
+        
+        function autoCalculate() {
+            if (window.calculator) {
+                window.calculator.autoCalculate();
+            }
+        }
+        
+        // Set up table sorting
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('sortable')) {
+                const sortBy = e.target.dataset.sort;
+                if (window.calculator) {
+                    window.calculator.sortTable(sortBy);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
