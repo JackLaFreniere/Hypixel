@@ -23,7 +23,7 @@ body {
 .header h1 {
     font-size: 3em;
     font-weight: 300;
-    margin-bottom: 15px;
+    margin: 0;
     color: #f1f5f9;
     background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
     -webkit-background-clip: text;
@@ -78,6 +78,12 @@ body {
     font-size: 3em;
     margin-bottom: 10px;
     display: block;
+    width: 64px;
+    height: 64px;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .calculator-card h3 {
