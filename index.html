@@ -17,6 +17,10 @@
 
     <div class="layout">
         <aside class="sidebar" aria-label="Filters">
+            <div class="search-box" style="margin-bottom:10px;">
+                <input id="calc-search" type="search" placeholder="Search calculators..." aria-label="Search calculators">
+                <button id="search-clear" aria-label="Clear search">✕</button>
+            </div>
             <div class="sidebar-inner">
                 <div class="sidebar-categories">
                     <div class="cat-row">
@@ -222,7 +226,83 @@
         const dropdownItems = document.querySelectorAll('.dropdown-item[data-filter]');
         const grid = document.querySelector('.calculator-grid');
         let cards = Array.from(document.querySelectorAll('.calculator-card'));
+        const searchInput = document.getElementById('calc-search');
+        const searchClear = document.getElementById('search-clear');
         const sortSelect = document.getElementById('sort-select');
+
+        // Reset category selection to All
+        function resetCategorySelection(){
+            closeAllDropdowns();
+            const allBtn = document.querySelector('.cat-btn[data-cat="All"]');
+            if(allBtn) allBtn.classList.add('active');
+        }
+
+        // Show/hide no-results element
+        function setNoResults(visible){
+            const noResultsEl = document.getElementById('no-results');
+            if(!noResultsEl) return;
+            noResultsEl.style.display = visible ? 'block' : 'none';
+        }
+
+        // Strict substring search across title, description, and data-tags
+        function applySearch(query){
+            const q = (query||'').trim().toLowerCase();
+            if(!q){
+                // clear search
+                resetCategorySelection();
+                cards.forEach(c => { c.style.display = 'block'; });
+                setNoResults(false);
+                return;
+            }
+
+            // reset categories when searching
+            resetCategorySelection();
+
+            const toShow = [];
+            cards.forEach(c => {
+                const name = (c.querySelector('h3')?.textContent || '').toLowerCase();
+                const desc = (c.querySelector('p')?.textContent || '').toLowerCase();
+                const tags = (c.dataset.tags || '').toLowerCase();
+                if(name.includes(q) || desc.includes(q) || tags.includes(q)){
+                    toShow.push(c);
+                }
+            });
+
+            const toShowSet = new Set(toShow);
+            const toHide = cards.filter(c => !toShowSet.has(c));
+
+            toHide.forEach(c => {
+                if(c.style.display !== 'none'){
+                    c.classList.add('is-hiding');
+                    setTimeout(() => { c.classList.remove('is-hiding'); c.style.display = 'none'; }, 260);
+                }
+            });
+            toShow.forEach(c => {
+                if(c.style.display === 'none' || getComputedStyle(c).display === 'none'){
+                    c.style.display = 'block';
+                    c.classList.add('is-showing');
+                    requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('is-showing')));
+                } else {
+                    c.classList.add('highlight');
+                    setTimeout(() => c.classList.remove('highlight'), 340);
+                }
+            });
+
+            setNoResults(toShow.length === 0);
+        }
+
+        // Debounce helper
+        function debounce(fn, wait){ let t; return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), wait); }; }
+
+        if(searchInput){
+            const onSearch = debounce((e)=>{ applySearch(e.target.value); }, 220);
+            searchInput.addEventListener('input', onSearch);
+            searchInput.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ searchInput.value = ''; applySearch(''); } });
+        }
+
+        if(searchClear){
+            searchClear.addEventListener('click', ()=>{ if(searchInput){ searchInput.value = ''; searchInput.focus(); applySearch(''); } });
+        }
 
         function closeAllDropdowns(){
             dropdowns.forEach(d => d.classList.remove('open'));
