@@ -23,6 +23,21 @@
         <!-- Filter Section -->
         <div class="filter-section">
             <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" class="form-control">
+                    <option value="all">All Categories</option>
+                    <option value="refining">Refining</option>
+                    <option value="forging">Forging</option>
+                    <option value="tools">Tools</option>
+                    <option value="gear">Gear</option>
+                    <option value="reforge stones">Reforge Stones</option>
+                    <option value="drill parts">Drill Parts</option>
+                    <option value="perfect gemstones">Perfect Gemstones</option>
+                    <option value="pets">Pets</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
                 <label for="sortBy">Sort by:</label>
                 <select id="sortBy" class="form-control">
                     <option value="profit-per-hour-desc">Highest Profit/Hour</option>
@@ -32,6 +47,7 @@
                     <option value="time-asc">Shortest Time</option>
                     <option value="time-desc">Longest Time</option>
                     <option value="name-asc">Name A-Z</option>
+                    <option value="category-asc">Category A-Z</option>
                 </select>
             </div>
             <div class="filter-group">

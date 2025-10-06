@@ -231,12 +231,27 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .recipe-name {
     font-size: 1.3em;
     font-weight: bold;
     color: #f1f5f9;
+}
+
+.recipe-category {
+    background: #4f46e5;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: auto;
+    margin-right: 8px;
 }
 
 .recipe-time {
