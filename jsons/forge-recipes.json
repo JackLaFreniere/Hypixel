@@ -1,0 +1,49 @@
+{
+  "recipes": [
+    {
+      "name": "Refined Diamond",
+      "inputs": [
+        {
+          "name": "Enchanted Diamond Block",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 8,
+        "minutes": 0
+      },
+      "sellLocation": "bazaar"
+    },
+        {
+      "name": "Refined Mithril",
+      "inputs": [
+        {
+          "name": "Enchanted Mithril",
+          "quantity": 160,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6,
+        "minutes": 0
+      },
+      "sellLocation": "bazaar"
+    },
+        {
+      "name": "Refined Titanium",
+      "inputs": [
+        {
+          "name": "Enchanted Titanium",
+          "quantity": 16,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 12,
+        "minutes": 0
+      },
+      "sellLocation": "bazaar"
+    }
+  ]
+}

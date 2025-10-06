@@ -1,0 +1,574 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #e2e8f0;
+    background: #0f172a;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+    position: relative;
+}
+
+.header-nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: translateX(-2px);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.header-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.header h1 {
+    font-size: 2.5em;
+    font-weight: 300;
+    margin: 0;
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 1.1em;
+    color: #94a3b8;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Filter Section */
+.filter-section {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #334155;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    color: #94a3b8;
+    font-size: 0.9em;
+}
+
+.form-control {
+    padding: 10px 12px;
+    border: 2px solid #334155;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #60a5fa;
+    outline: none;
+    box-shadow: 0 0 5px rgba(96, 165, 250, 0.3);
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Summary Section */
+.summary-section {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #334155;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.summary-item {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    border-left: 4px solid #60a5fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-label {
+    font-weight: bold;
+    color: #94a3b8;
+}
+
+.summary-value {
+    font-weight: bold;
+    color: #60a5fa;
+    font-size: 1.1em;
+}
+
+/* Recipes Section */
+.recipes-section {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #334155;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.recipes-section h2 {
+    color: #f1f5f9;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #60a5fa;
+    padding-bottom: 10px;
+}
+
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.recipe-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-color: #60a5fa;
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.recipe-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #f1f5f9;
+}
+
+.recipe-time {
+    background: #374151;
+    color: #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.recipe-inputs {
+    margin-bottom: 15px;
+}
+
+.recipe-inputs h4 {
+    color: #94a3b8;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #374151;
+}
+
+.input-item:last-child {
+    border-bottom: none;
+}
+
+.input-name {
+    color: #e2e8f0;
+    font-size: 0.9em;
+}
+
+.input-cost {
+    color: #94a3b8;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.recipe-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #374151;
+}
+
+.recipe-profit {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.profit-label {
+    font-size: 0.8em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profit-value {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.profit-positive {
+    color: #10b981;
+}
+
+.profit-negative {
+    color: #ef4444;
+}
+
+.profit-neutral {
+    color: #94a3b8;
+}
+
+.recipe-profit-per-hour {
+    text-align: right;
+}
+
+.profit-per-hour-label {
+    font-size: 0.8em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profit-per-hour-value {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #60a5fa;
+}
+
+/* Loading Animation */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}
+
+.spinner {
+    border: 4px solid #334155;
+    border-top: 4px solid #60a5fa;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Status Indicators */
+.status-profitable {
+    border-left-color: #10b981 !important;
+}
+
+.status-unprofitable {
+    border-left-color: #ef4444 !important;
+}
+
+.status-break-even {
+    border-left-color: #f59e0b !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        min-width: auto;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .recipe-footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .recipe-roi {
+        text-align: center;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* New detailed recipe layout styles */
+.recipe-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px 20px 20px;
+}
+
+.detail-section h4 {
+    margin: 0 0 12px 0;
+    color: #60a5fa;
+    font-size: 1em;
+    font-weight: bold;
+    border-bottom: 1px solid #374151;
+    padding-bottom: 8px;
+}
+
+.input-item {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #374151;
+}
+
+.input-unit-price {
+    color: #94a3b8;
+    font-size: 0.9em;
+    text-align: right;
+}
+
+.financial-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.financial-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #374151;
+}
+
+.financial-item:nth-child(odd):last-child,
+.financial-item:nth-child(even):last-child {
+    border-bottom: none;
+}
+
+.financial-label {
+    color: #94a3b8;
+    font-size: 0.9em;
+}
+
+.financial-value {
+    color: #e2e8f0;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Streamlined recipe card styles for profit emphasis */
+.recipe-materials {
+    margin: 15px 20px;
+}
+
+.material-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #374151;
+    font-size: 0.9em;
+}
+
+.material-item:last-child {
+    border-bottom: none;
+}
+
+.material-name {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+.material-cost {
+    color: #fbbf24;
+    font-weight: bold;
+}
+
+.recipe-summary {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 20px;
+    padding: 12px 0;
+    border-top: 1px solid #374151;
+    border-bottom: 1px solid #374151;
+}
+
+.cost-summary, .sell-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.recipe-summary .label {
+    font-size: 0.8em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.recipe-summary .value {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #e2e8f0;
+}
+
+.profit-highlight {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 0 0 12px 12px;
+    border-top: 2px solid #374151;
+}
+
+.total-profit, .hourly-profit {
+    text-align: center;
+    flex: 1;
+}
+
+.profit-label {
+    font-size: 0.7em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.profit-amount {
+    font-size: 1.4em;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profit-positive {
+    color: #10b981 !important;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.profit-negative {
+    color: #ef4444 !important;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.profit-neutral {
+    color: #94a3b8 !important;
+}

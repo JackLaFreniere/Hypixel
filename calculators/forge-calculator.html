@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge Calculator</title>
+    <meta name="description" content="Calculate the profit from forge recipes by comparing input costs to output values in Hypixel Skyblock">
+    <link rel="stylesheet" href="../css/forge-calculator.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-nav">
+            <a href="../index.html" class="back-button">← Back to Home</a>
+        </div>
+        <div class="header-content">
+            <img src="../assets/Images/Locations/Minecraft_items_furnace.png" alt="Forge" class="header-logo">
+            <h1>Forge Calculator</h1>
+        </div>
+        <p>Calculate the profit from forge recipes by comparing input costs to output values</p>
+    </div>
+
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="sortBy">Sort by:</label>
+                <select id="sortBy" class="form-control">
+                    <option value="profit-per-hour-desc">Highest Profit/Hour</option>
+                    <option value="profit-per-hour-asc">Lowest Profit/Hour</option>
+                    <option value="profit-desc">Highest Total Profit</option>
+                    <option value="profit-asc">Lowest Total Profit</option>
+                    <option value="time-asc">Shortest Time</option>
+                    <option value="time-desc">Longest Time</option>
+                    <option value="name-asc">Name A-Z</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button id="refreshPrices" class="btn btn-primary">Refresh Prices</button>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="summary-label">Best Profit:</span>
+                    <span class="summary-value" id="bestProfitDisplay">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Best Profit/Hour:</span>
+                    <span class="summary-value" id="bestProfitPerHourDisplay">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Recipes:</span>
+                    <span class="summary-value" id="recipeCountDisplay">Loading...</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Last Updated:</span>
+                    <span class="summary-value" id="lastUpdatedDisplay">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Grid -->
+        <div class="recipes-section">
+            <h2>Forge Recipes</h2>
+            <div id="loading" class="loading" style="display: block;">
+                <div class="spinner"></div>
+                <p>Loading forge recipes and prices...</p>
+            </div>
+            <div id="recipesGrid" class="recipes-grid" style="display: none;">
+                <!-- Recipes will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/apis/hypixel-bazaar-api.js"></script>
+    <script src="../js/apis/coflnet-auction-api.js"></script>
+    <script src="../js/forge-calculator.js"></script>
+</body>
+</html>
