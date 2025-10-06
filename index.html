@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hypixel Skyblock Calculators</title>
     <meta name="description" content="Comprehensive calculators for Hypixel Skyblock - ROI, profit, and optimization tools">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="container">
             <h1>Skyblock Calculators</h1>
             <p>Personal tools for Hypixel Skyblock optimization</p>
         </div>
-    </div>
+    </header>
 
     <div class="layout">
         <aside class="sidebar" aria-label="Filters">
-            <div class="search-box" style="margin-bottom:10px;">
+            <div class="search-box">
                 <input id="calc-search" type="search" placeholder="Search calculators..." aria-label="Search calculators">
                 <button id="search-clear" aria-label="Clear search">✕</button>
             </div>
+
             <div class="sidebar-inner">
                 <div class="sidebar-categories">
                     <div class="cat-row">
@@ -32,81 +33,55 @@
                         <div class="dropdown" data-cat="Skills">
                             <div class="dropdown-item" data-filter="combat">
                                 <img src="assets/Images/Skills/Minecraft_items_stone_sword.png" alt="Combat">
-                                <div class="item-text">
-                                    <strong>Combat</strong>
-                                </div>
+                                <div class="item-text"><strong>Combat</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="mining">
                                 <img src="assets/Images/Skills/Minecraft_items_stone_pickaxe.png" alt="Mining">
-                                <div class="item-text">
-                                    <strong>Mining</strong>
-                                </div>
+                                <div class="item-text"><strong>Mining</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="farming">
                                 <img src="assets/Images/Skills/Minecraft_items_golden_hoe.png" alt="Farming">
-                                <div class="item-text">
-                                    <strong>Farming</strong>
-                                </div>
+                                <div class="item-text"><strong>Farming</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="foraging">
                                 <img src="assets/Images/Skills/Minecraft_items_jungle_sapling.png" alt="Foraging">
-                                <div class="item-text">
-                                    <strong>Foraging</strong>
-                                </div>
+                                <div class="item-text"><strong>Foraging</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="fishing">
                                 <img src="assets/Images/Skills/Minecraft_items_fishing_rod.png" alt="Fishing">
-                                <div class="item-text">
-                                    <strong>Fishing</strong>
-                                </div>
+                                <div class="item-text"><strong>Fishing</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="enchanting">
                                 <img src="assets/Images/Skills/Minecraft_items_enchantment_table.png" alt="Enchanting">
-                                <div class="item-text">
-                                    <strong>Enchanting</strong>
-                                </div>
+                                <div class="item-text"><strong>Enchanting</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="alchemy">
                                 <img src="assets/Images/Skills/Minecraft_items_brewing_stand.png" alt="Alchemy">
-                                <div class="item-text">
-                                    <strong>Alchemy</strong>
-                                </div>
+                                <div class="item-text"><strong>Alchemy</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="taming">
                                 <img src="assets/Images/Skills/Minecraft_items_ghast_spawn_egg.png" alt="Taming">
-                                <div class="item-text">
-                                    <strong>Taming</strong>
-                                </div>
+                                <div class="item-text"><strong>Taming</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="hunting">
                                 <img src="assets/Images/Skills/Minecraft_items_lead.png" alt="Hunting">
-                                <div class="item-text">
-                                    <strong>Hunting</strong>
-                                </div>
+                                <div class="item-text"><strong>Hunting</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="dungeoneering">
                                 <img src="assets/Images/Skills/SkyBlock_items_dungeoneering.png" alt="Dungeoneering">
-                                <div class="item-text">
-                                    <strong>Dungeoneering</strong>
-                                </div>
+                                <div class="item-text"><strong>Dungeoneering</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="carpentry">
                                 <img src="assets/Images/Skills/Minecraft_items_crafting_table.png" alt="Carpentry">
-                                <div class="item-text">
-                                    <strong>Carpentry</strong>
-                                </div>
+                                <div class="item-text"><strong>Carpentry</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="social">
                                 <img src="assets/Images/Skills/Minecraft_items_emerald.png" alt="Social">
-                                <div class="item-text">
-                                    <strong>Social</strong>
-                                </div>
+                                <div class="item-text"><strong>Social</strong></div>
                             </div>
                             <div class="dropdown-item" data-filter="runecrafting">
                                 <img src="assets/Images/Skills/Minecraft_items_magma_cream.png" alt="Runecrafting">
-                                <div class="item-text">
-                                    <strong>Runecrafting</strong>
-                                </div>
+                                <div class="item-text"><strong>Runecrafting</strong></div>
                             </div>
                         </div>
                     </div>
@@ -115,18 +90,12 @@
                         <button class="cat-btn" data-cat="Events">Events</button>
                         <div class="dropdown" data-cat="Events">
                             <div class="dropdown-item" data-filter="winter-festival">
-                                <img src="assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Example Event">
-                                <div class="item-text">
-                                    <strong>Winter Festival</strong>
-                                    <span class="muted">Placeholder event text</span>
-                                </div>
+                                <img src="assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Winter Festival">
+                                <div class="item-text"><strong>Winter Festival</strong><span class="muted"> Seasonal event</span></div>
                             </div>
                             <div class="dropdown-item" data-filter="gemstone-event">
-                                <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Example Event">
-                                <div class="item-text">
-                                    <strong>Gemstone Event</strong>
-                                    <span class="muted">Placeholder event text</span>
-                                </div>
+                                <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Gemstone Event">
+                                <div class="item-text"><strong>Gemstone Event</strong><span class="muted"> Crystal bonuses</span></div>
                             </div>
                         </div>
                     </div>
@@ -138,52 +107,47 @@
             <section class="calculator-section">
                 <div class="container">
                     <h2>Available Calculators</h2>
+                    <div id="no-results" class="no-results" style="display:none;">No calculators found</div>
                     <div class="calculator-grid">
-                <div class="calculator-card" data-tags="mining">
-                    <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
-                    <h3>Corpse ROI Calculator</h3>
-                    <p>Calculate the return on investment for different corpse types in the Glacite Tunnels. Supports Vanguard, Tungsten, Umber, and Lapis corpses with customizable loot tables and live pricing.</p>
-                    <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Mining</span>
-                        <span class="tag">Profit</span>
-                        <span class="tag">Bazaar</span>
-                        <span class="tag">Auction</span>
-                        <span class="tag">Gambling</span>
+                        <div class="calculator-card" data-tags="mining,profit,bazaar,auction">
+                            <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
+                            <h3>Corpse ROI Calculator</h3>
+                            <p>Calculate the return on investment for different corpse types in the Glacite Tunnels. Supports Vanguard, Tungsten, Umber, and Lapis corpses with customizable loot tables and live pricing.</p>
+                            <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Mining</span>
+                                <span class="tag">Profit</span>
+                                <span class="tag">Bazaar</span>
+                            </div>
+                        </div>
+
+                        <div class="calculator-card" data-tags="gemstones,conversion,bazaar">
+                            <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="calc-icon">
+                            <h3>Crystal Calculator</h3>
+                            <p>Calculate the profit of converting 32,000 flawed gemstones to perfect gemstones. Compares all 12 gemstone types and shows which conversions are most profitable with live pricing.</p>
+                            <a href="calculators/crystal-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Gemstones</span>
+                                <span class="tag">Conversion</span>
+                                <span class="tag">Profit</span>
+                            </div>
+                        </div>
+
+                        <div class="calculator-card" data-tags="cold,time,resistance">
+                            <img src="assets/Images/Symbols/SkyBlock_icons_cold_resistance.png" alt="Cold Resistance" class="calc-icon">
+                            <h3>Cold Resistance Calculator</h3>
+                            <p>Calculate how long it takes to accumulate 100 cold based on your cold resistance value. Higher cold resistance slows down cold accumulation.</p>
+                            <a href="calculators/cold-resistance-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Cold</span>
+                                <span class="tag">Time</span>
+                                <span class="tag">Resistance</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="calculator-card" data-tags="mining">
-                    <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="calc-icon">
-                    <h3>Crystal Calculator</h3>
-                    <p>Calculate the profit of converting 32,000 flawed gemstones to perfect gemstones. Compares all 12 gemstone types and shows which conversions are most profitable with live pricing.</p>
-                    <a href="calculators/crystal-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Gemstones</span>
-                        <span class="tag">Conversion</span>
-                        <span class="tag">Bazaar</span>
-                        <span class="tag">Auction</span>
-                        <span class="tag">Profit</span>
-                    </div>
-                </div>
-                
-                <div class="calculator-card" data-tags="mining">
-                    <img src="assets/Images/Symbols/SkyBlock_icons_cold_resistance.png" alt="Cold Resistance" class="calc-icon">
-                    <h3>Cold Resistance Calculator</h3>
-                    <p>Calculate how long it takes to accumulate 100 cold based on your cold resistance value. Higher cold resistance slows down cold accumulation.</p>
-                    <a href="calculators/cold-resistance-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Cold</span>
-                        <span class="tag">Time</span>
-                        <span class="tag">Resistance</span>
-                        <span class="tag">Accumulation</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-            </main>
-        </div>
+            </section>
+        </main>
     </div>
 
     <footer class="footer">
@@ -216,231 +180,7 @@
             </div>
         </div>
     </footer>
+
+    <script src="js/site.js" defer></script>
 </body>
 </html>
-
-<script>
-    (function(){
-        const catButtons = document.querySelectorAll('.cat-btn');
-        const dropdowns = document.querySelectorAll('.dropdown');
-        const dropdownItems = document.querySelectorAll('.dropdown-item[data-filter]');
-        const grid = document.querySelector('.calculator-grid');
-        let cards = Array.from(document.querySelectorAll('.calculator-card'));
-        const searchInput = document.getElementById('calc-search');
-        const searchClear = document.getElementById('search-clear');
-        const sortSelect = document.getElementById('sort-select');
-
-        // Reset category selection to All
-        function resetCategorySelection(){
-            closeAllDropdowns();
-            const allBtn = document.querySelector('.cat-btn[data-cat="All"]');
-            if(allBtn) allBtn.classList.add('active');
-        }
-
-        // Show/hide no-results element
-        function setNoResults(visible){
-            const noResultsEl = document.getElementById('no-results');
-            if(!noResultsEl) return;
-            noResultsEl.style.display = visible ? 'block' : 'none';
-        }
-
-        // Strict substring search across title, description, and data-tags
-        function applySearch(query){
-            const q = (query||'').trim().toLowerCase();
-            if(!q){
-                // clear search
-                resetCategorySelection();
-                cards.forEach(c => { c.style.display = 'block'; });
-                setNoResults(false);
-                return;
-            }
-
-            // reset categories when searching
-            resetCategorySelection();
-
-            const toShow = [];
-            cards.forEach(c => {
-                const name = (c.querySelector('h3')?.textContent || '').toLowerCase();
-                const desc = (c.querySelector('p')?.textContent || '').toLowerCase();
-                const tags = (c.dataset.tags || '').toLowerCase();
-                if(name.includes(q) || desc.includes(q) || tags.includes(q)){
-                    toShow.push(c);
-                }
-            });
-
-            const toShowSet = new Set(toShow);
-            const toHide = cards.filter(c => !toShowSet.has(c));
-
-            toHide.forEach(c => {
-                if(c.style.display !== 'none'){
-                    c.classList.add('is-hiding');
-                    setTimeout(() => { c.classList.remove('is-hiding'); c.style.display = 'none'; }, 260);
-                }
-            });
-            toShow.forEach(c => {
-                if(c.style.display === 'none' || getComputedStyle(c).display === 'none'){
-                    c.style.display = 'block';
-                    c.classList.add('is-showing');
-                    requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('is-showing')));
-                } else {
-                    c.classList.add('highlight');
-                    setTimeout(() => c.classList.remove('highlight'), 340);
-                }
-            });
-
-            setNoResults(toShow.length === 0);
-        }
-
-        // Debounce helper
-        function debounce(fn, wait){ let t; return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), wait); }; }
-
-        if(searchInput){
-            const onSearch = debounce((e)=>{ applySearch(e.target.value); }, 220);
-            searchInput.addEventListener('input', onSearch);
-            searchInput.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ searchInput.value = ''; applySearch(''); } });
-        }
-
-        if(searchClear){
-            searchClear.addEventListener('click', ()=>{ if(searchInput){ searchInput.value = ''; searchInput.focus(); applySearch(''); } });
-        }
-
-        function closeAllDropdowns(){
-            dropdowns.forEach(d => d.classList.remove('open'));
-            catButtons.forEach(b => b.classList.remove('active'));
-        }
-
-        function showAllCards(){
-            cards.forEach(c => c.style.display = 'block');
-        }
-
-        function filterByTag(tag){
-            if(!tag){
-                // show all with animation
-                cards.forEach(c => {
-                    if(c.style.display === 'none'){
-                        c.style.display = 'block';
-                        c.classList.add('is-showing');
-                        requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('is-showing')));
-                    }
-                });
-                return;
-            }
-
-            const needle = tag.toLowerCase();
-            const toShow = [];
-            const toHide = [];
-
-            cards.forEach(c => {
-                const tags = (c.dataset.tags || '').toLowerCase();
-                if(tags.split(',').some(t => t.trim().includes(needle))){
-                    toShow.push(c);
-                } else {
-                    toHide.push(c);
-                }
-            });
-
-            // animate hiding
-            toHide.forEach(c => {
-                if(c.style.display !== 'none'){
-                    c.classList.add('is-hiding');
-                    // after transition, hide
-                    setTimeout(() => {
-                        c.classList.remove('is-hiding');
-                        c.style.display = 'none';
-                    }, 260);
-                }
-            });
-
-            // show and animate showing
-            toShow.forEach(c => {
-                if(c.style.display === 'none' || getComputedStyle(c).display === 'none'){
-                    c.style.display = 'block';
-                    c.classList.add('is-showing');
-                    requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('is-showing')));
-                } else {
-                    // brief highlight to indicate selection
-                    c.classList.add('highlight');
-                    setTimeout(() => c.classList.remove('highlight'), 340);
-                }
-            });
-        }
-
-        // Category button behavior
-        catButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const cat = btn.dataset.cat;
-                if(cat === 'All'){
-                    closeAllDropdowns();
-                    btn.classList.add('active');
-                    showAllCards();
-                    return;
-                }
-
-                const dropdown = document.querySelector(`.dropdown[data-cat="${cat}"]`);
-                const isOpen = dropdown.classList.contains('open');
-                closeAllDropdowns();
-                if(!isOpen){
-                    dropdown.classList.add('open');
-                    btn.classList.add('active');
-                }
-            });
-        });
-
-        // Dropdown selection -> filter
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const tag = item.dataset.filter;
-                dropdownItems.forEach(i => i.classList.remove('selected'));
-                item.classList.add('selected');
-
-                const parentDropdown = item.closest('.dropdown');
-                const cat = parentDropdown && parentDropdown.dataset.cat;
-                closeAllDropdowns();
-                const catBtn = document.querySelector(`.cat-btn[data-cat="${cat}"]`);
-                if(catBtn) catBtn.classList.add('active');
-
-                filterByTag(tag);
-            });
-        });
-
-        // Sorting logic (keeps current filtered visibility)
-        function sortCards(mode){
-            const visibleOnly = Array.from(cards).filter(c => c.style.display !== 'none');
-            const target = visibleOnly.length ? visibleOnly : cards.slice();
-
-            const getName = (card) => (card.querySelector('h3')?.textContent || '').trim().toLowerCase();
-            const getType = (card) => (card.dataset.type || '').trim().toLowerCase();
-
-            switch(mode){
-                case 'name-asc':
-                    target.sort((a,b) => getName(a).localeCompare(getName(b)));
-                    break;
-                case 'name-desc':
-                    target.sort((a,b) => getName(b).localeCompare(getName(a)));
-                    break;
-                case 'type-asc':
-                    target.sort((a,b) => getType(a).localeCompare(getType(b)));
-                    break;
-                case 'type-desc':
-                    target.sort((a,b) => getType(b).localeCompare(getType(a)));
-                    break;
-                default:
-                    // do nothing (keep current order)
-            }
-
-            // Re-append sorted nodes (only the target set)
-            target.forEach(node => grid.appendChild(node));
-            // refresh cards array
-            cards = Array.from(document.querySelectorAll('.calculator-card'));
-        }
-
-        if(sortSelect){
-            sortSelect.addEventListener('change', (e) => sortCards(e.target.value));
-        }
-
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if(!e.target.closest('.sidebar')){ closeAllDropdowns(); document.querySelector('.cat-btn[data-cat="All"]').classList.add('active'); showAllCards(); }
-        });
-    })();
-</script>
