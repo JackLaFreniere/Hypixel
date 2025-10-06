@@ -1,86 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hypixel Skyblock Calculators</title>
     <meta name="description" content="Comprehensive calculators for Hypixel Skyblock - ROI, profit, and optimization tools">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="container">
             <h1>Skyblock Calculators</h1>
             <p>Personal tools for Hypixel Skyblock optimization</p>
         </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar" aria-label="Filters">
+            <div class="search-box">
+                <input id="calc-search" type="search" placeholder="Search calculators..." aria-label="Search calculators">
+                <button id="search-clear" aria-label="Clear search">✕</button>
+            </div>
+
+            <div class="sidebar-inner">
+                <div class="sidebar-categories">
+                    <div class="cat-row">
+                        <button class="cat-btn active" data-cat="All">All</button>
+                    </div>
+
+                    <div class="cat-row">
+                        <button class="cat-btn" data-cat="Skills">Skills</button>
+                        <div class="dropdown" data-cat="Skills">
+                            <div class="dropdown-item" data-filter="combat">
+                                <img src="assets/Images/Skills/Minecraft_items_stone_sword.png" alt="Combat">
+                                <div class="item-text"><strong>Combat</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="mining">
+                                <img src="assets/Images/Skills/Minecraft_items_stone_pickaxe.png" alt="Mining">
+                                <div class="item-text"><strong>Mining</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="farming">
+                                <img src="assets/Images/Skills/Minecraft_items_golden_hoe.png" alt="Farming">
+                                <div class="item-text"><strong>Farming</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="foraging">
+                                <img src="assets/Images/Skills/Minecraft_items_jungle_sapling.png" alt="Foraging">
+                                <div class="item-text"><strong>Foraging</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="fishing">
+                                <img src="assets/Images/Skills/Minecraft_items_fishing_rod.png" alt="Fishing">
+                                <div class="item-text"><strong>Fishing</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="enchanting">
+                                <img src="assets/Images/Skills/Minecraft_items_enchantment_table.png" alt="Enchanting">
+                                <div class="item-text"><strong>Enchanting</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="alchemy">
+                                <img src="assets/Images/Skills/Minecraft_items_brewing_stand.png" alt="Alchemy">
+                                <div class="item-text"><strong>Alchemy</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="taming">
+                                <img src="assets/Images/Skills/Minecraft_items_ghast_spawn_egg.png" alt="Taming">
+                                <div class="item-text"><strong>Taming</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="hunting">
+                                <img src="assets/Images/Skills/Minecraft_items_lead.png" alt="Hunting">
+                                <div class="item-text"><strong>Hunting</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="dungeoneering">
+                                <img src="assets/Images/Skills/SkyBlock_items_dungeoneering.png" alt="Dungeoneering">
+                                <div class="item-text"><strong>Dungeoneering</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="carpentry">
+                                <img src="assets/Images/Skills/Minecraft_items_crafting_table.png" alt="Carpentry">
+                                <div class="item-text"><strong>Carpentry</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="social">
+                                <img src="assets/Images/Skills/Minecraft_items_emerald.png" alt="Social">
+                                <div class="item-text"><strong>Social</strong></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="runecrafting">
+                                <img src="assets/Images/Skills/Minecraft_items_magma_cream.png" alt="Runecrafting">
+                                <div class="item-text"><strong>Runecrafting</strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cat-row">
+                        <button class="cat-btn" data-cat="Events">Events</button>
+                        <div class="dropdown" data-cat="Events">
+                            <div class="dropdown-item" data-filter="winter-festival">
+                                <img src="assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Winter Festival">
+                                <div class="item-text"><strong>Winter Festival</strong><span class="muted"> Seasonal event</span></div>
+                            </div>
+                            <div class="dropdown-item" data-filter="gemstone-event">
+                                <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Gemstone Event">
+                                <div class="item-text"><strong>Gemstone Event</strong><span class="muted"> Crystal bonuses</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="calculator-section">
+                <div class="container">
+                    <h2>Available Calculators</h2>
+                    <div id="no-results" class="no-results" style="display:none;">No calculators found</div>
+                    <div class="calculator-grid">
+                        <div class="calculator-card" data-tags="mining,profit,bazaar,auction">
+                            <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
+                            <h3>Corpse ROI Calculator</h3>
+                            <p>Calculate the return on investment for different corpse types in the Glacite Tunnels. Supports Vanguard, Tungsten, Umber, and Lapis corpses with customizable loot tables and live pricing.</p>
+                            <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Mining</span>
+                                <span class="tag">Profit</span>
+                                <span class="tag">Bazaar</span>
+                            </div>
+                        </div>
+
+                        <div class="calculator-card" data-tags="gemstones,conversion,bazaar">
+                            <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="calc-icon">
+                            <h3>Crystal Calculator</h3>
+                            <p>Calculate the profit of converting 32,000 flawed gemstones to perfect gemstones. Compares all 12 gemstone types and shows which conversions are most profitable with live pricing.</p>
+                            <a href="calculators/crystal-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Gemstones</span>
+                                <span class="tag">Conversion</span>
+                                <span class="tag">Profit</span>
+                            </div>
+                        </div>
+
+                        <div class="calculator-card" data-tags="cold,time,resistance">
+                            <img src="assets/Images/Symbols/SkyBlock_icons_cold_resistance.png" alt="Cold Resistance" class="calc-icon">
+                            <h3>Cold Resistance Calculator</h3>
+                            <p>Calculate how long it takes to accumulate 100 cold based on your cold resistance value. Higher cold resistance slows down cold accumulation.</p>
+                            <a href="calculators/cold-resistance-calculator.html" class="calc-button">Launch Calculator</a>
+                            <div class="tags">
+                                <span class="tag">Cold</span>
+                                <span class="tag">Time</span>
+                                <span class="tag">Resistance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-
-    <section class="calculator-section">
-        <div class="container">
-            <h2>Available Calculators</h2>
-            <div class="calculator-grid">
-                <div class="calculator-card">
-                    <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
-                    <h3>Corpse ROI Calculator</h3>
-                    <p>Calculate the return on investment for different corpse types in the Glacite Tunnels. Supports Vanguard, Tungsten, Umber, and Lapis corpses with customizable loot tables and live pricing.</p>
-                    <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Mining</span>
-                        <span class="tag">Profit</span>
-                        <span class="tag">Bazaar</span>
-                        <span class="tag">Auction</span>
-                        <span class="tag">Gambling</span>
-                    </div>
-                </div>
-                
-                <div class="calculator-card">
-                    <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="calc-icon">
-                    <h3>Crystal Calculator</h3>
-                    <p>Calculate the profit of converting 32,000 flawed gemstones to perfect gemstones. Compares all 12 gemstone types and shows which conversions are most profitable with live pricing.</p>
-                    <a href="calculators/crystal-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Gemstones</span>
-                        <span class="tag">Conversion</span>
-                        <span class="tag">Bazaar</span>
-                        <span class="tag">Auction</span>
-                        <span class="tag">Profit</span>
-                    </div>
-                </div>
-                
-                <div class="calculator-card">
-                    <img src="assets/Images/Symbols/SkyBlock_icons_cold_resistance.png" alt="Cold Resistance" class="calc-icon">
-                    <h3>Cold Resistance Calculator</h3>
-                    <p>Calculate how long it takes to accumulate 100 cold based on your cold resistance value. Higher cold resistance slows down cold accumulation.</p>
-                    <a href="calculators/cold-resistance-calculator.html" class="calc-button">Launch Calculator</a>
-                    <div class="tags">
-                        <span class="tag">Cold</span>
-                        <span class="tag">Time</span>
-                        <span class="tag">Resistance</span>
-                        <span class="tag">Accumulation</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat">
-                    <h3>Real-Time</h3>
-                    <p>Live Data Updates</p>
-                </div>
-                <div class="stat">
-                    <h3>100%</h3>
-                    <p>Free to Use</p>
-                </div>
-                <div class="stat">
-                    <h3>24/7</h3>
-                    <p>Always Available</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <footer class="footer">
         <div class="container">
@@ -112,5 +180,7 @@
             </div>
         </div>
     </footer>
+
+    <script src="js/site.js" defer></script>
 </body>
 </html>

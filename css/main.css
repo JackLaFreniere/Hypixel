@@ -45,6 +45,67 @@ body {
     padding: 0 20px;
 }
 
+/* Sidebar styles */
+.layout { display:flex; gap: 30px; align-items:stretch; }
+.sidebar { width: 300px; background: linear-gradient(180deg, rgba(8,12,20,0.95), rgba(12,18,30,0.9)); border: 1px solid rgba(255,255,255,0.04); padding:14px; border-radius:12px; /* removed fixed min-height to allow stretching */ align-self:stretch; box-shadow: 0 8px 28px rgba(2,6,23,0.6); margin-top:12px; margin-bottom:12px; display:flex; flex-direction:column; overflow: visible; }
+.sidebar-inner { display:flex; flex-direction:column; gap:10px; height:100%; overflow:auto; }
+.sidebar-categories { display:flex; flex-direction:column; gap:0; }
+.search-box { display:flex; gap:8px; align-items:center; overflow: visible; margin-bottom: 10px; position: relative; }
+.search-box { margin-top: 4px; }
+.search-box input[type="search"] { flex:1; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); color: #e6eef6; padding-right:44px; position:relative; z-index:1000; }
+.search-box input[type="search"]::placeholder { color: #94a3b8; }
+.search-box button { background:transparent; border:1px solid rgba(255,255,255,0.03); color:#cbd5e1; padding:6px 8px; border-radius:8px; cursor:pointer; height:36px; display:flex; align-items:center; justify-content:center; }
+.search-box button { position: relative; z-index: 1; }
+.search-box button:hover { background: rgba(96,165,250,0.04); }
+.search-box input[type="search"]:focus { outline: none; box-shadow: 0 0 0 3px rgba(96,165,250,0.14); background: rgba(255,255,255,0.03); position:relative; z-index: 10000; }
+
+/* Hide native search clear decorations that can overlap UI */
+.search-box input[type="search"]::-webkit-search-decoration,
+.search-box input[type="search"]::-webkit-search-cancel-button,
+.search-box input[type="search"]::-webkit-search-results-button,
+.search-box input[type="search"]::-webkit-search-results-decoration {
+    display: none; -webkit-appearance: none;
+}
+.search-box input[type="search"]::-ms-clear { display: none; }
+
+.no-results { text-align:center; color:#e1cbcb; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); border-radius:12px; margin-bottom:18px; }
+.cat-row { display:flex; flex-direction:column; margin: 4px 8px 0px 4px; }
+.cat-btn { background:transparent; border:1px solid rgba(255,255,255,0.03); color:#cbd5e1; padding:8px 10px; border-radius:8px; text-align:left; cursor:pointer; font-weight:600; transition: background-color 160ms ease, transform 120ms ease, color 160ms ease; margin-bottom:12px; }
+.cat-btn:hover { background: rgba(96,165,250,0.04); color: #bfefff; transform: translateX(4px); }
+.cat-btn:focus { outline: 2px solid rgba(96,165,250,0.12); outline-offset: 2px; }
+.cat-btn.active { background: rgba(96,165,250,0.12); color:#a8f0ff; }
+.dropdown { max-height:0; overflow:hidden; transition: max-height 240ms cubic-bezier(.2,.9,.2,1), opacity 200ms ease; opacity:0; padding-left:6px; padding-top:0; padding-bottom:0; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); border-radius:8px; }
+.dropdown.open { max-height: 360px; opacity:1; padding-top:6px; padding-bottom:6px; overflow-y: auto; }
+
+.dropdown.open { margin-top: 6px; }
+.dropdown-item { display:flex; gap:10px; align-items:center; padding:6px 8px; border-radius:6px; border-bottom: 1px solid rgba(255,255,255,0.02); transition: background-color 140ms ease, transform 140ms ease; min-height:48px; }
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: rgba(96,165,250,0.06); transform: translateX(6px); }
+.dropdown-item img { width:36px; height:36px; object-fit:contain; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45)); }
+.dropdown-item .item-text { display:flex; flex-direction:column; justify-content: center; overflow: hidden; }
+.dropdown-item.selected { background: rgba(96,165,250,0.08); box-shadow: inset 0 0 0 1px rgba(96,165,250,0.03); }
+.muted { color:#9ca3af; font-size:0.82em; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* Dropdown item quick feedback */
+.dropdown-item:active { transform: scale(0.985); }
+
+/* Custom scrollbar for dropdown to fit theme (WebKit) */
+.dropdown.open::-webkit-scrollbar { width: 10px; }
+.dropdown.open::-webkit-scrollbar-track { background: transparent; }
+.dropdown.open::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(96,165,250,0.12), rgba(96,165,250,0.06)); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+
+/* Firefox scrollbar */
+.dropdown.open { scrollbar-width: thin; scrollbar-color: rgba(96,165,250,0.12) transparent; }
+
+/* Card show/hide animations */
+.calculator-card { transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease; }
+.calculator-card.is-hiding { opacity: 0; transform: translateY(8px) scale(0.99); }
+.calculator-card.is-showing { opacity: 0; transform: translateY(8px) scale(0.99); }
+.calculator-card.highlight { box-shadow: 0 18px 40px rgba(96,165,250,0.06); border-color: #60a5fa; }
+
+/* Ensure main content fills remaining area */
+.main-content { flex:1 1 auto; }
+
 /* Calculator Card */
 .calculator-section {
     padding: 20px 0;
@@ -71,14 +132,15 @@ body {
     border-radius: 15px;
     padding: 25px 25px 35px 25px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
 .calculator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
     border-color: #60a5fa;
 }
+.calculator-card:focus { outline: 3px solid rgba(96,165,250,0.08); outline-offset: 4px; }
 
 .calc-icon {
     font-size: 3em;
