@@ -93,78 +93,10 @@ class ForgeCalculator {
         if (itemId) {
             return itemId;
         }
-        
-        // Fallback for critical forge items
-        const knownForgeItems = {
-            'Drill Motor': 'DRILL_ENGINE',
-            'Treasurite': 'TREASURITE',
-            'Golden Plate': 'GOLDEN_PLATE',
-            'Enchanted Iron Block': 'ENCHANTED_IRON_BLOCK',
-            'Enchanted Redstone Block': 'ENCHANTED_REDSTONE_BLOCK',
-            'Refined Diamond': 'REFINED_DIAMOND',
-            'Refined Mithril': 'REFINED_MITHRIL',
-            'Refined Titanium': 'REFINED_TITANIUM',
-            'Refined Umber': 'REFINED_UMBER',
-            'Refined Tungsten': 'REFINED_TUNGSTEN',
-            'Bejeweled Handle': 'BEJEWELED_HANDLE',
-            'Enchanted Diamond Block': 'ENCHANTED_DIAMOND_BLOCK',
-            'Enchanted Mithril': 'ENCHANTED_MITHRIL',
-            'Enchanted Titanium': 'ENCHANTED_TITANIUM',
-            'Enchanted Umber': 'ENCHANTED_UMBER',
-            'Enchanted Tungsten': 'ENCHANTED_TUNGSTEN',
-            'Glacite Jewel': 'GLACITE_JEWEL',
-            'Fuel Canister': 'FUEL_CANISTER',
-            'Enchanted Coal Block': 'ENCHANTED_COAL_BLOCK',
-            'Gemstone Mixture': 'GEMSTONE_MIXTURE',
-            'Fine Jade Gemstone': 'FINE_JADE_GEMSTONE',
-            'Fine Amber Gemstone': 'FINE_AMBER_GEMSTONE',
-            'Fine Amethyst Gemstone': 'FINE_AMETHYST_GEMSTONE',
-            'Fine Sapphire Gemstone': 'FINE_SAPPHIRE_GEMSTONE',
-            'Sludge Juice': 'SLUDGE_JUICE',
-            'Glacite Amalgamation': 'GLACITE_AMALGAMATION',
-            'Fine Onyx Gemstone': 'FINE_ONYX_GEMSTONE',
-            'Fine Citrine Gemstone': 'FINE_CITRINE_GEMSTONE',
-            'Fine Peridot Gemstone': 'FINE_PERIDOT_GEMSTONE',
-            'Fine Aquamarine Gemstone': 'FINE_AQUAMARINE_GEMSTONE',
-            'Enchanted Glacite': 'ENCHANTED_GLACITE',
-            'Enchanted Gold Block': 'ENCHANTED_GOLD_BLOCK',
-            'Mithril Plate': 'MITHRIL_PLATE',
-            'Tungsten Plate': 'TUNGSTEN_PLATE',
-            'Umber Plate': 'UMBER_PLATE',
-            'Perfect Plate': 'PERFECT_PLATE',
-            'Mithril Drill SX-R226': 'MITHRIL_DRILL_SX-R226',
-            'Mithril Drill SX-R326': 'MITHRIL_DRILL_SX-R326',
-            'Ruby Drill TX-15': 'RUBY_DRILL_TX-15',
-            'Fine Ruby Gemstone': 'FINE_RUBY_GEMSTONE',
-            'Gemstone Drill LT-522': 'GEMSTONE_DRILL_LT-522',
-            'Topaz Drill KGR-12': 'TOPAZ_DRILL_KGR-12',
-            'Jasper Drill X': 'JASPER_DRILL_X',
-            'Topaz Rod': 'TOPAZ_ROD',
-            'Titanium Drill DR-X355': 'TITANIUM_DRILL_DR-X355',
-            'Titanium Drill DR-X455': 'TITANIUM_DRILL_DR-X455',
-            'Titanium Drill DR-X555': 'TITANIUM_DRILL_DR-X555',
-            'Titanium Drill DR-X655': 'TITANIUM_DRILL_DR-X655',
-            'Chisel': 'CHISEL',
-            'Reinforced Chisel': 'REINFORCED_CHISEL',
-            'Glacite-Plated Chisel': 'GLACITE_PLATED_CHISEL',
-            'Perfect Chisel': 'PERFECT_CHISEL',
-            "Divan's Drill": 'DIVANS_DRILL',
-            "Divan's Alloy": 'DIVANS_ALLOY',
-            'Flawless Topaz Gemstone': 'FLAWLESS_TOPAZ_GEMSTONE',
-            'Flawless Jasper Gemstone': 'FLAWLESS_JASPER_GEMSTONE',
-            'Flawless Ruby Gemstone': 'FLAWLESS_RUBY_GEMSTONE',
-            'Magma Core': 'MAGMA_CORE',
-            'Corleonite': 'CORLEONITE',
-            'Plasma': 'PLASMA',
-            'Tungsten': 'TUNGSTEN'
-        };
-        
-        itemId = knownForgeItems[itemName];
-        if (itemId) {
-            console.log(`Using fallback ID for ${itemName}: ${itemId}`);
-            return itemId;
-        }
-        
+
+        // Per project policy: no hard-coded fallback values. If the item isn't
+        // present in items.json, return null so callers can detect a missing ID
+        // and show 0 (or otherwise indicate failure).
         console.warn(`Item ID not found for: ${itemName}`);
         return null;
     }
@@ -379,7 +311,12 @@ class ForgeCalculator {
 
         // Calculate profit and profit per hour
         const profit = outputPrice - inputCost;
-        const totalHours = recipe.time.hours + (recipe.time.minutes / 60);
+    // Support optional days and seconds fields in recipe.time (backwards compatible)
+    const days = recipe.time.days || 0;
+    const hours = recipe.time.hours || 0;
+    const minutes = recipe.time.minutes || 0;
+    const seconds = recipe.time.seconds || 0;
+    const totalHours = (days * 24) + hours + (minutes / 60) + (seconds / 3600);
         const profitPerHour = totalHours > 0 ? profit / totalHours : 0;
 
         return {
@@ -406,11 +343,19 @@ class ForgeCalculator {
         
         console.log(`Filtered recipes count: ${filteredRecipes.length}`);
 
-        // Calculate profits for filtered recipes
-        const recipesWithData = filteredRecipes.map(recipe => ({
-            ...recipe,
-            calculation: this.calculateRecipeProfit(recipe)
-        }));
+        // Calculate profits for filtered recipes and mark missing-input recipes
+        const recipesWithData = filteredRecipes.map(recipe => {
+            const calculation = this.calculateRecipeProfit(recipe);
+            // Consider a recipe "missing inputs" if any input unitPrice is 0 and source !== 'coins', or the output price is 0 when sellLocation requires a market price
+            const hasMissingInput = calculation.inputDetails.some(inp => inp.source !== 'coins' && (!inp.unitPrice || inp.unitPrice === 0));
+            const hasMissingOutput = (!calculation.outputValue || calculation.outputValue === 0) && recipe.sellLocation && recipe.sellLocation !== 'coins';
+
+            return {
+                ...recipe,
+                calculation,
+                missingInputs: hasMissingInput || hasMissingOutput
+            };
+        });
 
         // Sort recipes
         recipesWithData.sort((a, b) => {
@@ -435,8 +380,12 @@ class ForgeCalculator {
                     return b.calculation.profitPerHour - a.calculation.profitPerHour;
             }
         });
+        // Move any recipes with missing inputs to the end while preserving relative order
+        const ready = recipesWithData.filter(r => !r.missingInputs);
+        const incomplete = recipesWithData.filter(r => r.missingInputs);
+        const ordered = ready.concat(incomplete);
 
-        this.displayRecipes(recipesWithData);
+        this.displayRecipes(ordered);
         this.updateSummary(recipesWithData);
     }
 
@@ -450,20 +399,25 @@ class ForgeCalculator {
 
         grid.innerHTML = recipes.map(recipe => {
             const calc = recipe.calculation;
+            const missingClass = recipe.missingInputs ? 'missing-inputs' : '';
             const profitClass = calc.profit > 0 ? 'profit-positive' : calc.profit < 0 ? 'profit-negative' : 'profit-neutral';
             const statusClass = calc.profit > 0 ? 'status-profitable' : calc.profit < 0 ? 'status-unprofitable' : 'status-break-even';
             
-            const timeText = recipe.time.hours > 0 ? 
-                `${recipe.time.hours}h ${recipe.time.minutes}m` : 
-                `${recipe.time.minutes}m`;
+            const days = recipe.time.days || 0;
+            const hours = recipe.time.hours || 0;
+            const minutes = recipe.time.minutes || 0;
+            const seconds = recipe.time.seconds || 0;
+            const timeText = this.formatDuration(days, hours, minutes, seconds);
 
             return `
-                <div class="recipe-card ${statusClass}">
+                <div class="recipe-card ${statusClass} ${missingClass}">
                     <div class="recipe-header">
-                        <div class="recipe-name">${recipe.name}</div>
-                        <div class="recipe-category">${recipe.category}</div>
-                        <div class="recipe-time">⏱️ ${timeText}</div>
-                    </div>
+                            <div class="recipe-name">${recipe.name}</div>
+                            <div class="recipe-meta">
+                                <div class="recipe-category">${recipe.category}</div>
+                                <div class="recipe-time">⏱️ ${timeText}</div>
+                            </div>
+                        </div>
                     
                     <div class="recipe-materials">
                         ${calc.inputDetails.map(input => `
@@ -529,11 +483,21 @@ class ForgeCalculator {
     }
 
     formatTime(hours, minutes) {
-        if (hours > 0) {
-            return `${hours}h ${minutes}m`;
-        } else {
-            return `${minutes}m`;
-        }
+        // Backwards compatible: if called with (hours, minutes) keep behavior.
+        // If a caller passes days in place of hours, prefer the object-based call below.
+        return `${hours}h ${minutes}m`;
+    }
+
+    // New: format a duration that may include days, hours, minutes, and seconds.
+    // Returns a compact string like "1d 4h 30m 12s" or "4h 30m" or "30m 12s".
+    formatDuration(days, hours, minutes, seconds) {
+        const parts = [];
+        if (days && days > 0) parts.push(`${days}d`);
+        if (hours && hours > 0) parts.push(`${hours}h`);
+        if (minutes && minutes > 0) parts.push(`${minutes}m`);
+        if (seconds && seconds > 0) parts.push(`${seconds}s`);
+        if (parts.length === 0) return '0m';
+        return parts.join(' ');
     }
 
     async refreshPrices() {

@@ -11,8 +11,7 @@
         }
       ],
       "time": {
-        "hours": 8,
-        "minutes": 0
+        "hours": 8
       },
       "sellLocation": "bazaar"
     },
@@ -27,8 +26,7 @@
         }
       ],
       "time": {
-        "hours": 6,
-        "minutes": 0
+        "hours": 6
       },
       "sellLocation": "bazaar"
     },
@@ -43,8 +41,7 @@
         }
       ],
       "time": {
-        "hours": 12,
-        "minutes": 0
+        "hours": 12
       },
       "sellLocation": "bazaar"
     },
@@ -59,8 +56,7 @@
         }
       ],
       "time": {
-        "hours": 1,
-        "minutes": 0
+        "hours": 1
       },
       "sellLocation": "bazaar"
     },
@@ -75,8 +71,7 @@
         }
       ],
       "time": {
-        "hours": 1,
-        "minutes": 0
+        "hours": 1
       },
       "sellLocation": "bazaar"
     },
@@ -91,8 +86,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "bazaar"
     },
@@ -122,8 +116,8 @@
         }
       ],
       "time": {
-        "hours": 30,
-        "minutes": 0
+        "days": 1,
+        "hours": 6
       },
       "sellLocation": "bazaar"
     },
@@ -138,8 +132,7 @@
         }
       ],
       "time": {
-        "hours": 10,
-        "minutes": 0
+        "hours": 10
       },
       "sellLocation": "bazaar"
     },
@@ -174,8 +167,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "bazaar"
     },
@@ -210,8 +202,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "bazaar"
     },
@@ -236,8 +227,7 @@
         }
       ],
       "time": {
-        "hours": 6,
-        "minutes": 0
+        "hours": 6
       },
       "sellLocation": "bazaar"
     },
@@ -267,8 +257,7 @@
         }
       ],
       "time": {
-        "hours": 18,
-        "minutes": 0
+        "hours": 18
       },
       "sellLocation": "bazaar"
     },
@@ -288,8 +277,7 @@
         }
       ],
       "time": {
-        "hours": 3,
-        "minutes": 0
+        "hours": 3
       },
       "sellLocation": "bazaar"
     },
@@ -309,8 +297,7 @@
         }
       ],
       "time": {
-        "hours": 3,
-        "minutes": 0
+        "hours": 3
       },
       "sellLocation": "bazaar"
     },
@@ -335,7 +322,6 @@
         }
       ],
       "time": {
-        "hours": 0,
         "minutes": 30
       },
       "sellLocation": "bazaar"
@@ -361,8 +347,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "auction"
     },
@@ -387,8 +372,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -413,8 +397,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "auction"
     },
@@ -434,8 +417,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -465,8 +447,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -496,8 +477,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -517,8 +497,7 @@
         }
       ],
       "time": {
-        "hours": 12,
-        "minutes": 0
+        "hours": 12
       },
       "sellLocation": "auction"
     },
@@ -553,8 +532,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "auction"
     },
@@ -584,8 +562,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -625,8 +602,7 @@
         }
       ],
       "time": {
-        "hours": 30,
-        "minutes": 0
+        "hours": 30
       },
       "sellLocation": "auction"
     },
@@ -671,8 +647,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -692,8 +667,7 @@
         }
       ],
       "time": {
-        "hours": 4,
-        "minutes": 0
+        "hours": 4
       },
       "sellLocation": "auction"
     },
@@ -723,8 +697,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -754,8 +727,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -780,8 +752,7 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
     },
@@ -807,10 +778,791 @@
         }
       ],
       "time": {
-        "hours": 0,
-        "minutes": 0.5
+        "seconds": 30
       },
       "sellLocation": "auction"
+    },
+    {
+      "name": "Mithril Necklace",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Enchanted Mithril",
+          "quantity": 3,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Mithril Cloak",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Enchanted Mithril",
+          "quantity": 3,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Mithril Belt",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Enchanted Mithril",
+          "quantity": 3,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Mithril Gauntlet",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Enchanted Mithril",
+          "quantity": 3,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Necklace",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Mineral",
+          "quantity": 16,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Titanium",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Mithril Necklace",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "hours": 4,
+        "minutes": 30
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Cloak",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Mineral",
+          "quantity": 16,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Titanium",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Mithril Cloak",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "hours": 4,
+        "minutes": 30
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Belt",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Mineral",
+          "quantity": 16,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Titanium",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Mithril Belt",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "hours": 4,
+        "minutes": 30
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Gauntlet",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Mineral",
+          "quantity": 16,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Titanium",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Mithril Gauntlet",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "hours": 4,
+        "minutes": 30
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Talisman",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Titanium",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 14
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Ring",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Titanium",
+          "quantity": 6,
+          "source": "bazaar"
+        },
+        {
+          "name": "Titanium Talisman",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "hours": 20
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Artifact",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Titanium",
+          "quantity": 12,
+          "source": "bazaar"
+        },
+        {
+          "name": "Titanium Ring",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "days": 1,
+        "hours": 12
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Titanium Relic",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Titanium",
+          "quantity": 20,
+          "source": "bazaar"
+        },
+        {
+          "name": "Titanium Artifact",
+          "quantity": 1,
+          "source": "auction"
+        }
+      ],
+      "time": {
+        "days": 3
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Divan's Powder Coating",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Mineral",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 5,
+          "source": "bazaar"
+        },
+        {
+          "name": "Enchanted Gold Block",
+          "quantity": 16,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1,
+        "hours": 12
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Helmet Of Divan",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Flawless Ruby Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 5,
+          "source": "bazaar"
+        },
+        {
+          "name": "Gemstone Mixture",
+          "quantity": 10,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Chestplate Of Divan",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Flawless Ruby Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 8,
+          "source": "bazaar"
+        },
+        {
+          "name": "Gemstone Mixture",
+          "quantity": 10,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Leggings Of Divan",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Flawless Ruby Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 7,
+          "source": "bazaar"
+        },
+        {
+          "name": "Gemstone Mixture",
+          "quantity": 10,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Boots Of Divan",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Flawless Ruby Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 4,
+          "source": "bazaar"
+        },
+        {
+          "name": "Gemstone Mixture",
+          "quantity": 10,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Amber Necklace",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Amber Gemstone",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Sapphire Cloack",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Sapphire Gemstone",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Jade Belt",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Jade Gemstone",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Amethyst Gauntlet",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Amethyst Gemstone",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Gemstone Chamber",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Worm Membrane",
+          "quantity": 100,
+          "source": "bazaar"
+        },
+        {
+          "name": "Gemstone Mixture",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Coins",
+          "quantity": 1,
+          "source": "coins",
+          "coinCost": 25000
+        }
+      ],
+      "time": {
+        "hours": 4
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Dwarven Handwarmers",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Flawless Jade Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Amber Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Tungsten Plate",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Umber Plate",
+          "quantity": 1,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 4
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Dwarven Metal Talisman",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Refined Umber",
+          "quantity": 4,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Tungsten",
+          "quantity": 4,
+          "source": "bazaar"
+        },
+        {
+          "name": "Glacite Amalgamation",
+          "quantity": 4,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 1
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Pendant Of Divan",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Shattered Locket",
+          "quantity": 1,
+          "source": "auction"
+        },
+        {
+          "name": "Perfect Plate",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Divan Fragment",
+          "quantity": 10,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "days": 7
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Relic Of Power",
+      "category": "gear",
+      "inputs": [
+        {
+          "name": "Artifact Of Power",
+          "quantity": 1,
+          "source": "auction"
+        },
+        {
+          "name": "Perfect Plate",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Glacite Amalgamation",
+          "quantity": 32,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 8
+      },
+      "sellLocation": "auction"
+    },
+    {
+      "name": "Diamonite",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Refined Diamond",
+          "quantity": 3,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Pocket Iceberg",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Glacite Jewel",
+          "quantity": 5,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Petrified Starfall",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Starfall",
+          "quantity": 512,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Pure Mithril",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Refined Mithril",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Dwarven Geode",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Enchanted Cobblestone",
+          "quantity": 128,
+          "source": "bazaar"
+        },
+        {
+          "name": "Treasurite",
+          "quantity": 64,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Titanium Tesseract",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Refined Titanium",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Enchanted Lapis Lazuli",
+          "quantity": 16,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Gleaming Crystal",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Glossy Gemstone",
+          "quantity": 32,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Mithril",
+          "quantity": 1,
+          "source": "bazaar"
+        },
+        {
+          "name": "Refined Diamond",
+          "quantity": 2,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Scorched Topaz",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Enchanted Hard Stone",
+          "quantity": 128,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Topaz Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Amber Material",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Fine Amber Gemstone",
+          "quantity": 12,
+          "source": "bazaar"
+        },
+        {
+          "name": "Golden Plate",
+          "quantity": 1,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "Frigid Husk",
+      "category": "reforge stones",
+      "inputs": [
+        {
+          "name": "Glacite Amalgamation",
+          "quantity": 4,
+          "source": "bazaar"
+        },
+        {
+          "name": "Flawless Onyx Gemstone",
+          "quantity": 1,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 6
+      },
+      "sellLocation": "bazaar"
+    },
+    {
+      "name": "",
+      "category": "drill parts",
+      "inputs": [
+        {
+          "name": "",
+          "quantity": 1,
+          "source": "bazaar"
+        }
+      ],
+      "time": {
+        "hours": 0
+      },
+      "sellLocation": "bazaar"
     }
   ]
 }

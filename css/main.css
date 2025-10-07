@@ -200,6 +200,21 @@ body {
     border: 1px solid #4b5563;
 }
 
+/* Visual style for recipes with missing inputs (prices missing / zero) */
+.recipe-card.missing-inputs {
+    background: linear-gradient(180deg, #2b1a00, #1e1300);
+    border-color: #f59e0b; /* amber/yellow to stand out */
+    box-shadow: 0 12px 30px rgba(245,158,11,0.08);
+}
+.recipe-card.missing-inputs .recipe-name,
+.recipe-card.missing-inputs .recipe-category,
+.recipe-card.missing-inputs .recipe-time {
+    color: #ffdca3;
+}
+.recipe-card.missing-inputs .profit-amount {
+    color: #fbbf24;
+}
+
 /* Stats */
 .stats {
     padding: 80px 0;
