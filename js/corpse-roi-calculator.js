@@ -408,7 +408,9 @@ class CorpseROICalculator {
         }
         
         // Show results
-        document.getElementById('results').style.display = 'block';
+        const resultsEl = document.getElementById('results');
+        resultsEl.classList.remove('hidden');
+        resultsEl.classList.add('visible');
         
         // Show status
         const statusText = profit >= 0 ? 
@@ -524,14 +526,19 @@ class CorpseROICalculator {
         
         if (show) {
             // Show loading, hide content
-            loadingEl.style.display = 'block';
-            dropTableContainer.style.display = 'none';
-            resultsEl.style.display = 'none';
+            loadingEl.classList.remove('hidden');
+            loadingEl.classList.add('visible');
+            dropTableContainer.classList.add('hidden');
+            dropTableContainer.classList.remove('visible');
+            resultsEl.classList.add('hidden');
+            resultsEl.classList.remove('visible');
         } else {
             // Hide loading, show content
-            loadingEl.style.display = 'none';
-            dropTableContainer.style.display = 'block';
-            resultsEl.style.display = 'block';
+            loadingEl.classList.add('hidden');
+            loadingEl.classList.remove('visible');
+            dropTableContainer.classList.remove('hidden');
+            dropTableContainer.classList.add('visible');
+            // Note: results stays hidden until a corpse is selected
         }
     }
 

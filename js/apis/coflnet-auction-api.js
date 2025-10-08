@@ -83,11 +83,6 @@ class CoflnetAuctionAPI {
      * @returns {string} The item tag for API calls
      */
     findItemTag(itemName) {
-        if (!this.itemsDatabase) {
-            console.warn('Items database not loaded, using fallback tag generation');
-            return this.nameToTag(itemName);
-        }
-
         const item = this.itemsDatabase.find(item => 
             item.name && item.name.toLowerCase() === itemName.toLowerCase()
         );
@@ -95,22 +90,7 @@ class CoflnetAuctionAPI {
         if (item && item.id) {
             console.log(`Found item: ${itemName} -> ${item.id}`);
             return item.id;
-        } else {
-            console.warn(`Item not found in database: ${itemName}, using fallback`);
-            return this.nameToTag(itemName);
         }
-    }
-
-    /**
-     * Convert display name to item tag format
-     * @param {string} itemName - The display name
-     * @returns {string} The generated item tag
-     */
-    nameToTag(itemName) {
-        return itemName
-            .toUpperCase()
-            .replace(/\s+/g, '_')
-            .replace(/[()]/g, '');
     }
 
     /**

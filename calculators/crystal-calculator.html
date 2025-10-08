@@ -52,7 +52,7 @@
         <!-- Gemstone Table -->
         <div class="gemstone-table">
             <h2>Gemstone Conversion Table</h2>
-            <div id="loading" class="loading" style="display: none;">
+            <div id="loading" class="loading">
                 <div class="spinner"></div>
                 <p>Loading prices...</p>
             </div>
@@ -83,13 +83,13 @@
 
     <!-- Scripts -->
     <script src="../js/apis/hypixel-bazaar-api.js" 
-            onerror="console.error('Failed to load hypixel-bazaar-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load hypixel-bazaar-api.js from ../js/apis/</div>'"></script>
+            onerror="console.error('Failed to load hypixel-bazaar-api.js'); document.body.innerHTML += '<div class=\'script-error\'>ERROR: Could not load hypixel-bazaar-api.js from ../js/apis/</div>'"></script>
     <script src="../js/apis/coflnet-auction-api.js" 
-            onerror="console.error('Failed to load coflnet-auction-api.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load coflnet-auction-api.js from ../js/apis/</div>'"></script>
+            onerror="console.error('Failed to load coflnet-auction-api.js'); document.body.innerHTML += '<div class=\'script-error\'>ERROR: Could not load coflnet-auction-api.js from ../js/apis/</div>'"></script>
     <script src="../js/apis/gemstone-pricing.js" 
-            onerror="console.error('Failed to load gemstone-pricing.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load gemstone-pricing.js from ../js/apis/</div>'"></script>
+            onerror="console.error('Failed to load gemstone-pricing.js'); document.body.innerHTML += '<div class=\'script-error\'>ERROR: Could not load gemstone-pricing.js from ../js/apis/</div>'"></script>
     <script src="../js/crystal-calculator.js" 
-            onerror="console.error('Failed to load crystal-calculator.js'); document.body.innerHTML += '<div style=\'background:red;color:white;padding:10px;\'>ERROR: Could not load crystal-calculator.js from ../js/</div>'"></script>
+            onerror="console.error('Failed to load crystal-calculator.js'); document.body.innerHTML += '<div class=\'script-error\'>ERROR: Could not load crystal-calculator.js from ../js/</div>'"></script>
     <script>
         // Wait for all scripts to load
         window.addEventListener('load', function() {
@@ -104,25 +104,25 @@
             
             if (typeof HypixelBazaarAPI === 'undefined') {
                 console.error('HypixelBazaarAPI is not loaded!');
-                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: HypixelBazaarAPI failed to load. Check file path.</div>';
+                document.body.innerHTML += '<div class="script-error">ERROR: HypixelBazaarAPI failed to load. Check file path.</div>';
                 return;
             }
             
             if (typeof CoflnetAuctionAPI === 'undefined') {
                 console.error('CoflnetAuctionAPI is not loaded!');
-                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CoflnetAuctionAPI failed to load. Check file path.</div>';
+                document.body.innerHTML += '<div class="script-error">ERROR: CoflnetAuctionAPI failed to load. Check file path.</div>';
                 return;
             }
             
             if (typeof GemstonePricing === 'undefined') {
                 console.error('GemstonePricing is not loaded!');
-                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: GemstonePricing failed to load. Check file path.</div>';
+                document.body.innerHTML += '<div class="script-error">ERROR: GemstonePricing failed to load. Check file path.</div>';
                 return;
             }
             
             if (typeof CrystalCalculator === 'undefined') {
                 console.error('CrystalCalculator is not loaded!');
-                document.body.innerHTML += '<div style="background: red; color: white; padding: 10px;">ERROR: CrystalCalculator failed to load. Check file path.</div>';
+                document.body.innerHTML += '<div class="script-error">ERROR: CrystalCalculator failed to load. Check file path.</div>';
                 return;
             }
             

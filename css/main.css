@@ -2,7 +2,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box;    
 }
 
 body {
@@ -47,7 +47,7 @@ body {
 
 /* Sidebar styles */
 .layout { display:flex; gap: 30px; align-items:stretch; }
-.sidebar { width: 300px; background: linear-gradient(180deg, rgba(8,12,20,0.95), rgba(12,18,30,0.9)); border: 1px solid rgba(255,255,255,0.04); padding:14px; border-radius:12px; /* removed fixed min-height to allow stretching */ align-self:stretch; box-shadow: 0 8px 28px rgba(2,6,23,0.6); margin-top:12px; margin-bottom:12px; display:flex; flex-direction:column; overflow: visible; }
+.sidebar { width: 300px; background: linear-gradient(180deg, #1e293b, #0f172a); border: 1px solid rgba(255,255,255,0.04); padding:14px; border-radius:12px; /* removed fixed min-height to allow stretching */ align-self:stretch; box-shadow: 0 8px 28px rgba(2,6,23,0.6); margin-top:12px; margin-bottom:12px; margin-left:12px; display:flex; flex-direction:column; overflow: visible; }
 .sidebar-inner { display:flex; flex-direction:column; gap:10px; height:100%; overflow:auto; }
 .sidebar-categories { display:flex; flex-direction:column; gap:0; }
 .search-box { display:flex; gap:8px; align-items:center; overflow: visible; margin-bottom: 10px; position: relative; }
@@ -68,7 +68,15 @@ body {
 }
 .search-box input[type="search"]::-ms-clear { display: none; }
 
-.no-results { text-align:center; color:#e1cbcb; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); border-radius:12px; margin-bottom:18px; }
+.no-results { text-align:center; color:#e1cbcb; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); border-radius:12px; margin-bottom:18px; display: none; }
+
+/* Utility classes for showing/hiding elements */
+.hidden { display: none !important; }
+.visible { display: block !important; }
+
+/* Loading states */
+.loading { display: block; }
+.recipes-grid { display: none; }
 .cat-row { display:flex; flex-direction:column; margin: 4px 8px 0px 4px; }
 .cat-btn { background:transparent; border:1px solid rgba(255,255,255,0.03); color:#cbd5e1; padding:8px 10px; border-radius:8px; text-align:left; cursor:pointer; font-weight:600; transition: background-color 160ms ease, transform 120ms ease, color 160ms ease; margin-bottom:12px; }
 .cat-btn:hover { background: rgba(96,165,250,0.04); color: #bfefff; transform: translateX(4px); }
@@ -89,13 +97,23 @@ body {
 /* Dropdown item quick feedback */
 .dropdown-item:active { transform: scale(0.985); }
 
-/* Custom scrollbar for dropdown to fit theme (WebKit) */
+/* Custom scrollbar for dropdown to fit theme (WebKit - works in Safari, Chrome, Edge) */
 .dropdown.open::-webkit-scrollbar { width: 10px; }
 .dropdown.open::-webkit-scrollbar-track { background: transparent; }
-.dropdown.open::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(96,165,250,0.12), rgba(96,165,250,0.06)); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+.dropdown.open::-webkit-scrollbar-thumb { 
+    background: linear-gradient(180deg, rgba(96,165,250,0.12), rgba(96,165,250,0.06)); 
+    border-radius: 10px; 
+    border: 2px solid transparent; 
+    background-clip: padding-box; 
+}
 
-/* Firefox scrollbar */
-.dropdown.open { scrollbar-width: thin; scrollbar-color: rgba(96,165,250,0.12) transparent; }
+/* Firefox scrollbar (fallback for Firefox) */
+@supports (scrollbar-width: thin) {
+    .dropdown.open { 
+        scrollbar-width: thin; 
+        scrollbar-color: rgba(96,165,250,0.12) transparent; 
+    }
+}
 
 /* Card show/hide animations */
 .calculator-card { transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease; }
@@ -198,6 +216,21 @@ body {
     border-radius: 20px;
     font-size: .9em;
     border: 1px solid #4b5563;
+}
+
+/* Visual style for recipes with missing inputs (prices missing / zero) */
+.recipe-card.missing-inputs {
+    background: linear-gradient(180deg, #2b1a00, #1e1300);
+    border-color: #f59e0b; /* amber/yellow to stand out */
+    box-shadow: 0 12px 30px rgba(245,158,11,0.08);
+}
+.recipe-card.missing-inputs .recipe-name,
+.recipe-card.missing-inputs .recipe-category,
+.recipe-card.missing-inputs .recipe-time {
+    color: #ffdca3;
+}
+.recipe-card.missing-inputs .profit-amount {
+    color: #fbbf24;
 }
 
 /* Stats */
