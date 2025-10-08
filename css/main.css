@@ -107,14 +107,6 @@ body {
     background-clip: padding-box; 
 }
 
-/* Firefox scrollbar (fallback for Firefox) */
-@supports (scrollbar-width: thin) {
-    .dropdown.open { 
-        scrollbar-width: thin; 
-        scrollbar-color: rgba(96,165,250,0.12) transparent; 
-    }
-}
-
 /* Card show/hide animations */
 .calculator-card { transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease; }
 .calculator-card.is-hiding { opacity: 0; transform: translateY(8px) scale(0.99); }
