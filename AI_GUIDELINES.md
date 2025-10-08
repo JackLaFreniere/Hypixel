@@ -62,4 +62,8 @@ Quick task template (use when requesting changes)
 - Don't put extensively complex debugging and functionality
 - Makes it harder for users to read and to debug
 
+14) Keep JS and CSS out of HTMl
+- Keep all JS and CSS functionality out of any HTML files.
+- Find accordingly linked files if adding new functionality, and make a new file if it doesn't exist
+
 Last updated: 2025-10-06

@@ -394,6 +394,7 @@ body {
     text-align: center;
     padding: 40px;
     color: #94a3b8;
+    display: block;
 }
 
 .spinner {
@@ -409,6 +410,13 @@ body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    display: none;
 }
 
 /* Status Indicators */

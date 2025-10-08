@@ -68,7 +68,15 @@ body {
 }
 .search-box input[type="search"]::-ms-clear { display: none; }
 
-.no-results { text-align:center; color:#e1cbcb; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); border-radius:12px; margin-bottom:18px; }
+.no-results { text-align:center; color:#e1cbcb; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02)); border:1px solid rgba(255,255,255,0.03); border-radius:12px; margin-bottom:18px; display: none; }
+
+/* Utility classes for showing/hiding elements */
+.hidden { display: none !important; }
+.visible { display: block !important; }
+
+/* Loading states */
+.loading { display: block; }
+.recipes-grid { display: none; }
 .cat-row { display:flex; flex-direction:column; margin: 4px 8px 0px 4px; }
 .cat-btn { background:transparent; border:1px solid rgba(255,255,255,0.03); color:#cbd5e1; padding:8px 10px; border-radius:8px; text-align:left; cursor:pointer; font-weight:600; transition: background-color 160ms ease, transform 120ms ease, color 160ms ease; margin-bottom:12px; }
 .cat-btn:hover { background: rgba(96,165,250,0.04); color: #bfefff; transform: translateX(4px); }

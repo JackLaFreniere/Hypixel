@@ -143,6 +143,41 @@ body {
     background-position: center;
 }
 
+/* Specific corpse background images */
+.corpse-option[data-corpse="vanguard"] .corpse-image {
+    background-image: url('../assets/Images/Corpses/SkyBlock_entities_corpse_vanguard.png');
+}
+
+.corpse-option[data-corpse="tungsten"] .corpse-image {
+    background-image: url('../assets/Images/Corpses/SkyBlock_entities_corpse_tungsten.png');
+}
+
+.corpse-option[data-corpse="umber"] .corpse-image {
+    background-image: url('../assets/Images/Corpses/SkyBlock_entities_corpse_umber.png');
+}
+
+.corpse-option[data-corpse="lapis"] .corpse-image {
+    background-image: url('../assets/Images/Corpses/SkyBlock_entities_corpse_lapis.png');
+}
+
+/* Loading states */
+.loading {
+    display: none;
+}
+
+#dropTableContainer {
+    display: none;
+}
+
+/* Error message styles for script loading */
+.script-error {
+    background: red;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
 .corpse-option h3 {
     color: #f1f5f9;
     font-size: 1.1em;
