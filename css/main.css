@@ -97,13 +97,23 @@ body {
 /* Dropdown item quick feedback */
 .dropdown-item:active { transform: scale(0.985); }
 
-/* Custom scrollbar for dropdown to fit theme (WebKit) */
+/* Custom scrollbar for dropdown to fit theme (WebKit - works in Safari, Chrome, Edge) */
 .dropdown.open::-webkit-scrollbar { width: 10px; }
 .dropdown.open::-webkit-scrollbar-track { background: transparent; }
-.dropdown.open::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(96,165,250,0.12), rgba(96,165,250,0.06)); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+.dropdown.open::-webkit-scrollbar-thumb { 
+    background: linear-gradient(180deg, rgba(96,165,250,0.12), rgba(96,165,250,0.06)); 
+    border-radius: 10px; 
+    border: 2px solid transparent; 
+    background-clip: padding-box; 
+}
 
-/* Firefox scrollbar */
-.dropdown.open { scrollbar-width: thin; scrollbar-color: rgba(96,165,250,0.12) transparent; }
+/* Firefox scrollbar (fallback for Firefox) */
+@supports (scrollbar-width: thin) {
+    .dropdown.open { 
+        scrollbar-width: thin; 
+        scrollbar-color: rgba(96,165,250,0.12) transparent; 
+    }
+}
 
 /* Card show/hide animations */
 .calculator-card { transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease; }
