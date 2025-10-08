@@ -432,6 +432,15 @@ body {
     border-left-color: #f59e0b !important;
 }
 
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .filter-section {

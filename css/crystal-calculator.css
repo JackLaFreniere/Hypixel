@@ -536,3 +536,12 @@ tr:hover {
 .loading {
     display: none;
 }
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}

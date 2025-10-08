@@ -169,6 +169,15 @@ body {
     display: none;
 }
 
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
 /* Error message styles for script loading */
 .script-error {
     background: red;
