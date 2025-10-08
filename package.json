@@ -1,0 +1,16 @@
+{
+  "name": "hypixel-skyblock-calculators",
+  "version": "1.0.0",
+  "description": "Comprehensive calculators for Hypixel Skyblock",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": ["hypixel", "skyblock", "calculator", "gaming"],
+  "author": "JackLaFreniere",
+  "license": "MIT"
+}
