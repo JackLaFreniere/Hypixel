@@ -1,0 +1,56 @@
+---
+# GitHub Pages Jekyll configuration optimized for Lighthouse
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Encoding and content type
+encoding: utf-8
+
+# Exclude files from build
+exclude:
+  - node_modules
+  - server.js
+  - server.py
+  - package.json
+  - README.md
+  - "*.sh"
+  - "*.bat"
+  - LIGHTHOUSE_FIXES.md
+  - GITHUB_PAGES_README.md
+  - CACHE_FIX_README.md
+
+# Include important files
+include:
+  - .htaccess
+  - sw.js
+
+# Site settings for SEO
+title: "Hypixel Skyblock Calculators"
+description: "Comprehensive calculators for Hypixel Skyblock - ROI, profit, and optimization tools"
+lang: en
+url: "https://your-username.github.io"
+baseurl: "/Hypixel"
+
+# Optimize HTML output
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+
+# Markdown settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Default content type
+defaults:
+  - scope:
+      path: ""
+    values:
+      charset: "utf-8"

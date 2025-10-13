@@ -1,0 +1,17 @@
+# Robots.txt for Hypixel Skyblock Calculators
+# Allow all robots to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location (Jekyll will generate this)
+Sitemap: /Hypixel/sitemap.xml
+
+# Disallow access to service worker (not needed for crawling)
+Disallow: /sw.js
+
+# Allow access to all calculators
+Allow: /calculators/
+Allow: /assets/
+Allow: /css/
+Allow: /js/
