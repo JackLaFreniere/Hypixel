@@ -229,20 +229,23 @@ body {
     font-weight: bold;
     color: #10b981;
     display: block;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* Removed text-shadow for better performance */
 }
 
 .result-item.main-result .result-value.highlight {
     color: #10b981;
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: highlight-pulse 2s ease-in-out infinite alternate;
 }
 
-@keyframes glow {
+/* Performance-optimized animation using transform instead of text-shadow */
+@keyframes highlight-pulse {
     from {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(16, 185, 129, 0.5);
+        transform: scale(1);
+        opacity: 1;
     }
     to {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(16, 185, 129, 0.8), 0 0 30px rgba(16, 185, 129, 0.6);
+        transform: scale(1.02);
+        opacity: 0.9;
     }
 }
 

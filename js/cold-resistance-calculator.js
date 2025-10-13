@@ -95,33 +95,9 @@ class ColdResistanceCalculator {
             timeElement.classList.remove('highlight');
         }
     }
-
-    // Utility method to get calculation breakdown
-    getCalculationBreakdown(coldResistance) {
-        const baseTime = 100 * 5; // 500 seconds
-        const penaltyMultiplier = 1 + (coldResistance / 100);
-        const totalTime = baseTime * penaltyMultiplier;
-        const penalty = totalTime - baseTime;
-        
-        return {
-            coldResistance: coldResistance,
-            baseTimeSeconds: baseTime,
-            penaltyMultiplier: penaltyMultiplier,
-            penaltySeconds: penalty,
-            penaltyPercentage: coldResistance,
-            totalTimeSeconds: totalTime,
-            explanation: `With ${coldResistance} cold resistance, each cold takes ${(5 * penaltyMultiplier).toFixed(2)} seconds instead of 5 seconds.`
-        };
-    }
 }
 
 // Initialize the calculator when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.coldResistanceCalculator = new ColdResistanceCalculator();
-    console.log('Cold Resistance Calculator initialized');
 });
-
-// Export for potential module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ColdResistanceCalculator;
-}

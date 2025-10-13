@@ -1,4 +1,10 @@
-# Apache .htaccess configuration for optimal caching
+# Apache .htaccess configuration for optimal caching and content-types
+
+# Set correct MIME types with UTF-8 charset
+AddType "text/javascript; charset=utf-8" .js
+AddType "text/css; charset=utf-8" .css
+AddType "text/html; charset=utf-8" .html
+AddType "application/json; charset=utf-8" .json
 
 # Enable compression
 <IfModule mod_deflate.c>

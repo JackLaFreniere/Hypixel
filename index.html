@@ -198,6 +198,13 @@
         </div>
     </footer>
 
-    <script src="js/site.js?v=1.0.0" defer crossorigin="anonymous"></script>
+    <script>
+        // Load script with explicit UTF-8 handling
+        const script = document.createElement('script');
+        script.type = 'text/javascript; charset=utf-8';
+        script.src = 'js/site.js?v=1.1.0';
+        script.defer = true;
+        document.head.appendChild(script);
+    </script>
 </body>
 </html>
