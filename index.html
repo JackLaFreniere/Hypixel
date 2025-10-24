@@ -3,6 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
+        NOTE: Lighthouse cache-control warnings come from HTTP response headers.
+        Those must be set on your web server (nginx/Apache/GitHub Pages etc.).
+        The meta tags below are a lightweight, non-invasive hint and may not
+        satisfy Lighthouse; use server configuration listed in the README or
+        server docs to set proper Cache-Control headers.
+    -->
+    <!-- Ensure the HTML document itself is not cached by intermediaries -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Hypixel Skyblock Calculators</title>
     <meta name="description" content="Comprehensive calculators for Hypixel Skyblock - ROI, profit, and optimization tools">
     <link rel="stylesheet" href="css/main.css">
@@ -107,7 +118,7 @@
             <section class="calculator-section">
                 <div class="container">
                     <h2>Available Calculators</h2>
-                    <div id="no-results" class="no-results">No calculators found</div>
+                    <div id="no-results" class="no-results" style="display:none;">No calculators found</div>
                     <div class="calculator-grid">
                         <div class="calculator-card" data-tags="mining">
                             <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
