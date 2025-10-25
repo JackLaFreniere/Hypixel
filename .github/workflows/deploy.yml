@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages with Cache Busting
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Generate cache busting version
+      id: version
+      run: |
+        # Generate version based on commit hash (first 8 characters)
+        VERSION=$(echo ${{ github.sha }} | cut -c1-8)
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Generated version: $VERSION"
+        
+    - name: Update cache busting parameters
+      run: |
+        # Update all HTML files with new version
+        find . -name "*.html" -type f -exec sed -i "s/?v=[^\"']*/?v=${{ steps.version.outputs.VERSION }}/g" {} +
+        
+        # Verify changes
+        echo "Updated cache busting in HTML files:"
+        grep -r "?v=" --include="*.html" . | head -5
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+# Permissions needed for GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Ensure only one deployment runs at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false

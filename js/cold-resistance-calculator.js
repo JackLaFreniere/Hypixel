@@ -2,22 +2,26 @@
 class ColdResistanceCalculator {
     constructor() {
         this.initializeEventListeners();
-        this.calculateTime(); // Initial calculation with default value
+        // Ensure DOM is ready before initial calculation
+        setTimeout(() => this.calculateTime(), 0);
     }
 
     initializeEventListeners() {
-        // Calculate button
-        document.getElementById('calculateBtn').addEventListener('click', () => {
-            this.calculateTime();
-        });
+        const resistanceInput = document.getElementById('coldResistance');
+        
+        if (!resistanceInput) {
+            console.warn('Cold resistance input not found, retrying...');
+            setTimeout(() => this.initializeEventListeners(), 100);
+            return;
+        }
 
         // Auto-calculate on input change
-        document.getElementById('coldResistance').addEventListener('input', () => {
+        resistanceInput.addEventListener('input', () => {
             this.calculateTime();
         });
 
-        // Validate input
-        document.getElementById('coldResistance').addEventListener('change', (e) => {
+        // Validate input and calculate on change
+        resistanceInput.addEventListener('change', (e) => {
             this.validateInput(e.target);
         });
     }
@@ -35,7 +39,17 @@ class ColdResistanceCalculator {
     }
 
     calculateTime() {
-        const coldResistance = parseInt(document.getElementById('coldResistance').value) || 0;
+        const resistanceInput = document.getElementById('coldResistance');
+        const timeDisplay = document.getElementById('timeDisplay');
+        
+        if (!resistanceInput || !timeDisplay) {
+            console.warn('Calculator elements not found, retrying...');
+            setTimeout(() => this.calculateTime(), 100);
+            return;
+        }
+        
+        const coldResistance = parseInt(resistanceInput.value) || 0;
+        console.log(`Input: ${coldResistance} cold resistance`);
         
         // We need to gain 100 cold (starting from 0)
         const coldNeeded = 100;
@@ -58,6 +72,7 @@ class ColdResistanceCalculator {
             timeDisplay: this.formatTime(totalTimeSeconds)
         };
         
+        console.log(`Calculated: ${results.timeDisplay} (${totalTimeSeconds.toFixed(1)} seconds)`);
         this.displayResults(results);
     }
 
@@ -68,60 +83,46 @@ class ColdResistanceCalculator {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.round(seconds % 60);
             return `${minutes}m ${remainingSeconds}s`;
-        } else {
+        } else if (seconds < 86400) {
             const hours = Math.floor(seconds / 3600);
             const minutes = Math.floor((seconds % 3600) / 60);
             const remainingSeconds = Math.round(seconds % 60);
-            
-            if (hours < 24) {
-                return `${hours}h ${minutes}m ${remainingSeconds}s`;
-            } else {
-                const days = Math.floor(hours / 24);
-                const remainingHours = hours % 24;
-                return `${days}d ${remainingHours}h ${minutes}m`;
-            }
+            return `${hours}h ${minutes}m ${remainingSeconds}s`;
+        } else if (seconds < 31536000) {
+            const days = Math.floor(seconds / 86400);
+            const remainingHours = Math.floor((seconds % 86400) / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            return `${days}d ${remainingHours}h ${minutes}m`;
+        } else {
+            const years = Math.floor(seconds / 31536000);
+            const remainingDays = Math.floor((seconds % 31536000) / 86400);
+            const hours = Math.floor((seconds % 86400) / 3600);
+            return `${years}y ${remainingDays}d ${hours}h`;
         }
     }
 
     displayResults(results) {
-        // Update only the time display
-        document.getElementById('timeDisplay').textContent = results.timeDisplay;
-        
-        // Highlight the time result
         const timeElement = document.getElementById('timeDisplay');
-        if (results.timeDisplay !== "Enter cold resistance to calculate") {
+        
+        if (timeElement) {
+            // Update only the time display
+            timeElement.textContent = results.timeDisplay;
+            
+            // Highlight the time result
             timeElement.classList.add('highlight');
         } else {
-            timeElement.classList.remove('highlight');
+            console.error('ERROR: timeDisplay element not found - cannot update display');
         }
-    }
-
-    // Utility method to get calculation breakdown
-    getCalculationBreakdown(coldResistance) {
-        const baseTime = 100 * 5; // 500 seconds
-        const penaltyMultiplier = 1 + (coldResistance / 100);
-        const totalTime = baseTime * penaltyMultiplier;
-        const penalty = totalTime - baseTime;
-        
-        return {
-            coldResistance: coldResistance,
-            baseTimeSeconds: baseTime,
-            penaltyMultiplier: penaltyMultiplier,
-            penaltySeconds: penalty,
-            penaltyPercentage: coldResistance,
-            totalTimeSeconds: totalTime,
-            explanation: `With ${coldResistance} cold resistance, each cold takes ${(5 * penaltyMultiplier).toFixed(2)} seconds instead of 5 seconds.`
-        };
     }
 }
 
 // Initialize the calculator when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    window.coldResistanceCalculator = new ColdResistanceCalculator();
-    console.log('Cold Resistance Calculator initialized');
+    console.log('DOM loaded, initializing calculator...');
+    try {
+        window.coldResistanceCalculator = new ColdResistanceCalculator();
+        console.log('Calculator initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize calculator:', error);
+    }
 });
-
-// Export for potential module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ColdResistanceCalculator;
-}

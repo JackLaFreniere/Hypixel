@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cold Resistance Calculator</title>
     <meta name="description" content="Calculate your cold resistance requirements and gear optimization for Hypixel SkyBlock's cold areas">
-    <link rel="stylesheet" href="../css/cold-resistance-calculator.css">
+    <link rel="icon" type="image/x-icon" href="../assets/Favicons/ColdResistance.ico">
+    <link rel="stylesheet" href="../css/cold-resistance-calculator.css?v=1.4.0" type="text/css">
 </head>
 <body>
     <div class="header">
@@ -28,7 +29,6 @@
                 <input type="number" id="coldResistance" class="form-control" value="0" min="0" step="1">
                 <p class="input-help">Enter your cold resistance value (higher = slower cold gain)</p>
             </div>
-            <button id="calculateBtn" class="btn btn-primary">Calculate Time</button>
         </div>
 
         <!-- Results Section -->
@@ -36,13 +36,22 @@
             <h2>Time to Reach 100 Cold</h2>
             <div class="result-display">
                 <div class="result-item main-result">
-                    <span class="result-value" id="timeDisplay">Enter cold resistance to calculate</span>
+                    <span class="result-value" id="timeDisplay">8m 20s</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../js/apis/hypixel-bazaar-api.js"></script>
-    <script src="../js/cold-resistance-calculator.js"></script>
+    <script>
+        // Clean up any existing service worker that might be causing header issues
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+    <script src="../js/cold-resistance-calculator.js?v=1.4.0" defer></script>
 </body>
 </html>
