@@ -1174,7 +1174,7 @@
       "sellLocation": "auction"
     },
     {
-      "name": "Sapphire Cloack",
+      "name": "Sapphire Cloak",
       "category": "gear",
       "inputs": [
         {
@@ -1651,7 +1651,7 @@
         {
           "name": "Goblin Omelette",
           "quantity": 1,
-          "source": "bazaar"
+          "source": "auction"
         }
       ],
       "time": {

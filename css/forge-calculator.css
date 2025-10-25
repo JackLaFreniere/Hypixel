@@ -293,59 +293,122 @@ body {
     font-weight: 500;
 }
 
-.recipe-inputs {
+.recipe-materials {
     margin-bottom: 15px;
 }
 
-.recipe-inputs h4 {
-    color: #94a3b8;
-    font-size: 0.9em;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.input-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.input-item {
+.material-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 0;
+    padding: 8px 0;
     border-bottom: 1px solid #374151;
 }
 
-.input-item:last-child {
+.material-item:last-child {
     border-bottom: none;
 }
 
-.input-name {
+.material-name {
     color: #e2e8f0;
     font-size: 0.9em;
 }
 
-.input-cost {
-    color: #94a3b8;
+.material-cost {
+    color: #60a5fa;
     font-size: 0.85em;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-.recipe-footer {
+.recipe-summary {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-top: 15px;
+    padding: 12px 0;
     border-top: 1px solid #374151;
+    border-bottom: 1px solid #374151;
+    margin-bottom: 15px;
 }
 
-.recipe-profit {
+.cost-row,
+.sell-row {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
+}
+
+.recipe-summary .label {
+    font-size: 0.8em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.recipe-summary .value {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.profit-section {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.profit-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    padding: 10px;
+    background: rgba(96, 165, 250, 0.05);
+    border-radius: 8px;
+}
+
+.profit-label {
+    font-size: 0.75em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profit-amount {
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+.profit-positive {
+    color: #10b981;
+}
+
+.profit-negative {
+    color: #ef4444;
+}
+
+.profit-neutral {
+    color: #94a3b8;
+}
+
+.recipes-empty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px;
+    font-size: 1.1em;
+}
+
+.error-container {
+    text-align: center;
+    color: #ef4444;
+    padding: 40px;
+}
+
+.error-container h3 {
+    margin-bottom: 10px;
+}
+
+.error-container .reload-btn {
+    margin-top: 15px;
 }
 
 .profit-label {

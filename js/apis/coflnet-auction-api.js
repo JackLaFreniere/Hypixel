@@ -16,9 +16,10 @@ class CoflnetAuctionAPI {
         
         // Caching system
         this.cache = new Map();
-        this.cacheExpiry = 300000; // 5 minutes
+        this.cacheExpiry = 600000; // 10 minutes (increased to reduce API calls)
         this.rateLimitDelay = 250; // 250ms between requests to be respectful
         this.lastRequest = 0;
+        this.localStoragePrefix = 'coflnet_auction_';
         
         // Items database for name-to-tag conversion
         this.itemsDatabase = null;
@@ -28,41 +29,32 @@ class CoflnetAuctionAPI {
         this.isInitialized = false;
         this.connectionStatus = 'disconnected';
         this.lastError = null;
+        
+        // Load persistent cache on initialization
+        this.loadPersistentCache();
     }
 
-    /**
-     * Initialize the API manager by loading the items database
-     * @returns {Promise<boolean>} Success status
-     */
     async initialize() {
         if (this.isInitialized) {
             return true;
         }
 
         try {
-            console.log('Initializing Coflnet Auction API...');
             await this.loadItemsDatabase();
             this.isInitialized = true;
-            console.log('Coflnet Auction API initialized successfully');
             return true;
         } catch (error) {
             this.lastError = error;
-            console.error('Failed to initialize Coflnet Auction API:', error);
             return false;
         }
     }
 
-    /**
-     * Load the items database for name-to-tag conversion
-     * @private
-     */
     async loadItemsDatabase() {
         if (this.itemsDatabaseLoaded) {
             return;
         }
 
         try {
-            console.log('Loading items database for Coflnet API...');
             const response = await fetch('../jsons/items.json');
             if (!response.ok) {
                 throw new Error(`Failed to load items.json: ${response.status}`);
@@ -70,27 +62,21 @@ class CoflnetAuctionAPI {
             const data = await response.json();
             this.itemsDatabase = data.items || data;
             this.itemsDatabaseLoaded = true;
-            console.log(`Loaded ${this.itemsDatabase.length} items for Coflnet lookup`);
         } catch (error) {
-            console.error('Failed to load items database for Coflnet API:', error);
             throw error;
         }
     }
 
-    /**
-     * Find the item tag (ID) for a given item name
-     * @param {string} itemName - The display name of the item
-     * @returns {string} The item tag for API calls
-     */
     findItemTag(itemName) {
         const item = this.itemsDatabase.find(item => 
             item.name && item.name.toLowerCase() === itemName.toLowerCase()
         );
 
         if (item && item.id) {
-            console.log(`Found item: ${itemName} -> ${item.id}`);
             return item.id;
         }
+        
+        return null;
     }
 
     /**
@@ -109,45 +95,31 @@ class CoflnetAuctionAPI {
         this.lastRequest = Date.now();
     }
 
-    /**
-     * Get the lowest BIN (Buy It Now) price for an item
-     * @param {string} itemName - Item name or tag
-     * @returns {Promise<number>} Lowest BIN price (0 if not found)
-     */
     async getLowestBIN(itemName) {
         try {
             const itemTag = itemName.includes('_') ? itemName : this.findItemTag(itemName);
             const cacheKey = `bin_${itemTag}`;
             
-            console.log(`Looking up BIN price for "${itemName}" -> tag: "${itemTag}"`);
-            
             // Check cache first
             const cached = this.getCached(cacheKey);
             if (cached !== null) {
-                console.log(`Using cached BIN price for ${itemName}: ${cached}`);
                 return cached;
             }
             
             await this.rateLimit();
             
             const url = `${this.baseURL}/auctions/tag/${itemTag}/active/bin`;
-            console.log(`Fetching BIN data from Coflnet: ${url}`);
-            
             const response = await fetch(url);
-            console.log(`Response status: ${response.status} ${response.statusText}`);
             
             if (!response.ok) {
                 if (response.status === 404) {
-                    console.warn(`No BIN auctions found for ${itemName} (${itemTag}) - 404 response`);
-                    // Try alternative API endpoint
+                    // Try alternative endpoint
                     const altUrl = `${this.baseURL}/item/${itemTag}/price`;
-                    console.log(`Trying alternative endpoint: ${altUrl}`);
-                    
                     const altResponse = await fetch(altUrl);
+                    
                     if (altResponse.ok) {
                         const altData = await altResponse.json();
                         const price = altData.median || altData.mean || 0;
-                        console.log(`Alternative API returned price: ${price}`);
                         this.setCached(cacheKey, price);
                         return price;
                     }
@@ -159,33 +131,22 @@ class CoflnetAuctionAPI {
             }
             
             const data = await response.json();
-            console.log(`API response data:`, data);
             
             if (!Array.isArray(data) || data.length === 0) {
-                console.warn(`No BIN auctions available for ${itemName}`);
                 this.setCached(cacheKey, 0);
                 return 0;
             }
             
-            // Get the lowest price (first item should be lowest)
             const lowestPrice = data[0].startingBid || data[0].highestBidAmount || 0;
-            
-            console.log(`Found ${data.length} BIN auctions for ${itemName}, lowest: ${lowestPrice} coins`);
             this.setCached(cacheKey, lowestPrice);
             
             return lowestPrice;
             
         } catch (error) {
-            console.error(`Error getting BIN price for ${itemName}:`, error);
             return 0;
         }
     }
 
-    /**
-     * Get average BIN price for an item
-     * @param {string} itemName - Item name or tag
-     * @returns {Promise<number>} Average BIN price (0 if not found)
-     */
     async getAverageBIN(itemName) {
         try {
             const itemTag = itemName.includes('_') ? itemName : this.findItemTag(itemName);
@@ -194,20 +155,16 @@ class CoflnetAuctionAPI {
             // Check cache first
             const cached = this.getCached(cacheKey);
             if (cached !== null) {
-                console.log(`Using cached average BIN price for ${itemName}: ${cached}`);
                 return cached;
             }
             
             await this.rateLimit();
             
             const url = `${this.baseURL}/auctions/tag/${itemTag}/active/bin`;
-            console.log(`Fetching BIN data for average from Coflnet: ${url}`);
-            
             const response = await fetch(url);
             
             if (!response.ok) {
                 if (response.status === 404) {
-                    console.warn(`No BIN auctions found for ${itemName} (${itemTag})`);
                     this.setCached(cacheKey, 0);
                     return 0;
                 }
@@ -217,30 +174,25 @@ class CoflnetAuctionAPI {
             const data = await response.json();
             
             if (!Array.isArray(data) || data.length === 0) {
-                console.warn(`No BIN auctions available for ${itemName}`);
                 this.setCached(cacheKey, 0);
                 return 0;
             }
             
-            // Calculate average from available auctions
+            // Calculate average
             const prices = data.map(auction => auction.startingBid || auction.highestBidAmount || 0);
             const validPrices = prices.filter(price => price > 0);
             
             if (validPrices.length === 0) {
-                console.warn(`No valid prices found for ${itemName}`);
                 this.setCached(cacheKey, 0);
                 return 0;
             }
             
             const averagePrice = validPrices.reduce((sum, price) => sum + price, 0) / validPrices.length;
-            
-            console.log(`Found ${validPrices.length} valid BIN prices for ${itemName}, average: ${Math.round(averagePrice)} coins`);
             this.setCached(cacheKey, Math.round(averagePrice));
             
             return Math.round(averagePrice);
             
         } catch (error) {
-            console.error(`Error getting average BIN price for ${itemName}:`, error);
             return 0;
         }
     }
@@ -259,7 +211,6 @@ class CoflnetAuctionAPI {
                 const price = await this.getLowestBIN(itemName);
                 results.set(itemName, price);
             } catch (error) {
-                console.error(`Failed to get price for ${itemName}:`, error);
                 results.set(itemName, 0);
             }
         }
@@ -268,43 +219,125 @@ class CoflnetAuctionAPI {
     }
 
     /**
-     * Get cached value if still valid
+     * Get cached value if still valid (checks both memory and localStorage)
      * @param {string} key - Cache key
      * @returns {number|null} Cached value or null if expired/missing
      * @private
      */
     getCached(key) {
+        // Check memory cache first
         const cached = this.cache.get(key);
-        if (!cached) return null;
-        
-        const now = Date.now();
-        if (now - cached.timestamp > this.cacheExpiry) {
+        if (cached) {
+            const now = Date.now();
+            if (now - cached.timestamp <= this.cacheExpiry) {
+                return cached.value;
+            }
             this.cache.delete(key);
-            return null;
         }
         
-        return cached.value;
+        // Check localStorage
+        try {
+            const storageKey = this.localStoragePrefix + key;
+            const stored = localStorage.getItem(storageKey);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                const now = Date.now();
+                if (now - parsed.timestamp <= this.cacheExpiry) {
+                    // Restore to memory cache
+                    this.cache.set(key, parsed);
+                    return parsed.value;
+                } else {
+                    // Expired, remove it
+                    localStorage.removeItem(storageKey);
+                }
+            }
+        } catch (error) {
+            // Silent fail
+        }
+        
+        return null;
     }
 
     /**
-     * Set cached value with timestamp
+     * Set cached value with timestamp (saves to both memory and localStorage)
      * @param {string} key - Cache key
      * @param {number} value - Value to cache
      * @private
      */
     setCached(key, value) {
-        this.cache.set(key, {
+        const cacheObject = {
             value: value,
             timestamp: Date.now()
-        });
+        };
+        
+        // Save to memory cache
+        this.cache.set(key, cacheObject);
+        
+        // Save to localStorage
+        try {
+            const storageKey = this.localStoragePrefix + key;
+            localStorage.setItem(storageKey, JSON.stringify(cacheObject));
+        } catch (error) {
+            // Silent fail
+        }
     }
 
     /**
-     * Clear the cache
+     * Load all persistent cache entries from localStorage into memory
+     * @private
      */
+    loadPersistentCache() {
+        try {
+            const now = Date.now();
+            const keysToRemove = [];
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const storageKey = localStorage.key(i);
+                if (storageKey && storageKey.startsWith(this.localStoragePrefix)) {
+                    try {
+                        const stored = localStorage.getItem(storageKey);
+                        const parsed = JSON.parse(stored);
+                        
+                        // Check if still valid
+                        if (now - parsed.timestamp <= this.cacheExpiry) {
+                            const cacheKey = storageKey.substring(this.localStoragePrefix.length);
+                            this.cache.set(cacheKey, parsed);
+                        } else {
+                            keysToRemove.push(storageKey);
+                        }
+                    } catch (error) {
+                        keysToRemove.push(storageKey);
+                    }
+                }
+            }
+            
+            // Clean up expired entries
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            if (this.cache.size > 0) {
+                console.log(`✓ Loaded ${this.cache.size} cached auction prices from localStorage`);
+            }
+        } catch (error) {
+            // Silent fail
+        }
+    }
+
     clearCache() {
         this.cache.clear();
-        console.log('Coflnet API cache cleared');
+        
+        // Clear localStorage entries
+        try {
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith(this.localStoragePrefix)) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        } catch (error) {
+            // Silent fail
+        }
     }
 
     /**

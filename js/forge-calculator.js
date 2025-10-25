@@ -1,24 +1,21 @@
 // Forge Calculator
 class ForgeCalculator {
     constructor() {
-        console.log('ForgeCalculator constructor called');
         try {
             this.bazaarAPI = window.globalBazaarAPI || new HypixelBazaarAPI();
             this.coflnetAPI = window.globalCoflnetAPI || new CoflnetAuctionAPI();
-            console.log('APIs assigned successfully');
         } catch (error) {
-            console.error('Error assigning APIs:', error);
+            console.error('Error initializing APIs:', error);
         }
         
         this.recipes = [];
-        this.items = new Map(); // Map item names to IDs
+        this.items = new Map();
         this.priceCache = new Map();
         this.lastPriceUpdate = null;
         
         this.initializeEventListeners();
         this.loadItemsAndRecipes();
         
-        // Make this accessible globally
         window.forgeCalculator = this;
     }
 
@@ -51,35 +48,17 @@ class ForgeCalculator {
 
     async loadItems() {
         try {
-            console.log('Loading items.json...');
             const response = await fetch('../jsons/items.json');
-            console.log('Items.json response status:', response.status);
             
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
             const data = await response.json();
-            console.log('Items.json data loaded, success:', data.success);
-            console.log('Total items in database:', data.items.length);
             
             // Create a map of item names to their IDs
-            let processedCount = 0;
             data.items.forEach(item => {
                 this.items.set(item.name, item.id);
-                processedCount++;
-                if (processedCount % 10000 === 0) {
-                    console.log(`Processed ${processedCount} items...`);
-                }
-            });
-            
-            console.log(`Loaded ${this.items.size} items for ID lookup`);
-            
-            // Test a few specific items we need
-            const testItems = ['Drill Motor', 'Treasurite', 'Golden Plate', 'Refined Diamond'];
-            testItems.forEach(itemName => {
-                const id = this.items.get(itemName);
-                console.log(`Test lookup - ${itemName}: ${id}`);
             });
         } catch (error) {
             console.error('Error loading items:', error);
@@ -88,17 +67,8 @@ class ForgeCalculator {
     }
 
     getItemId(itemName) {
-        // First try the loaded items map
-        let itemId = this.items.get(itemName);
-        if (itemId) {
-            return itemId;
-        }
-
-        // Per project policy: no hard-coded fallback values. If the item isn't
-        // present in items.json, return null so callers can detect a missing ID
-        // and show 0 (or otherwise indicate failure).
-        console.warn(`Item ID not found for: ${itemName}`);
-        return null;
+        const itemId = this.items.get(itemName);
+        return itemId || null;
     }
 
     async loadRecipes() {
@@ -107,7 +77,6 @@ class ForgeCalculator {
             const data = await response.json();
             
             this.recipes = data.recipes;
-            console.log(`Loaded ${this.recipes.length} forge recipes`);
             document.getElementById('recipeCountDisplay').textContent = this.recipes.length;
             
             await this.loadPrices();
@@ -123,57 +92,61 @@ class ForgeCalculator {
         document.getElementById('recipesGrid').style.display = 'none';
         
         try {
-            console.log('=== STARTING PRICE LOADING ===');
-            // Clear existing cache
             this.priceCache.clear();
             
-            // Collect all items that need pricing with their specified sources
-            const itemsToFetch = new Map(); // itemName -> {source, isOutput}
+            // Collect all items that need pricing
+            const itemsToFetch = new Map();
+            const failedItems = [];
             
             this.recipes.forEach(recipe => {
-                console.log(`Processing recipe: ${recipe.name}`);
-                // Add input items with their specified sources (skip coin inputs)
                 recipe.inputs.forEach(input => {
                     if (input.source !== 'coins') {
                         itemsToFetch.set(input.name, { source: input.source, isOutput: false });
-                        console.log(`  Input: ${input.name} from ${input.source}`);
-                    } else {
-                        console.log(`  Skipping coin input: ${input.name} (${input.coinCost} coins)`);
                     }
                 });
-                
-                // Add output item with its specified sell location
                 itemsToFetch.set(recipe.name, { source: recipe.sellLocation, isOutput: true });
-                console.log(`  Output: ${recipe.name} to ${recipe.sellLocation}`);
             });
             
-            console.log('=== ITEMS TO FETCH ===');
-            console.log('Items to fetch with sources:', Object.fromEntries(itemsToFetch));
-            
-            // Check if items are properly mapped to IDs
-            console.log('=== CHECKING ITEM ID MAPPINGS ===');
-            for (const [itemName, {source, isOutput}] of itemsToFetch) {
-                const itemId = this.getItemId(itemName);
-                console.log(`${itemName} -> ${itemId} (${source}, ${isOutput ? 'output' : 'input'})`);
-            }
-            
-            // Fetch prices for all items from their specified locations only
+            // Fetch prices
             const pricePromises = Array.from(itemsToFetch).map(async ([itemName, {source, isOutput}]) => {
                 try {
-                    console.log(`=== FETCHING PRICE FOR ${itemName} ===`);
                     const price = await this.getItemPriceFromSource(itemName, source, isOutput);
-                    console.log(`=== PRICE RESULT FOR ${itemName}: ${price} ===`);
                     this.priceCache.set(itemName, price);
+                    
+                    // Log completion and track failures
+                    if (price === 0 && source !== 'coins') {
+                        console.error(`❌ ${itemName}`);
+                        failedItems.push({
+                            name: itemName,
+                            source: source,
+                            type: isOutput ? 'output' : 'input'
+                        });
+                    } else {
+                        console.log(`✓ ${itemName}: ${this.formatCoins(price)}`);
+                    }
                 } catch (error) {
-                    console.warn(`Failed to get price for ${itemName} from ${source}:`, error);
+                    console.error(`❌ ${itemName}`);
                     this.priceCache.set(itemName, 0);
+                    failedItems.push({
+                        name: itemName,
+                        source: source,
+                        type: isOutput ? 'output' : 'input'
+                    });
                 }
             });
             
             await Promise.allSettled(pricePromises);
             
-            console.log('=== FINAL PRICE CACHE ===');
-            console.log('Price cache contents:', Object.fromEntries(this.priceCache));
+            // Display summary of failed items
+            if (failedItems.length > 0) {
+                console.group(`⚠️ Failed: ${failedItems.length} items`);
+                failedItems.forEach(item => {
+                    console.log(`  • ${item.name} [${item.type}] from ${item.source}`);
+                });
+                console.groupEnd();
+            } else {
+                console.log('✅ All items loaded');
+            }
             
             this.lastPriceUpdate = new Date();
             document.getElementById('lastUpdatedDisplay').textContent = 
@@ -189,94 +162,44 @@ class ForgeCalculator {
     }
 
     async getItemPriceFromSource(itemName, source, isOutput) {
-        console.log(`=== GET PRICE FROM SOURCE: ${itemName} ===`);
-        
-        // Handle raw coin inputs
         if (source === 'coins') {
-            console.log(`Using raw coin cost for ${itemName}`);
-            return 0; // We'll handle this in the input processing
+            return 0;
         }
         
         const itemId = this.getItemId(itemName);
         if (!itemId) {
-            console.error(`Cannot get price for ${itemName}: Item ID not found in items.json`);
-            console.log('Available items in map (first 10):', Array.from(this.items.keys()).slice(0, 10));
             return 0;
         }
         
-        console.log(`Item ID for ${itemName}: ${itemId}`);
-        
         try {
-            console.log(`Getting price for ${itemName} (ID: ${itemId}) from ${source}`);
-            
             if (source === 'bazaar') {
-                console.log('Calling bazaar API...');
-                // Get the full bazaar data for this item
                 const products = await this.bazaarAPI.fetchBazaarData();
-                console.log('Bazaar data fetched, checking for item...');
                 const product = products[itemId];
                 
                 if (!product) {
-                    console.warn(`${itemName} (${itemId}) not found in bazaar`);
-                    console.log('Available products (first 10):', Object.keys(products).slice(0, 10));
                     return 0;
                 }
                 
-                console.log(`Found product for ${itemName}:`, {
-                    hasBuySummary: !!product.buy_summary,
-                    buySummaryLength: product.buy_summary?.length || 0,
-                    hasSellSummary: !!product.sell_summary,
-                    sellSummaryLength: product.sell_summary?.length || 0
-                });
-                
-                let price = 0;
-                
                 if (isOutput) {
-                    // For outputs, we want to sell - use buy orders (what players will pay us)
-                    if (product.buy_summary && product.buy_summary.length > 0) {
-                        price = product.buy_summary[0].pricePerUnit;
-                        console.log(`Found ${itemName} sell price in bazaar: ${price}`);
-                    } else {
-                        console.log(`No buy orders for ${itemName}`);
-                    }
+                    const price = product.buy_summary?.[0]?.pricePerUnit || 0;
+                    return price;
                 } else {
-                    // For inputs, we want to buy - use sell orders (what players are selling for)
-                    if (product.sell_summary && product.sell_summary.length > 0) {
-                        price = product.sell_summary[0].pricePerUnit;
-                        console.log(`Found ${itemName} buy price in bazaar: ${price}`);
-                    } else {
-                        console.log(`No sell orders for ${itemName}`);
-                    }
-                }
-                
-                if (price === 0) {
-                    console.warn(`No ${isOutput ? 'buy orders' : 'sell orders'} for ${itemName} in bazaar`);
-                }
-                
-                return price;
-                
-            } else if (source === 'auction') {
-                console.log('Calling auction API...');
-                // For auction house, use the item ID
-                const price = await this.coflnetAPI.getLowestBIN(itemId);
-                if (price > 0) {
-                    console.log(`Found ${itemName} in auction house: ${price}`);
+                    const price = product.sell_summary?.[0]?.pricePerUnit || 0;
                     return price;
                 }
-                console.warn(`No auction price found for ${itemName}`);
-                return 0;
+                
+            } else if (source === 'auction') {
+                const price = await this.coflnetAPI.getLowestBIN(itemId);
+                return price || 0;
             } else {
-                console.error(`Unknown source: ${source} for item ${itemName}`);
                 return 0;
             }
         } catch (error) {
-            console.error(`Error getting ${source} price for ${itemName}:`, error);
             return 0;
         }
     }
 
     calculateRecipeProfit(recipe) {
-        // Calculate input costs
         let inputCost = 0;
         const inputDetails = [];
 
@@ -285,15 +208,11 @@ class ForgeCalculator {
             let totalCost = 0;
             
             if (input.source === 'coins') {
-                // Handle raw coin inputs
                 price = input.coinCost || 0;
                 totalCost = price * input.quantity;
-                console.log(`Using coin cost for ${input.name}: ${price} each, total: ${totalCost}`);
             } else {
-                // Handle regular market-priced inputs
                 price = this.priceCache.get(input.name) || 0;
                 totalCost = price * input.quantity;
-                console.log(`Calculating cost for ${input.name}: ${price} each, total: ${totalCost}`);
             }
             
             inputCost += totalCost;
@@ -304,19 +223,14 @@ class ForgeCalculator {
             });
         });
 
-        // Calculate output value
         const outputPrice = this.priceCache.get(recipe.name) || 0;
-        console.log(`Output price for ${recipe.name}: ${outputPrice}`);
-        console.log(`Final calculation - Input cost: ${inputCost}, Output value: ${outputPrice}`);
-
-        // Calculate profit and profit per hour
         const profit = outputPrice - inputCost;
-    // Support optional days and seconds fields in recipe.time (backwards compatible)
-    const days = recipe.time.days || 0;
-    const hours = recipe.time.hours || 0;
-    const minutes = recipe.time.minutes || 0;
-    const seconds = recipe.time.seconds || 0;
-    const totalHours = (days * 24) + hours + (minutes / 60) + (seconds / 3600);
+        
+        const days = recipe.time.days || 0;
+        const hours = recipe.time.hours || 0;
+        const minutes = recipe.time.minutes || 0;
+        const seconds = recipe.time.seconds || 0;
+        const totalHours = (days * 24) + hours + (minutes / 60) + (seconds / 3600);
         const profitPerHour = totalHours > 0 ? profit / totalHours : 0;
 
         return {
@@ -333,20 +247,13 @@ class ForgeCalculator {
         const categoryFilter = document.getElementById('categoryFilter').value;
         const sortBy = document.getElementById('sortBy').value;
         
-        console.log(`Filtering by category: ${categoryFilter}, sorting by: ${sortBy}`);
-        
-        // Filter recipes by category
         let filteredRecipes = this.recipes;
         if (categoryFilter !== 'all') {
             filteredRecipes = this.recipes.filter(recipe => recipe.category === categoryFilter);
         }
-        
-        console.log(`Filtered recipes count: ${filteredRecipes.length}`);
 
-        // Calculate profits for filtered recipes and mark missing-input recipes
         const recipesWithData = filteredRecipes.map(recipe => {
             const calculation = this.calculateRecipeProfit(recipe);
-            // Consider a recipe "missing inputs" if any input unitPrice is 0 and source !== 'coins', or the output price is 0 when sellLocation requires a market price
             const hasMissingInput = calculation.inputDetails.some(inp => inp.source !== 'coins' && (!inp.unitPrice || inp.unitPrice === 0));
             const hasMissingOutput = (!calculation.outputValue || calculation.outputValue === 0) && recipe.sellLocation && recipe.sellLocation !== 'coins';
 
@@ -380,7 +287,7 @@ class ForgeCalculator {
                     return b.calculation.profitPerHour - a.calculation.profitPerHour;
             }
         });
-        // Move any recipes with missing inputs to the end while preserving relative order
+        
         const ready = recipesWithData.filter(r => !r.missingInputs);
         const incomplete = recipesWithData.filter(r => r.missingInputs);
         const ordered = ready.concat(incomplete);
@@ -393,7 +300,7 @@ class ForgeCalculator {
         const grid = document.getElementById('recipesGrid');
         
         if (recipes.length === 0) {
-            grid.innerHTML = '<p style="text-align: center; color: #94a3b8;">No recipes found for the selected filters.</p>';
+            grid.innerHTML = '<p class="recipes-empty">No recipes found for the selected filters.</p>';
             return;
         }
 
@@ -412,12 +319,12 @@ class ForgeCalculator {
             return `
                 <div class="recipe-card ${statusClass} ${missingClass}">
                     <div class="recipe-header">
-                            <div class="recipe-name">${recipe.name}</div>
-                            <div class="recipe-meta">
-                                <div class="recipe-category">${recipe.category}</div>
-                                <div class="recipe-time">⏱️ ${timeText}</div>
-                            </div>
+                        <div class="recipe-name">${recipe.name}</div>
+                        <div class="recipe-meta">
+                            <span class="recipe-category">${recipe.category}</span>
+                            <span class="recipe-time">⏱️ ${timeText}</span>
                         </div>
+                    </div>
                     
                     <div class="recipe-materials">
                         ${calc.inputDetails.map(input => `
@@ -425,32 +332,32 @@ class ForgeCalculator {
                                 <span class="material-name">${input.quantity}x ${input.name}</span>
                                 <span class="material-cost">${
                                     input.source === 'coins' 
-                                        ? `${this.formatCoins(input.unitPrice)}`
-                                        : `${this.formatCoins(input.unitPrice)} each`
+                                        ? this.formatCoins(input.unitPrice)
+                                        : `${this.formatCoins(input.unitPrice)} ea`
                                 }</span>
                             </div>
                         `).join('')}
                     </div>
                     
                     <div class="recipe-summary">
-                        <div class="cost-summary">
+                        <div class="cost-row">
                             <span class="label">Cost:</span>
                             <span class="value">${this.formatCoins(calc.inputCost)}</span>
                         </div>
-                        <div class="sell-summary">
-                            <span class="label">Sells for:</span>
+                        <div class="sell-row">
+                            <span class="label">Sells:</span>
                             <span class="value">${this.formatCoins(calc.outputValue)}</span>
                         </div>
                     </div>
                     
-                    <div class="profit-highlight">
-                        <div class="hourly-profit">
-                            <div class="profit-label">Per Hour</div>
-                            <div class="profit-amount ${profitClass}">${this.formatCoins(calc.profitPerHour)}</div>
+                    <div class="profit-section">
+                        <div class="profit-item">
+                            <span class="profit-label">Per Hour</span>
+                            <span class="profit-amount ${profitClass}">${this.formatCoins(calc.profitPerHour)}</span>
                         </div>
-                        <div class="total-profit">
-                            <div class="profit-label">Total Profit</div>
-                            <div class="profit-amount ${profitClass}">${this.formatCoins(calc.profit)}</div>
+                        <div class="profit-item">
+                            <span class="profit-label">Total</span>
+                            <span class="profit-amount ${profitClass}">${this.formatCoins(calc.profit)}</span>
                         </div>
                     </div>
                 </div>
@@ -483,13 +390,9 @@ class ForgeCalculator {
     }
 
     formatTime(hours, minutes) {
-        // Backwards compatible: if called with (hours, minutes) keep behavior.
-        // If a caller passes days in place of hours, prefer the object-based call below.
         return `${hours}h ${minutes}m`;
     }
 
-    // New: format a duration that may include days, hours, minutes, and seconds.
-    // Returns a compact string like "1d 4h 30m 12s" or "4h 30m" or "30m 12s".
     formatDuration(days, hours, minutes, seconds) {
         const parts = [];
         if (days && days > 0) parts.push(`${days}d`);
@@ -509,26 +412,27 @@ class ForgeCalculator {
     showError(message) {
         const grid = document.getElementById('recipesGrid');
         grid.innerHTML = `
-            <div style="text-align: center; color: #ef4444; padding: 40px;">
+            <div class="error-container">
                 <h3>Error</h3>
                 <p>${message}</p>
-                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 15px;">
-                    Reload Page
-                </button>
+                <button class="btn btn-primary reload-btn">Reload Page</button>
             </div>
         `;
         grid.style.display = 'block';
         document.getElementById('loading').style.display = 'none';
+        
+        const reloadBtn = grid.querySelector('.reload-btn');
+        if (reloadBtn) {
+            reloadBtn.addEventListener('click', () => location.reload());
+        }
     }
 }
 
-// Initialize the calculator when the page loads
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.forgeCalculator = new ForgeCalculator();
-    console.log('Forge Calculator initialized');
 });
 
-// Export for potential module use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ForgeCalculator;
 }
