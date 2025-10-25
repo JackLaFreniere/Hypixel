@@ -15,7 +15,7 @@
     // Utilities
     function closeAllDropdowns() {
         dropdowns.forEach(d => d.classList.remove('open'));
-        catButtons.forEach(b => b.classList.remove('active'));
+        catButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-expanded', 'false'); });
     }
 
     function showAllCards() {
@@ -147,11 +147,14 @@
     // --- Event wiring ---
     // Category buttons
     catButtons.forEach(btn => {
+        // initialize aria state
+        btn.setAttribute('aria-expanded', 'false');
         btn.addEventListener('click', () => {
             const cat = btn.dataset.cat;
             if (cat === 'All') {
                 closeAllDropdowns();
                 btn.classList.add('active');
+                btn.setAttribute('aria-expanded', 'false');
                 showAllCards();
                 return;
             }
@@ -162,22 +165,26 @@
             if (!isOpen && dropdown) {
                 dropdown.classList.add('open');
                 btn.classList.add('active');
+                btn.setAttribute('aria-expanded', 'true');
             }
         });
     });
 
-    // Dropdown items -> filter
+    // Dropdown items -> filter (buttons are natively keyboard-accessible)
     dropdownItems.forEach(item => {
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-pressed', 'false');
         item.addEventListener('click', () => {
             const tag = item.dataset.filter;
-            dropdownItems.forEach(i => i.classList.remove('selected'));
+            dropdownItems.forEach(i => { i.classList.remove('selected'); i.setAttribute('aria-pressed', 'false'); });
             item.classList.add('selected');
+            item.setAttribute('aria-pressed', 'true');
 
             const parentDropdown = item.closest('.dropdown');
             const cat = parentDropdown && parentDropdown.dataset.cat;
             closeAllDropdowns();
             const catBtn = document.querySelector(`.cat-btn[data-cat="${cat}"]`);
-            if (catBtn) catBtn.classList.add('active');
+            if (catBtn) { catBtn.classList.add('active'); catBtn.setAttribute('aria-expanded', 'false'); }
 
             filterByTag(tag);
         });

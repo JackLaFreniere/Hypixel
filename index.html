@@ -18,7 +18,7 @@
     <aside class="sidebar">
       <div class="search-box">
         <input id="calc-search" type="search" placeholder="Search calculators...">
-        <button id="search-clear">✕</button>
+        <button id="search-clear" type="button" aria-label="Clear search">✕</button>
       </div>
 
       <div class="sidebar-inner">
@@ -29,72 +29,72 @@
         <div class="cat-row">
           <button class="cat-btn" data-cat="Skills">Skills</button>
           <div class="dropdown" data-cat="Skills">
-            <div class="dropdown-item" data-filter="combat">
+            <button type="button" class="dropdown-item" data-filter="combat" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_stone_sword.png" alt="Combat">
               <div class="item-text"><strong>Combat</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="mining">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="mining" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_stone_pickaxe.png" alt="Mining">
               <div class="item-text"><strong>Mining</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="farming">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="farming" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_golden_hoe.png" alt="Farming">
               <div class="item-text"><strong>Farming</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="foraging">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="foraging" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_jungle_sapling.png" alt="Foraging">
               <div class="item-text"><strong>Foraging</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="fishing">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="fishing" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_fishing_rod.png" alt="Fishing">
               <div class="item-text"><strong>Fishing</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="enchanting">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="enchanting" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_enchantment_table.png" alt="Enchanting">
               <div class="item-text"><strong>Enchanting</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="alchemy">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="alchemy" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_brewing_stand.png" alt="Alchemy">
               <div class="item-text"><strong>Alchemy</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="taming">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="taming" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_ghast_spawn_egg.png" alt="Taming">
               <div class="item-text"><strong>Taming</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="hunting">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="hunting" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_lead.png" alt="Hunting">
               <div class="item-text"><strong>Hunting</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="dungeoneering">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="dungeoneering" aria-pressed="false">
               <img src="assets/Images/Skills/SkyBlock_items_dungeoneering.png" alt="Dungeoneering">
               <div class="item-text"><strong>Dungeoneering</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="carpentry">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="carpentry" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_crafting_table.png" alt="Carpentry">
               <div class="item-text"><strong>Carpentry</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="social">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="social" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_emerald.png" alt="Social">
               <div class="item-text"><strong>Social</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="runecrafting">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="runecrafting" aria-pressed="false">
               <img src="assets/Images/Skills/Minecraft_items_magma_cream.png" alt="Runecrafting">
               <div class="item-text"><strong>Runecrafting</strong></div>
-            </div>
+            </button>
           </div>
         </div>
 
         <div class="cat-row">
           <button class="cat-btn" data-cat="Events">Events</button>
           <div class="dropdown" data-cat="Events">
-            <div class="dropdown-item" data-filter="winter-festival">
+            <button type="button" class="dropdown-item" data-filter="winter-festival" aria-pressed="false">
               <img src="assets/Images/Items/SkyBlock_items_coin_iron.png" alt="Winter Festival">
               <div class="item-text"><strong>Winter Festival</strong></div>
-            </div>
-            <div class="dropdown-item" data-filter="gemstone-event">
+            </button>
+            <button type="button" class="dropdown-item" data-filter="gemstone-event" aria-pressed="false">
               <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Gemstone Event">
               <div class="item-text"><strong>Gemstone Event</strong></div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -109,14 +109,14 @@
             <div class="calculator-card" data-tags="mining">
               <img src="assets/Images/Items/SkyBlock_items_shattered_pendant.png" alt="Shattered Pendant" class="calc-icon">
               <h3>Corpse ROI Calculator</h3>
-              <p>Calculate the return on investment for different corpse types.</p>
+              <p>Calculate the return on investment for different corpses in the Glacite Tunnels.</p>
               <a href="calculators/corpse-roi-calculator.html" class="calc-button">Launch</a>
             </div>
 
             <div class="calculator-card" data-tags="mining">
               <img src="assets/Images/Crystals/SkyBlock_items_jasper_crystal.png" alt="Jasper Crystal" class="calc-icon">
               <h3>Crystal Calculator</h3>
-              <p>Compare profit from gemstone conversions.</p>
+              <p>Calculates the profit of forging a pefect gemstone from a crystal.</p>
               <a href="calculators/crystal-calculator.html" class="calc-button">Launch</a>
             </div>
 
