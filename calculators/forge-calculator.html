@@ -22,56 +22,115 @@
     <div class="container">
         <!-- Filter Section -->
         <div class="filter-section">
-            <div class="filter-group">
-                <label for="categoryFilter">Category:</label>
-                <select id="categoryFilter" class="form-control">
-                    <option value="all">All Categories</option>
-                    <option value="refining">Refining</option>
-                    <option value="forging">Forging</option>
-                    <option value="tools">Tools</option>
-                    <option value="gear">Gear</option>
-                    <option value="reforge stones">Reforge Stones</option>
-                    <option value="drill parts">Drill Parts</option>
-                    <option value="pets">Pets</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="sortBy">Sort by:</label>
-                <select id="sortBy" class="form-control">
-                    <option value="profit-per-hour-desc">Highest Profit/Hour</option>
-                    <option value="profit-per-hour-asc">Lowest Profit/Hour</option>
-                    <option value="profit-desc">Highest Total Profit</option>
-                    <option value="profit-asc">Lowest Total Profit</option>
-                    <option value="time-asc">Shortest Time</option>
-                    <option value="time-desc">Longest Time</option>
-                    <option value="name-asc">Name A-Z</option>
-                    <option value="category-asc">Category A-Z</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <button id="refreshPrices" class="btn btn-primary">Refresh Prices</button>
-            </div>
-        </div>
-
-        <!-- Summary Section -->
-        <div class="summary-section">
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <span class="summary-label">Best Profit:</span>
-                    <span class="summary-value" id="bestProfitDisplay">Loading...</span>
+            <!-- Basic Filters Row -->
+            <div class="filter-row basic-filters">
+                <div class="filter-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter" class="form-control">
+                        <option value="all">All Categories</option>
+                        <option value="refining">Refining</option>
+                        <option value="forging">Forging</option>
+                        <option value="tools">Tools</option>
+                        <option value="gear">Gear</option>
+                        <option value="reforge stones">Reforge Stones</option>
+                        <option value="drill parts">Drill Parts</option>
+                        <option value="pets">Pets</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Best Profit/Hour:</span>
-                    <span class="summary-value" id="bestProfitPerHourDisplay">Loading...</span>
+                <div class="filter-group">
+                    <label for="sortBy">Sort By</label>
+                    <select id="sortBy" class="form-control">
+                        <option value="profit-per-hour-desc">Highest Profit/Hour</option>
+                        <option value="profit-per-hour-asc">Lowest Profit/Hour</option>
+                        <option value="profit-desc">Highest Total Profit</option>
+                        <option value="profit-asc">Lowest Total Profit</option>
+                        <option value="time-asc">Shortest Time</option>
+                        <option value="time-desc">Longest Time</option>
+                        <option value="name-asc">Name A-Z</option>
+                        <option value="category-asc">Category A-Z</option>
+                    </select>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Total Recipes:</span>
-                    <span class="summary-value" id="recipeCountDisplay">Loading...</span>
+                <div class="filter-group">
+                    <label for="sellLocationFilter">Sell Location</label>
+                    <select id="sellLocationFilter" class="form-control">
+                        <option value="all">All Locations</option>
+                        <option value="bazaar">Bazaar</option>
+                        <option value="auction">Auction House</option>
+                    </select>
                 </div>
-                <div class="summary-item">
-                    <span class="summary-label">Last Updated:</span>
-                    <span class="summary-value" id="lastUpdatedDisplay">-</span>
+            </div>
+            
+            <!-- Action Row -->
+            <div class="filter-row action-row">
+                <div class="filter-group last-updated-group">
+                    <label>Last Updated</label>
+                    <div class="last-updated-display" id="lastUpdatedDisplay">Never</div>
+                </div>
+                <div class="filter-group refresh-group">
+                    <button id="refreshPrices" class="btn btn-primary">
+                        <span class="btn-icon">↻</span>
+                        Refresh Prices
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Advanced Filters with Sliders -->
+            <div class="filter-row advanced-filters">
+                <div class="range-filter-group">
+                    <label>Input Cost Range</label>
+                    <div class="range-container">
+                        <div class="range-inputs-row">
+                            <div class="input-with-unit">
+                                <input type="text" id="inputCostMinText" class="range-text-input" placeholder="Min (e.g. 250k, 10m)" value="">
+                                <span class="input-unit">coins</span>
+                            </div>
+                            <span class="range-separator">to</span>
+                            <div class="input-with-unit">
+                                <input type="text" id="inputCostMaxText" class="range-text-input" placeholder="Max (e.g. 100m, 1.5b)" value="">
+                                <span class="input-unit">coins</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="range-filter-group">
+                    <label>Forge Time Range</label>
+                    <div class="range-container">
+                        <div class="range-inputs-row time-inputs">
+                            <select id="forgeTimeMin" class="form-control time-select">
+                                <option value="0">Any Min</option>
+                                <option value="0.00833">30 seconds</option>
+                                <option value="0.08333">5 minutes</option>
+                                <option value="0.5">30 minutes</option>
+                                <option value="1">1 hour</option>
+                                <option value="2">2 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="8">8 hours</option>
+                                <option value="12">12 hours</option>
+                                <option value="24">1 day</option>
+                                <option value="48">2 days</option>
+                                <option value="72">3 days</option>
+                            </select>
+                            <span class="range-separator">to</span>
+                            <select id="forgeTimeMax" class="form-control time-select">
+                                <option value="999999" selected>Any Max</option>
+                                <option value="0.00833">30 seconds</option>
+                                <option value="0.08333">5 minutes</option>
+                                <option value="0.5">30 minutes</option>
+                                <option value="1">1 hour</option>
+                                <option value="2">2 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="8">8 hours</option>
+                                <option value="12">12 hours</option>
+                                <option value="24">1 day</option>
+                                <option value="48">2 days</option>
+                                <option value="72">3 days</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

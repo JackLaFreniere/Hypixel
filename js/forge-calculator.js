@@ -28,10 +28,67 @@ class ForgeCalculator {
         document.getElementById('sortBy').addEventListener('change', () => {
             this.filterAndSortRecipes();
         });
+        
+        document.getElementById('sellLocationFilter').addEventListener('change', () => {
+            this.filterAndSortRecipes();
+        });
 
         document.getElementById('refreshPrices').addEventListener('click', () => {
             this.refreshPrices();
         });
+        
+        // Input cost range filters (text inputs with format parsing)
+        const inputCostMinText = document.getElementById('inputCostMinText');
+        const inputCostMaxText = document.getElementById('inputCostMaxText');
+        
+        inputCostMinText.addEventListener('input', () => {
+            this.filterAndSortRecipes();
+        });
+        
+        inputCostMaxText.addEventListener('input', () => {
+            this.filterAndSortRecipes();
+        });
+        
+        // Forge time range filters
+        document.getElementById('forgeTimeMin').addEventListener('change', () => {
+            this.filterAndSortRecipes();
+        });
+        
+        document.getElementById('forgeTimeMax').addEventListener('change', () => {
+            this.filterAndSortRecipes();
+        });
+    }
+    
+    parseNumberInput(input) {
+        // Parse user input like "250k", "10m", "1.5b" etc.
+        if (!input || input.trim() === '') {
+            return null; // No limit
+        }
+        
+        const str = input.trim().toLowerCase();
+        const match = str.match(/^([\d.]+)\s*([kmb]?)$/);
+        
+        if (!match) {
+            // Try parsing as plain number
+            const num = parseFloat(str);
+            return isNaN(num) ? null : num;
+        }
+        
+        const value = parseFloat(match[1]);
+        const suffix = match[2];
+        
+        if (isNaN(value)) return null;
+        
+        switch (suffix) {
+            case 'k':
+                return value * 1000;
+            case 'm':
+                return value * 1000000;
+            case 'b':
+                return value * 1000000000;
+            default:
+                return value;
+        }
     }
 
     async loadItemsAndRecipes() {
@@ -77,7 +134,6 @@ class ForgeCalculator {
             const data = await response.json();
             
             this.recipes = data.recipes;
-            document.getElementById('recipeCountDisplay').textContent = this.recipes.length;
             
             await this.loadPrices();
             this.filterAndSortRecipes();
@@ -246,10 +302,25 @@ class ForgeCalculator {
     filterAndSortRecipes() {
         const categoryFilter = document.getElementById('categoryFilter').value;
         const sortBy = document.getElementById('sortBy').value;
+        const sellLocationFilter = document.getElementById('sellLocationFilter').value;
+        
+        const inputCostMinValue = this.parseNumberInput(document.getElementById('inputCostMinText').value);
+        const inputCostMaxValue = this.parseNumberInput(document.getElementById('inputCostMaxText').value);
+        const inputCostMin = inputCostMinValue !== null ? inputCostMinValue : 0;
+        const inputCostMax = inputCostMaxValue !== null ? inputCostMaxValue : Infinity;
+        const forgeTimeMin = parseFloat(document.getElementById('forgeTimeMin').value) || 0;
+        const forgeTimeMax = parseFloat(document.getElementById('forgeTimeMax').value) || 999999;
         
         let filteredRecipes = this.recipes;
+        
+        // Category filter
         if (categoryFilter !== 'all') {
-            filteredRecipes = this.recipes.filter(recipe => recipe.category === categoryFilter);
+            filteredRecipes = filteredRecipes.filter(recipe => recipe.category === categoryFilter);
+        }
+        
+        // Sell location filter
+        if (sellLocationFilter !== 'all') {
+            filteredRecipes = filteredRecipes.filter(recipe => recipe.sellLocation === sellLocationFilter);
         }
 
         const recipesWithData = filteredRecipes.map(recipe => {
@@ -263,9 +334,20 @@ class ForgeCalculator {
                 missingInputs: hasMissingInput || hasMissingOutput
             };
         });
+        
+        // Apply range filters
+        const rangeFiltered = recipesWithData.filter(recipe => {
+            const inputCost = recipe.calculation.inputCost;
+            const forgeTime = recipe.calculation.totalTime;
+            
+            if (inputCost < inputCostMin || inputCost > inputCostMax) return false;
+            if (forgeTime < forgeTimeMin || forgeTime > forgeTimeMax) return false;
+            
+            return true;
+        });
 
         // Sort recipes
-        recipesWithData.sort((a, b) => {
+        rangeFiltered.sort((a, b) => {
             switch (sortBy) {
                 case 'profit-per-hour-desc':
                     return b.calculation.profitPerHour - a.calculation.profitPerHour;
@@ -288,12 +370,11 @@ class ForgeCalculator {
             }
         });
         
-        const ready = recipesWithData.filter(r => !r.missingInputs);
+        const ready = rangeFiltered.filter(r => !r.missingInputs);
         const incomplete = recipesWithData.filter(r => r.missingInputs);
         const ordered = ready.concat(incomplete);
 
         this.displayRecipes(ordered);
-        this.updateSummary(recipesWithData);
     }
 
     displayRecipes(recipes) {
@@ -363,20 +444,6 @@ class ForgeCalculator {
                 </div>
             `;
         }).join('');
-    }
-
-    updateSummary(recipes) {
-        if (recipes.length === 0) {
-            document.getElementById('bestProfitDisplay').textContent = 'No data';
-            document.getElementById('bestProfitPerHourDisplay').textContent = 'No data';
-            return;
-        }
-
-        const bestProfit = Math.max(...recipes.map(r => r.calculation.profit));
-        const bestProfitPerHour = Math.max(...recipes.map(r => r.calculation.profitPerHour));
-
-        document.getElementById('bestProfitDisplay').textContent = this.formatCoins(bestProfit);
-        document.getElementById('bestProfitPerHourDisplay').textContent = this.formatCoins(bestProfitPerHour);
     }
 
     formatCoins(amount) {
