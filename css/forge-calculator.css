@@ -136,12 +136,14 @@ body {
     flex: 1;
 }
 
-.refresh-group {
+.button-group {
     flex: 0 0 auto;
     min-width: auto;
+    flex-direction: row;
+    gap: 12px;
 }
 
-.refresh-group button {
+.button-group button {
     margin-top: auto;
 }
 
@@ -221,6 +223,23 @@ body {
 .btn-primary:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(100, 116, 139, 0.4);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);
 }
 
 .btn-icon {

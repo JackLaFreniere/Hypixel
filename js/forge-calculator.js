@@ -53,6 +53,13 @@ class ForgeCalculator {
             this.refreshPrices();
         });
         
+        const resetButton = document.getElementById('resetFilters');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                this.resetFilters();
+            });
+        }
+        
         // Input cost range filters (text inputs with format parsing)
         const inputCostMinText = document.getElementById('inputCostMinText');
         const inputCostMaxText = document.getElementById('inputCostMaxText');
@@ -473,6 +480,20 @@ class ForgeCalculator {
         
         this.priceCache.clear();
         await this.loadPrices();
+        this.filterAndSortRecipes();
+    }
+
+    resetFilters() {
+        // Reset all filter controls to their default values
+        document.getElementById('categoryFilter').value = 'all';
+        document.getElementById('sortBy').value = 'profit-per-hour-desc';
+        document.getElementById('sellLocationFilter').value = 'all';
+        document.getElementById('inputCostMinText').value = '';
+        document.getElementById('inputCostMaxText').value = '';
+        document.getElementById('forgeTimeMin').value = '0';
+        document.getElementById('forgeTimeMax').value = '999999';
+        
+        // Re-filter and sort with default values
         this.filterAndSortRecipes();
     }
 
