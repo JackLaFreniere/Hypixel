@@ -2,10 +2,10 @@
 class ForgeCalculator {
     constructor() {
         try {
-            this.bazaarAPI = window.globalBazaarAPI || new HypixelBazaarAPI();
-            this.coflnetAPI = window.globalCoflnetAPI || new CoflnetAuctionAPI();
+            // Use unified Price API - it provides both bazaar and auction data
+            this.priceAPI = window.globalPriceAPI || new PriceAPI();
         } catch (error) {
-            console.error('Error initializing APIs:', error);
+            console.error('Error initializing API:', error);
         }
         
         this.recipes = [];
@@ -14,9 +14,25 @@ class ForgeCalculator {
         this.lastPriceUpdate = null;
         
         this.initializeEventListeners();
-        this.loadItemsAndRecipes();
+        this.initialize();
         
         window.forgeCalculator = this;
+    }
+    
+    async initialize() {
+        try {
+            // Initialize the API first (fetches all price data)
+            await this.priceAPI.initialize();
+            
+            // Enable auto-refresh for price data (handles both bazaar and auction)
+            this.priceAPI.startAutoRefresh(60000); // Every 60 seconds
+            
+            // Now load items and recipes
+            await this.loadItemsAndRecipes();
+        } catch (error) {
+            console.error('Error initializing calculator:', error);
+            this.showError('Failed to initialize calculator');
+        }
     }
 
     initializeEventListeners() {
@@ -228,28 +244,9 @@ class ForgeCalculator {
         }
         
         try {
-            if (source === 'bazaar') {
-                const products = await this.bazaarAPI.fetchBazaarData();
-                const product = products[itemId];
-                
-                if (!product) {
-                    return 0;
-                }
-                
-                if (isOutput) {
-                    const price = product.buy_summary?.[0]?.pricePerUnit || 0;
-                    return price;
-                } else {
-                    const price = product.sell_summary?.[0]?.pricePerUnit || 0;
-                    return price;
-                }
-                
-            } else if (source === 'auction') {
-                const price = await this.coflnetAPI.getLowestBIN(itemId);
-                return price || 0;
-            } else {
-                return 0;
-            }
+            // Use unified Price API - it handles both bazaar and auction
+            const price = await this.priceAPI.getPrice(itemId, source);
+            return price || 0;
         } catch (error) {
             return 0;
         }
@@ -471,6 +468,9 @@ class ForgeCalculator {
     }
 
     async refreshPrices() {
+        // Force refresh prices (bypasses cache for both bazaar and auction)
+        await this.priceAPI.forceRefresh();
+        
         this.priceCache.clear();
         await this.loadPrices();
         this.filterAndSortRecipes();
